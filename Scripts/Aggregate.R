@@ -7,15 +7,15 @@
 
 library(dplyr)
 # Aggregate GSEA
-Prot_GSEA = read.csv("~/documents/Lund_Melanoma/Results/proteomics/ICA/significant_IC_clinical.csv")
-Trans_GSEA = read.csv("~/documents/Lund_Melanoma/Results/transcriptomics/ICA/significant_IC_clinical.csv")
-phospho_GSEA = read.csv("~/documents/Lund_Melanoma/Results/phospho/ICA/significant_IC_clinical.csv")
+Prot_GSEA = read.csv("~/documents/Segundo_Melanoma/Results/proteomics/ICA/significant_IC_clinical.csv")
+Trans_GSEA = read.csv("~/documents/Segundo_Melanoma/Results/transcriptomics/ICA/significant_IC_clinical.csv")
+phospho_GSEA = read.csv("~/documents/Segundo_Melanoma/Results/phospho/ICA/significant_IC_clinical.csv")
 GSEA = data.frame(matrix(ncol=11, nrow=0))
 colnames(GSEA) = c('pathway',	'pval',	'padj',	'ES',	'NES',	'nMoreExtreme',	'size',	'leadingEdge', 'group', 'IC', 'clinical')
 for (a in 1:nrow(Prot_GSEA)){
   m = toString(droplevels(Prot_GSEA[a, "Feature"]))
   n = toString(droplevels(Prot_GSEA[a, "IC"]))
-  ICS = read.csv(paste("~/documents/Lund_Melanoma/Results/proteomics/GSEA/", n, ".csv", sep=''), row.names=1)
+  ICS = read.csv(paste("~/documents/Segundo_Melanoma/Results/proteomics/GSEA/", n, ".csv", sep=''), row.names=1)
   ICS = ICS[ICS$padj < 0.01,]
   if (nrow(ICS) != 0){
     ICS$group = 'proteomics'
@@ -28,7 +28,7 @@ for (a in 1:nrow(Prot_GSEA)){
 for (a in 1:nrow(Trans_GSEA)){
   m = toString(droplevels(Trans_GSEA[a, "Feature"]))
   n = toString(droplevels(Trans_GSEA[a, "IC"]))
-  ICS = read.csv(paste("~/documents/Lund_Melanoma/Results/transcriptomics/GSEA/", n, ".csv", sep=''), row.names=1)
+  ICS = read.csv(paste("~/documents/Segundo_Melanoma/Results/transcriptomics/GSEA/", n, ".csv", sep=''), row.names=1)
   ICS = ICS[ICS$padj < 0.01,]
   if (nrow(ICS) != 0){
     ICS$group = 'transcriptomics'
@@ -41,7 +41,7 @@ for (a in 1:nrow(Trans_GSEA)){
 for (a in 1:nrow(phospho_GSEA)){
   m = toString(droplevels(phospho_GSEA[a, "Feature"]))
   n = toString(droplevels(phospho_GSEA[a, "IC"]))
-  ICS = read.csv(paste("~/documents/Lund_Melanoma/Results/phospho/GSEA/", n, ".csv", sep=''), row.names=1)
+  ICS = read.csv(paste("~/documents/Segundo_Melanoma/Results/phospho/GSEA/", n, ".csv", sep=''), row.names=1)
   ICS = ICS[ICS$padj < 0.01,]
   if (nrow(ICS) != 0){
     ICS$group = 'phospho'
@@ -52,23 +52,23 @@ for (a in 1:nrow(phospho_GSEA)){
 }
 GSEA$clinical = as.character(GSEA$clinical)
 GSEA = GSEA[order(GSEA$padj), ]
-write.csv(GSEA, file = "~/documents/Lund_Melanoma/Results/ICA_GSEA_summary.csv", row.names=FALSE)
+write.csv(GSEA, file = "~/documents/Segundo_Melanoma/Results/ICA_GSEA_summary.csv", row.names=FALSE)
 
 
 # Aggregate OLA
-prot_data=read.csv("~/documents/Lund_Melanoma/Results/proteomics/OLA/ola_data.csv")
+prot_data=read.csv("~/documents/Segundo_Melanoma/Results/proteomics/OLA/ola_data.csv")
 prot_data=prot_data[,2:4]
-# trans_data=read.csv("~/documents/Lund_Melanoma/Results/transcriptomics/OLA/ola_data.csv")
+# trans_data=read.csv("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/ola_data.csv")
 # trans_data = trans_data[,2:3]
-phospho_data=read.csv("~/documents/Lund_Melanoma/Results/phospho/OLA/ola_data.csv")
+phospho_data=read.csv("~/documents/Segundo_Melanoma/Results/phospho/OLA/ola_data.csv")
 phospho_data = phospho_data[,2:5]
-prot=read.delim("~/documents/Lund_Melanoma/Results/proteomics/OLA/5yr-survival-compare_alive_comparison_qvals.txt")
+prot=read.delim("~/documents/Segundo_Melanoma/Results/proteomics/OLA/5yr-survival-compare_alive_comparison_qvals.txt")
 prot= prot[prot$significant == "True", ]
 prot = prot[,1:2]
-# trans=read.delim("~/documents/Lund_Melanoma/Results/transcriptomics/OLA/5yr-survival-compare_alive_comparison_qvals.txt")
+# trans=read.delim("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/5yr-survival-compare_alive_comparison_qvals.txt")
 # trans= trans[trans$significant == "True", ]
 # trans = trans[,1:2]
-phospho=read.delim("~/documents/Lund_Melanoma/Results/phospho/OLA/5yr-survival-compare_alive_comparison_qvals.txt")
+phospho=read.delim("~/documents/Segundo_Melanoma/Results/phospho/OLA/5yr-survival-compare_alive_comparison_qvals.txt")
 phospho= phospho[phospho$significant == "True", ]
 phospho = phospho[,1:2]
 ppt = merge(prot, prot_data, by="Accession")
@@ -82,7 +82,7 @@ ddt$Feature = "5yr-survival"
 ddt$Enriched_in = "alive"
 ddt = ddt[,c(4,3,1,5,2,6,7)]
 ddt = ddt[order(ddt$FDR), ]
-write.csv(ddt, file = "~/documents/Lund_Melanoma/Results/OLA_summary.csv", row.names=FALSE)
+write.csv(ddt, file = "~/documents/Segundo_Melanoma/Results/OLA_summary.csv", row.names=FALSE)
 
 
 
