@@ -54,6 +54,13 @@ GSEA$clinical = as.character(GSEA$clinical)
 GSEA = GSEA[order(GSEA$padj), ]
 write.csv(GSEA, file = "~/documents/Segundo_Melanoma/Results/ICA_GSEA_summary.csv", row.names=FALSE)
 
+GSEA.p = GSEA[GSEA$group == "proteomics", ]
+GSEA.t = GSEA[GSEA$group == "transcriptomics", ]
+GSEA.h = GSEA[GSEA$group == "phospho", ]
+colnames(GSEA.h)[2:10] = paste(colnames(GSEA.h)[2:10], '.phos', sep='')
+GSEA.joined = merge(GSEA.p, GSEA.t, by=c("pathway","clinical"), suffixes = c(".prot",".trans"))
+GSEA.joined = merge(GSEA.joined, GSEA.h, by=c("pathway","clinical"))
+write.csv(GSEA.joined, file = "~/documents/Segundo_Melanoma/Results/ICA_GSEA_summary_joined.csv", row.names=FALSE)
 
 # Aggregate OLA
 prot_data=read.csv("~/documents/Segundo_Melanoma/Results/proteomics/OLA/ola_data.csv")
