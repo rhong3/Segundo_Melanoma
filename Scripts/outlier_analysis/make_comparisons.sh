@@ -1,18 +1,18 @@
 #!/bin/bash
 
 location_of_py_file="compare_groups_outliers.py"
-location_of_outliers_file="../../Results/proteomics/OLA/gender/ola_table.txt"
-gene_column_name="Accession"
+location_of_outliers_file="/Users/rh2740/documents/Segundo_Melanoma/Results/transcriptomics/OLA/6-month-survival/ola_table.txt"
+gene_column_name="Gene.name"
 fdr_cut_off=0.05
 blue_or_red="red"
 output_qvals="True"
 frac_filter="0.3"
 
-output_prefix="../../Results/proteomics/OLA/gender/gender_female"
-group1_label="female"
-group1_list="../../Results/proteomics/OLA/G1.txt"
-group2_label="male"
-group2_list="../../Results/proteomics/OLA/G2.txt"
+output_prefix="/Users/rh2740/documents/Segundo_Melanoma/Results/transcriptomics/OLA/6-month-survival/alive_"
+group1_label="alive"
+group1_list="/Users/rh2740/documents/Segundo_Melanoma/Results/transcriptomics/OLA/6-month-survival/G1.txt"
+group2_label="dead"
+group2_list="/Users/rh2740/documents/Segundo_Melanoma/Results/transcriptomics/OLA/6-month-survival/G2.txt"
 
 python3  ${location_of_py_file} \
 --outliers_table  ${location_of_outliers_file} \

@@ -1,11 +1,11 @@
 #!/bin/bash
 updown="up"
 location_of_py_file="make_outliers_table.py"
-location_of_data_file="../../Results/proteomics/OLA/gender/ola_data.csv"
+location_of_data_file="/Users/rh2740/documents/Segundo_Melanoma/Results/transcriptomics/OLA/6-month-survival/ola_data.csv"
 iqrs_over_median=1.5 #Note 1.5 IQRs is suggested, this is just for test data.
-gene_column_name="Accession"
-output_prefix="../../Results/proteomics/OLA/gender/ola_table"
-sample_names_file="../../Results/proteomics/OLA/gender/samples.txt"
+gene_column_name="Gene.name"
+output_prefix="/Users/rh2740/documents/Segundo_Melanoma/Results/transcriptomics/OLA/6-month-survival/ola_table"
+sample_names_file="/Users/rh2740/documents/Segundo_Melanoma/Results/transcriptomics/OLA/6-month-survival/samples.txt"
 aggregate=True
 write_frac_table="True"
 
