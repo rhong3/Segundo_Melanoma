@@ -1,18 +1,18 @@
 #!/bin/bash
 
 location_of_py_file="compare_groups_outliers.py"
-location_of_outliers_file="../../Results/transcriptomics/OLA/ola_table.txt"
-gene_column_name="Gene.name"
+location_of_outliers_file="../../Results/proteomics/OLA/gender/ola_table.txt"
+gene_column_name="Accession"
 fdr_cut_off=0.05
 blue_or_red="red"
 output_qvals="True"
 frac_filter="0.3"
 
-output_prefix="../../Results/transcriptomics/OLA/5yr-survival-compare_alive"
-group1_label="dead"
-group1_list="../../Results/transcriptomics/OLA/G2.txt"
-group2_label="alive"
-group2_list="../../Results/transcriptomics/OLA/G1.txt"
+output_prefix="../../Results/proteomics/OLA/gender/gender_female"
+group1_label="female"
+group1_list="../../Results/proteomics/OLA/G1.txt"
+group2_label="male"
+group2_list="../../Results/proteomics/OLA/G2.txt"
 
 python3  ${location_of_py_file} \
 --outliers_table  ${location_of_outliers_file} \
