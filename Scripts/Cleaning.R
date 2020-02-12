@@ -47,6 +47,10 @@ rownames(clinical) = clinical$sample
 his_clin = merge(clinical, histology, by=0, all=TRUE, suffixes = c("",""))
 rownames(his_clin) = his_clin$sample
 his_clin = his_clin[,-which(colnames(his_clin) %in% c("Row.names", "Case ID", "sample"))]
+
+his_clin$survival_5yr="NA"
+his_clin$survival_5yr[which(his_clin$os.days>1825)] = 1
+his_clin$survival_5yr[which(his_clin$os.days<1825 & his_clin$os.events==1)] = 0
 write.csv(his_clin, "~/Documents/Segundo_Melanoma/Data/clinical&histology.csv")
 
 
@@ -119,7 +123,7 @@ readAndImputePhosphoData <- function(filepath) {
   
 }
 
-Phospho = readAndImputePhosphoData("~/Documents/Segundo_Melanoma/Data/phospho/MM_Phosho_DIA_Segundo_Cohort_total_peptides_NORMALIZED.txt")
+Phospho = readAndImputePhosphoData("~/Documents/Segundo_Melanoma/Data/phospho/MM_Phosho_DIA_lund_Cohort_total_peptides_NORMALIZED.txt")
 Phospho = Phospho[,-c(1,3,6,7,9)]
 Phospho$MM790 = rowMeans(Phospho[c('MM790.1.', 'MM790.2.')], na.rm=TRUE)
 Phospho$MM807 = rowMeans(Phospho[c('MM807.1.', 'MM807.2.')], na.rm=TRUE)
