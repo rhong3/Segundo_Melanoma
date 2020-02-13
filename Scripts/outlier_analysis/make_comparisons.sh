@@ -1,18 +1,18 @@
 #!/bin/bash
 
 location_of_py_file="compare_groups_outliers.py"
-location_of_outliers_file="/Users/rh2740/documents/Segundo_Melanoma/Results/transcriptomics/OLA/6-month-survival/ola_table.txt"
-gene_column_name="Gene.name"
+location_of_outliers_file="/Users/rh2740/documents/Segundo_Melanoma/Results/phospho/OLA/NRAS/ola_table.txt"
+gene_column_name="Modified_sequence"
 fdr_cut_off=0.05
 blue_or_red="red"
 output_qvals="True"
 frac_filter="0.3"
 
-output_prefix="/Users/rh2740/documents/Segundo_Melanoma/Results/transcriptomics/OLA/6-month-survival/alive_"
-group1_label="alive"
-group1_list="/Users/rh2740/documents/Segundo_Melanoma/Results/transcriptomics/OLA/6-month-survival/G1.txt"
-group2_label="dead"
-group2_list="/Users/rh2740/documents/Segundo_Melanoma/Results/transcriptomics/OLA/6-month-survival/G2.txt"
+output_prefix="/Users/rh2740/documents/Segundo_Melanoma/Results/phospho/OLA/NARS/mut_"
+group1_label="mut"
+group1_list="/Users/rh2740/documents/Segundo_Melanoma/Results/phospho/OLA/NRAS/G1.txt"
+group2_label="WT"
+group2_list="/Users/rh2740/documents/Segundo_Melanoma/Results/phospho/OLA/NRAS/G2.txt"
 
 python3  ${location_of_py_file} \
 --outliers_table  ${location_of_outliers_file} \
