@@ -150,7 +150,18 @@ ppt$Enriched_in = "mut"
 
 ddt = rbind.fill(ddt, ppt)
 
+# stage
+prot_data=read.csv("~/documents/Segundo_Melanoma/Results/proteomics/OLA/stage/ola_data.csv")
+prot_data=prot_data[,2:4]
+prot=read.delim("~/documents/Segundo_Melanoma/Results/proteomics/OLA/stage/4__comparison_qvals.txt")
+prot= prot[prot$significant == "True", ]
+prot = prot[,1:2]
+ppt = merge(prot, prot_data, by="Accession")
+ppt$Group = "proteomics"
+ppt$Feature = "stage"
+ppt$Enriched_in = "stage4"
 
+ddt = rbind.fill(ddt, ppt)
 
 write.csv(ddt, file = "~/documents/Segundo_Melanoma/Results/OLA_summary.csv", row.names=FALSE)
 
