@@ -346,3 +346,175 @@ phospho.oladata = cbind(phospho.oridata[1:4], phospho.oladata)
 write.csv(phospho.oladata, "~/documents/Segundo_Melanoma/Results/phospho/OLA/NRAS/ola_data.csv")
 
 
+## stage
+# proteomics
+prot = read.csv("~/documents/Segundo_Melanoma/Data/proteomics/proteomics_clinical.csv", row.names=1)
+prot.oridata = read.csv("~/documents/Segundo_Melanoma/Data/proteomics/proteomics.csv")
+prot.ola = prot[prot$dis.stage>2,]
+prot.ola = prot[!is.na(prot$dis.stage),]
+write.csv(prot.ola, "~/documents/Segundo_Melanoma/Results/proteomics/OLA/stage/stage-clinical.csv")
+fileConn<-file("~/documents/Segundo_Melanoma/Results/proteomics/OLA/stage/samples.txt")
+writeLines(rownames(prot.ola), fileConn)
+close(fileConn)
+fileConn<-file("~/documents/Segundo_Melanoma/Results/proteomics/OLA/stage/G1.txt")
+writeLines(rownames(prot.ola[which(prot.ola$dis.stage==3),]), fileConn)
+close(fileConn)
+fileConn<-file("~/documents/Segundo_Melanoma/Results/proteomics/OLA/stage/G2.txt")
+writeLines(rownames(prot.ola[which(prot.ola$dis.stage==4),]), fileConn)
+close(fileConn)
+prot.oladata = prot.oridata[,match(rownames(prot.ola), colnames(prot.oridata))]
+prot.oladata = cbind(prot.oridata[111:113], prot.oladata)
+write.csv(prot.oladata, "~/documents/Segundo_Melanoma/Results/proteomics/OLA/stage/ola_data.csv")
+
+# transcriptomics
+trans = read.csv("~/documents/Segundo_Melanoma/Data/transcriptomics/transcriptomics_clinical.csv", row.names=1)
+trans.oridata = read.csv("~/documents/Segundo_Melanoma/Data/transcriptomics/transcriptomics.csv")
+trans.ola = trans[trans$dis.stage>2,]
+trans.ola = trans[!is.na(trans$dis.stage),]
+write.csv(trans.ola, "~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/stage/stage-clinical.csv")
+fileConn<-file("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/stage/samples.txt")
+writeLines(rownames(trans.ola), fileConn)
+close(fileConn)
+fileConn<-file("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/stage/G1.txt")
+writeLines(rownames(trans.ola[which(trans.ola$dis.stage==3),]), fileConn)
+close(fileConn)
+fileConn<-file("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/stage/G2.txt")
+writeLines(rownames(trans.ola[which(trans.ola$dis.stage==4),]), fileConn)
+close(fileConn)
+trans.oladata = trans.oridata[,match(rownames(trans.ola), colnames(trans.oridata))]
+trans.oladata = cbind(trans.oridata[1:2], trans.oladata)
+write.csv(trans.oladata, "~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/stage/ola_data.csv")
+
+# phospho
+phospho = read.csv("~/documents/Segundo_Melanoma/Data/phospho/phospho_clinical.csv", row.names=1)
+phospho.oridata = read.csv("~/documents/Segundo_Melanoma/Data/phospho/phospho.csv")
+phospho.ola = phospho[phospho$dis.stage>2,]
+phospho.ola = phospho[!is.na(phospho$dis.stage),]
+write.csv(phospho.ola, "~/documents/Segundo_Melanoma/Results/phospho/OLA/stage/stage-clinical.csv")
+fileConn<-file("~/documents/Segundo_Melanoma/Results/phospho/OLA/stage/samples.txt")
+writeLines(rownames(phospho.ola), fileConn)
+close(fileConn)
+fileConn<-file("~/documents/Segundo_Melanoma/Results/phospho/OLA/stage/G1.txt")
+writeLines(rownames(phospho.ola[which(phospho.ola$dis.stage==3),]), fileConn)
+close(fileConn)
+fileConn<-file("~/documents/Segundo_Melanoma/Results/phospho/OLA/stage/G2.txt")
+writeLines(rownames(phospho.ola[which(phospho.ola$dis.stage==4),]), fileConn)
+close(fileConn)
+phospho.oladata = phospho.oridata[,match(rownames(phospho.ola), colnames(phospho.oridata))]
+phospho.oladata = cbind(phospho.oridata[1:4], phospho.oladata)
+write.csv(phospho.oladata, "~/documents/Segundo_Melanoma/Results/phospho/OLA/stage/ola_data.csv")
+
+
+## primary to metastasis 400
+# proteomics
+prot = read.csv("~/documents/Segundo_Melanoma/Data/proteomics/proteomics_clinical.csv", row.names=1)
+prot.oridata = read.csv("~/documents/Segundo_Melanoma/Data/proteomics/proteomics.csv")
+prot.ola = prot[!is.na(prot$dmfs.days),]
+write.csv(prot.ola, "~/documents/Segundo_Melanoma/Results/proteomics/OLA/PtoM400/PtoM400-clinical.csv")
+fileConn<-file("~/documents/Segundo_Melanoma/Results/proteomics/OLA/PtoM400/samples.txt")
+writeLines(rownames(prot.ola), fileConn)
+close(fileConn)
+fileConn<-file("~/documents/Segundo_Melanoma/Results/proteomics/OLA/PtoM400/G1.txt")
+writeLines(rownames(prot.ola[which(prot.ola$dmfs.days>400),]), fileConn)
+close(fileConn)
+fileConn<-file("~/documents/Segundo_Melanoma/Results/proteomics/OLA/PtoM400/G2.txt")
+writeLines(rownames(prot.ola[which(prot.ola$dmfs.days<=400),]), fileConn)
+close(fileConn)
+prot.oladata = prot.oridata[,match(rownames(prot.ola), colnames(prot.oridata))]
+prot.oladata = cbind(prot.oridata[111:113], prot.oladata)
+write.csv(prot.oladata, "~/documents/Segundo_Melanoma/Results/proteomics/OLA/PtoM400/ola_data.csv")
+
+# transcriptomics
+trans = read.csv("~/documents/Segundo_Melanoma/Data/transcriptomics/transcriptomics_clinical.csv", row.names=1)
+trans.oridata = read.csv("~/documents/Segundo_Melanoma/Data/transcriptomics/transcriptomics.csv")
+trans.ola = trans[!is.na(trans$dmfs.days),]
+write.csv(trans.ola, "~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/PtoM400/PtoM400-clinical.csv")
+fileConn<-file("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/PtoM400/samples.txt")
+writeLines(rownames(trans.ola), fileConn)
+close(fileConn)
+fileConn<-file("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/PtoM400/G1.txt")
+writeLines(rownames(trans.ola[which(trans.ola$dmfs.days>400),]), fileConn)
+close(fileConn)
+fileConn<-file("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/PtoM400/G2.txt")
+writeLines(rownames(trans.ola[which(trans.ola$dmfs.days<=400),]), fileConn)
+close(fileConn)
+trans.oladata = trans.oridata[,match(rownames(trans.ola), colnames(trans.oridata))]
+trans.oladata = cbind(trans.oridata[1:2], trans.oladata)
+write.csv(trans.oladata, "~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/PtoM400/ola_data.csv")
+
+# phospho
+phospho = read.csv("~/documents/Segundo_Melanoma/Data/phospho/phospho_clinical.csv", row.names=1)
+phospho.oridata = read.csv("~/documents/Segundo_Melanoma/Data/phospho/phospho.csv")
+phospho.ola = phospho[!is.na(phospho$dmfs.days),]
+write.csv(phospho.ola, "~/documents/Segundo_Melanoma/Results/phospho/OLA/PtoM400/PtoM400-clinical.csv")
+fileConn<-file("~/documents/Segundo_Melanoma/Results/phospho/OLA/PtoM400/samples.txt")
+writeLines(rownames(phospho.ola), fileConn)
+close(fileConn)
+fileConn<-file("~/documents/Segundo_Melanoma/Results/phospho/OLA/PtoM400/G1.txt")
+writeLines(rownames(phospho.ola[which(phospho.ola$dmfs.days>400),]), fileConn)
+close(fileConn)
+fileConn<-file("~/documents/Segundo_Melanoma/Results/phospho/OLA/PtoM400/G2.txt")
+writeLines(rownames(phospho.ola[which(phospho.ola$dmfs.days<=400),]), fileConn)
+close(fileConn)
+phospho.oladata = phospho.oridata[,match(rownames(phospho.ola), colnames(phospho.oridata))]
+phospho.oladata = cbind(phospho.oridata[1:4], phospho.oladata)
+write.csv(phospho.oladata, "~/documents/Segundo_Melanoma/Results/phospho/OLA/PtoM400/ola_data.csv")
+
+
+## primary to metastasis 600
+# proteomics
+prot = read.csv("~/documents/Segundo_Melanoma/Data/proteomics/proteomics_clinical.csv", row.names=1)
+prot.oridata = read.csv("~/documents/Segundo_Melanoma/Data/proteomics/proteomics.csv")
+prot.ola = prot[!is.na(prot$dmfs.days),]
+write.csv(prot.ola, "~/documents/Segundo_Melanoma/Results/proteomics/OLA/PtoM600/PtoM600-clinical.csv")
+fileConn<-file("~/documents/Segundo_Melanoma/Results/proteomics/OLA/PtoM600/samples.txt")
+writeLines(rownames(prot.ola), fileConn)
+close(fileConn)
+fileConn<-file("~/documents/Segundo_Melanoma/Results/proteomics/OLA/PtoM600/G1.txt")
+writeLines(rownames(prot.ola[which(prot.ola$dmfs.days>600),]), fileConn)
+close(fileConn)
+fileConn<-file("~/documents/Segundo_Melanoma/Results/proteomics/OLA/PtoM600/G2.txt")
+writeLines(rownames(prot.ola[which(prot.ola$dmfs.days<=600),]), fileConn)
+close(fileConn)
+prot.oladata = prot.oridata[,match(rownames(prot.ola), colnames(prot.oridata))]
+prot.oladata = cbind(prot.oridata[111:113], prot.oladata)
+write.csv(prot.oladata, "~/documents/Segundo_Melanoma/Results/proteomics/OLA/PtoM600/ola_data.csv")
+
+# transcriptomics
+trans = read.csv("~/documents/Segundo_Melanoma/Data/transcriptomics/transcriptomics_clinical.csv", row.names=1)
+trans.oridata = read.csv("~/documents/Segundo_Melanoma/Data/transcriptomics/transcriptomics.csv")
+trans.ola = trans[!is.na(trans$dmfs.days),]
+write.csv(trans.ola, "~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/PtoM600/PtoM600-clinical.csv")
+fileConn<-file("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/PtoM600/samples.txt")
+writeLines(rownames(trans.ola), fileConn)
+close(fileConn)
+fileConn<-file("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/PtoM600/G1.txt")
+writeLines(rownames(trans.ola[which(trans.ola$dmfs.days>600),]), fileConn)
+close(fileConn)
+fileConn<-file("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/PtoM600/G2.txt")
+writeLines(rownames(trans.ola[which(trans.ola$dmfs.days<=600),]), fileConn)
+close(fileConn)
+trans.oladata = trans.oridata[,match(rownames(trans.ola), colnames(trans.oridata))]
+trans.oladata = cbind(trans.oridata[1:2], trans.oladata)
+write.csv(trans.oladata, "~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/PtoM600/ola_data.csv")
+
+# phospho
+phospho = read.csv("~/documents/Segundo_Melanoma/Data/phospho/phospho_clinical.csv", row.names=1)
+phospho.oridata = read.csv("~/documents/Segundo_Melanoma/Data/phospho/phospho.csv")
+phospho.ola = phospho[!is.na(phospho$dmfs.days),]
+write.csv(phospho.ola, "~/documents/Segundo_Melanoma/Results/phospho/OLA/PtoM600/PtoM600-clinical.csv")
+fileConn<-file("~/documents/Segundo_Melanoma/Results/phospho/OLA/PtoM600/samples.txt")
+writeLines(rownames(phospho.ola), fileConn)
+close(fileConn)
+fileConn<-file("~/documents/Segundo_Melanoma/Results/phospho/OLA/PtoM600/G1.txt")
+writeLines(rownames(phospho.ola[which(phospho.ola$dmfs.days>600),]), fileConn)
+close(fileConn)
+fileConn<-file("~/documents/Segundo_Melanoma/Results/phospho/OLA/PtoM600/G2.txt")
+writeLines(rownames(phospho.ola[which(phospho.ola$dmfs.days<=600),]), fileConn)
+close(fileConn)
+phospho.oladata = phospho.oridata[,match(rownames(phospho.ola), colnames(phospho.oridata))]
+phospho.oladata = cbind(phospho.oridata[1:4], phospho.oladata)
+write.csv(phospho.oladata, "~/documents/Segundo_Melanoma/Results/phospho/OLA/PtoM600/ola_data.csv")
+
+
+
