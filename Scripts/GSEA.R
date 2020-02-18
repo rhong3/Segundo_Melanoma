@@ -10,9 +10,12 @@ library('org.Hs.eg.db')
 library("reactome.db")
 library("ReactomePA")
 library("fgsea")
-library("pheatmap")
+library(ComplexHeatmap)
 library(RColorBrewer)
 library(dplyr)
+library(plyr)
+library(circlize)
+library("RColorBrewer")
 
 todolist = function(ICAfile, mix_file, outfile){
   tdlist = list()
@@ -88,31 +91,44 @@ HMP = function(centroid_file, clinical_file, data_file, td_list_file, outdir, nu
     ica = ica[order(ica[n]), ]
     clinical = clinical[order(clinical[m]), ]
     sorted_data_all = ori_data[match(rownames(ica), rownames(ori_data)), match(rownames(clinical), colnames(ori_data))]
-    sorted_data = data.matrix(sorted_data_all[-c(26:(nrow(sorted_data_all)-26)),])
+    sorted_data = data.matrix(sorted_data_all[-c(26:(nrow(sorted_data_all)-25)),])
     sorted_data = rbind(data.frame(t(clinical[m])), sorted_data)
     sorted_data_all = rbind(data.frame(t(clinical[m])), sorted_data_all)
-    fw = data.frame(as.factor(sorted_data[1, ]))
-    colnames(fw) = m
-    pdf(paste(outdir, n, "_", m, "_HM.pdf", sep=""), width = 20, height = 10)
-    pheatmap(sorted_data[2:nrow(sorted_data), ], cluster_cols = F, cluster_rows = F, annotation_col = fw, legend = FALSE, 
-             annotation_legend = TRUE, fontsize_col = 6, main = paste(n, ' vs ',m), show_rownames = T)
-    dev.off()
+    sorted_data=sorted_data[,colSums(is.na(sorted_data[1,]))==0]
+    
     if (numb == 1){
       sorted_data_out = merge(ica[,1:2], sorted_data[2:nrow(sorted_data), ], by=0)
       sorted_data_out = sorted_data_out[,-3]
       sorted_data_all_out = merge(ica[,1:2], sorted_data_all[2:nrow(sorted_data_all),], by=0)
       sorted_data_all_out = sorted_data_all_out[,-3]
-    }
-    else{
+    }else{
       sorted_data_out = merge(ica[,1:numb], sorted_data[2:nrow(sorted_data), ], by=0)
       sorted_data_all_out = merge(ica[,1:numb], sorted_data_all[2:nrow(sorted_data_all),], by=0)
     }
+    
     sorted_data_out = rbind.fill(sorted_data[1,], sorted_data_out)
     sorted_data_all_out = rbind.fill(sorted_data_all[1,], sorted_data_all_out)
     colnames(sorted_data_out) = gsub("Row.names", nm, colnames(sorted_data_out))
     colnames(sorted_data_all_out) = gsub("Row.names", nm, colnames(sorted_data_all_out))
     write.csv(sorted_data_out, paste(outdir, n, "_", m, "_lite.csv", sep=""), row.names=FALSE)
     write.csv(sorted_data_all_out, paste(outdir, n, "_", m, ".csv", sep=""), row.names=FALSE)
+    
+    sorted_data_out[nm][1,] = m
+    rownames(sorted_data_out) = unname(unlist(sorted_data_out[nm]))
+    
+    gn = rowAnnotation(Gene.name = anno_text(sorted_data_out$Gene.name[2:length(sorted_data_out$Gene.name)],
+                                             location = 0.5, just = "center"))
+    sorted_data_out = sorted_data_out %>% select(matches("MM"))
+    breaksList = seq(min(ori_data), max(ori_data), by=1)
+    col = colorRampPalette(rev(brewer.pal(n = 10, name = "RdYlBu")))(length(breaksList))
+    col_fun = colorRamp2(c(min(as.numeric(sorted_data_out[1, ])), mean(as.numeric(sorted_data_out[1, ])), max(as.numeric(sorted_data_out[1, ]))), c("blue", "white", "red"))
+    anno = HeatmapAnnotation(Feature = as.numeric(sorted_data_out[1, ]), col=list(Feature=col_fun), annotation_legend_param = list(direction = "horizontal"))
+    pdf(paste(outdir, n, "_", m, "_HM.pdf", sep=""), height = 10, width = 20)
+    hp = Heatmap(as.matrix(sorted_data_out[2:nrow(sorted_data_out), ]), col = col, column_title = paste(n, ' vs ',m), top_annotation = anno,  right_annotation=gn,
+                 cluster_rows = FALSE, cluster_columns = FALSE, row_split = c(rep('first 25 genes',25), rep('last 25 genes',25)), name = "Value", heatmap_legend_param = list(direction = "horizontal"))
+    draw(hp, heatmap_legend_side = "bottom", 
+         annotation_legend_side = "bottom", merge_legend = TRUE,)
+    dev.off()
   }
 }
 
