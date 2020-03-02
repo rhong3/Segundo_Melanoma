@@ -7,15 +7,15 @@
 
 library(dplyr)
 # Aggregate GSEA
-Prot_GSEA = read.csv("~/documents/Segundo_Melanoma/Results/proteomics/ICA/significant_IC_clinical.csv")
-Trans_GSEA = read.csv("~/documents/Segundo_Melanoma/Results/transcriptomics/ICA/significant_IC_clinical.csv")
-phospho_GSEA = read.csv("~/documents/Segundo_Melanoma/Results/phospho/ICA/significant_IC_clinical.csv")
+Prot_GSEA = read.csv("~/documents/Segundo_Melanoma/Results/proteomics/ICA/0.0005/significant_IC_clinical.csv")
+Trans_GSEA = read.csv("~/documents/Segundo_Melanoma/Results/transcriptomics/ICA/0.0005/significant_IC_clinical.csv")
+phospho_GSEA = read.csv("~/documents/Segundo_Melanoma/Results/phospho/ICA/0.0005/significant_IC_clinical.csv")
 GSEA = data.frame(matrix(ncol=11, nrow=0))
 colnames(GSEA) = c('pathway',	'pval',	'padj',	'ES',	'NES',	'nMoreExtreme',	'size',	'leadingEdge', 'group', 'IC', 'clinical')
 for (a in 1:nrow(Prot_GSEA)){
   m = toString(droplevels(Prot_GSEA[a, "Feature"]))
   n = toString(droplevels(Prot_GSEA[a, "IC"]))
-  ICS = read.csv(paste("~/documents/Segundo_Melanoma/Results/proteomics/GSEA/", n, ".csv", sep=''), row.names=1)
+  ICS = read.csv(paste("~/documents/Segundo_Melanoma/Results/proteomics/GSEA/relax/", n, ".csv", sep=''), row.names=1)
   ICS = ICS[ICS$padj < 0.01,]
   if (nrow(ICS) != 0){
     ICS$group = 'proteomics'
@@ -28,7 +28,7 @@ for (a in 1:nrow(Prot_GSEA)){
 for (a in 1:nrow(Trans_GSEA)){
   m = toString(droplevels(Trans_GSEA[a, "Feature"]))
   n = toString(droplevels(Trans_GSEA[a, "IC"]))
-  ICS = read.csv(paste("~/documents/Segundo_Melanoma/Results/transcriptomics/GSEA/", n, ".csv", sep=''), row.names=1)
+  ICS = read.csv(paste("~/documents/Segundo_Melanoma/Results/transcriptomics/GSEA/relax/", n, ".csv", sep=''), row.names=1)
   ICS = ICS[ICS$padj < 0.01,]
   if (nrow(ICS) != 0){
     ICS$group = 'transcriptomics'
@@ -41,7 +41,7 @@ for (a in 1:nrow(Trans_GSEA)){
 for (a in 1:nrow(phospho_GSEA)){
   m = toString(droplevels(phospho_GSEA[a, "Feature"]))
   n = toString(droplevels(phospho_GSEA[a, "IC"]))
-  ICS = read.csv(paste("~/documents/Segundo_Melanoma/Results/phospho/GSEA/", n, ".csv", sep=''), row.names=1)
+  ICS = read.csv(paste("~/documents/Segundo_Melanoma/Results/phospho/GSEA/relax/", n, ".csv", sep=''), row.names=1)
   ICS = ICS[ICS$padj < 0.01,]
   if (nrow(ICS) != 0){
     ICS$group = 'phospho'
@@ -52,7 +52,7 @@ for (a in 1:nrow(phospho_GSEA)){
 }
 GSEA$clinical = as.character(GSEA$clinical)
 GSEA = GSEA[order(GSEA$padj), ]
-write.csv(GSEA, file = "~/documents/Segundo_Melanoma/Results/ICA_GSEA_summary.csv", row.names=FALSE)
+write.csv(GSEA, file = "~/documents/Segundo_Melanoma/Results/relax_ICA_GSEA_summary.csv", row.names=FALSE)
 
 GSEA.p = GSEA[GSEA$group == "proteomics", ]
 GSEA.t = GSEA[GSEA$group == "transcriptomics", ]
@@ -60,7 +60,7 @@ GSEA.h = GSEA[GSEA$group == "phospho", ]
 colnames(GSEA.h)[2:10] = paste(colnames(GSEA.h)[2:10], '.phos', sep='')
 GSEA.joined = merge(GSEA.p, GSEA.t, by=c("pathway","clinical"), suffixes = c(".prot",".trans"))
 GSEA.joined = merge(GSEA.joined, GSEA.h, by=c("pathway","clinical"))
-write.csv(GSEA.joined, file = "~/documents/Segundo_Melanoma/Results/ICA_GSEA_summary_joined.csv", row.names=FALSE)
+write.csv(GSEA.joined, file = "~/documents/Segundo_Melanoma/Results/relax_ICA_GSEA_summary_joined.csv", row.names=FALSE)
 
 
 library(plyr)
