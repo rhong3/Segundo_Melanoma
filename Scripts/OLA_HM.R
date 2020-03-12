@@ -51,9 +51,9 @@ anno = HeatmapAnnotation(days = as.numeric(prot.clinical.1[,2]),
                        NRAS = as.numeric(prot.clinical.1[,3]),
                        col = list(days = col_fun2, stage = col_fun3, NRAS = col_fun4))
 
-pdf("~/documents/Segundo_Melanoma/Results/OLA_HM_proteomics.pdf", height = 20, width = 30)
+pdf("~/documents/Segundo_Melanoma/Results/col_OLA_HM_proteomics.pdf", height = 20, width = 30)
 hp = Heatmap(as.matrix(OLA.prot.table.1), col = col, column_title = paste("proteomics outliers"), top_annotation = anno,  right_annotation=gn,
-             cluster_rows = FALSE, cluster_columns = FALSE, show_row_names = FALSE, name = "value", heatmap_legend_param = list(direction = "vertical"))
+             cluster_rows = FALSE, cluster_columns = TRUE, show_row_names = FALSE, name = "value", heatmap_legend_param = list(direction = "vertical"))
 draw(hp, heatmap_legend_side = "bottom", 
      annotation_legend_side = "right", merge_legend = TRUE,)
 dev.off()
