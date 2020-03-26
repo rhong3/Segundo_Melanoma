@@ -74,7 +74,7 @@ for (a in c('strict', 'relax')){
     deg <- degree(g, mode="all")
     V(g)$size <- 2*log(deg)
     E(g)$width <- E(g)$`-logp`/3
-    E(g)$arrow.size <- .05
+    E(g)$arrow.size <- .5
     E(g)$edge.color <- "gray80"
     # V(g)$label <- NA
     edge.start <- get.edges(g, 1:ecount(g))[,1] 
