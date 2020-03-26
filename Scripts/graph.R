@@ -26,7 +26,6 @@ for (a in c('strict', 'relax')){
     unqc = distinct(summ1['clinical'])
     colnames(unqc) = c('name')
     unqc['group'] = 'clinical'
-    unq = rbind(unqp, unqc, unqi)
     colnames(summ1) = c("from", "to", "-logp")
     colnames(summ2) = c("from", "to", "-logp")
     
@@ -35,8 +34,36 @@ for (a in c('strict', 'relax')){
     colnames(xxx) = c('from', 'to')
     xxx['-logp'] = mean(summ1$`-logp`)
     
+    wxxx = xxx[ ,c(1,2)]
+    colnames(wxxx) = c('from', 'to2')
+    summ2 = left_join(summ2, wxxx, by='from')
+    summ2[, 4] = as.character(summ2[, 4])
+    for (row in 1:nrow(summ2)){
+      if (is.na(summ2[row, 4])){
+        summ2[row, 4] = summ2[row, 1]
+      }
+    }
+    
+    summ2 = summ2[, c(4,2,3)]
+    colnames(summ2) = c('from', 'to', '-logp')
+    unqp = distinct(summ2['from'])
+    colnames(unqp) = c('name')
+    unqp['group'] = 'pathway'
+    unq = rbind(unqp, unqc, unqi)
+    unq = unique(unq)
+    
     summall = rbind(summ1, summ2, xxx)
     summall = unique(summall)
+    
+    unqa = distinct(summall['from'])
+    colnames(unqa) = c('name')
+    unqb = distinct(summall['to'])
+    colnames(unqb) = c('name')
+    unqx = rbind(unqa, unqb)
+    unqx= unique(unqx)
+    unq = left_join(unqx, unq, by = 'name')
+    unq[is.na(unq$group), 2] = 'pathway'
+    
     g <- graph_from_data_frame(summall, directed=TRUE, vertices=unq)
     g <- simplify(g, remove.multiple = F, remove.loops = T)
     colrs <- c("tomato", "gold", "light blue")
