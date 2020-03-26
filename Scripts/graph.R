@@ -65,7 +65,7 @@ for (a in c('strict', 'relax')){
     unq[is.na(unq$group), 2] = 'pathway'
     
     g <- graph_from_data_frame(summall, directed=TRUE, vertices=unq)
-    g <- simplify(g, remove.multiple = F, remove.loops = T)
+    g <- simplify(g, remove.multiple = F, remove.loops = T, edge.attr.comb="sum")
     colrs <- c("tomato", "gold", "light blue")
     V(g)$group = gsub("pathway", "light blue", V(g)$group)
     V(g)$group = gsub("clinical", "tomato", V(g)$group)
@@ -77,7 +77,7 @@ for (a in c('strict', 'relax')){
     E(g)$arrow.size <- .5
     E(g)$edge.color <- "gray80"
     # V(g)$label <- NA
-    edge.start <- get.edges(g, 1:ecount(g))[,1] 
+    edge.start <- get.edges(g, 1:ecount(g))[,2] 
     edge.col <- V(g)$color[edge.start]
     l = layout.kamada.kawai(g)
     l <- layout.norm(l, ymin=-1, ymax=1, xmin=-1, xmax=1)
