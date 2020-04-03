@@ -76,4 +76,4 @@ for(m in c('NISCH', 'OSBP', 'SRRM2', 'TEX2')){
   out[m, 'phos_median_Alive-Dead'] = medianfch
   
 }
-
+write.csv(out, '~/Documents/Segundo_Melanoma/Results/OLA_prot-phos.csv')
