@@ -1,18 +1,18 @@
 #!/bin/bash
 
 location_of_py_file="compare_groups_outliers.py"
-location_of_outliers_file="/Users/rh2740/documents/Segundo_Melanoma/Results/proteomics/OLA/PtoM600/ola_table.txt"
-gene_column_name="Accession"
+location_of_outliers_file="/Users/rh2740/documents/Segundo_Melanoma/Results/phospho/OLA/3-yr-dead-BRAF/ola_table.txt"
+gene_column_name="Modified_sequence"
 fdr_cut_off=0.05
 blue_or_red="red"
 output_qvals="True"
 frac_filter="0.3"
 
-output_prefix="/Users/rh2740/documents/Segundo_Melanoma/Results/proteomics/OLA/PtoM600/more_"
-group2_label="less"
-group2_list="/Users/rh2740/documents/Segundo_Melanoma/Results/proteomics/OLA/PtoM600/G1.txt"
-group1_label="more"
-group1_list="/Users/rh2740/documents/Segundo_Melanoma/Results/proteomics/OLA/PtoM600/G2.txt"
+output_prefix="/Users/rh2740/documents/Segundo_Melanoma/Results/phospho/OLA/3-yr-dead-BRAF/mut_"
+group1_label="mut"
+group1_list="/Users/rh2740/documents/Segundo_Melanoma/Results/phospho/OLA/3-yr-dead-BRAF/G1.txt"
+group2_label="wt"
+group2_list="/Users/rh2740/documents/Segundo_Melanoma/Results/phospho/OLA/3-yr-dead-BRAF/G2.txt"
 
 python3  ${location_of_py_file} \
 --outliers_table  ${location_of_outliers_file} \

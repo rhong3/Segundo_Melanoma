@@ -163,6 +163,94 @@ ppt$Enriched_in = "stage4"
 
 ddt = rbind.fill(ddt, ppt)
 
+#3yr-alive-BRAF
+prot_data=read.csv("~/documents/Segundo_Melanoma/Results/proteomics/OLA/3-yr-alive-BRAF/ola_data.csv")
+prot_data=prot_data[,2:4]
+trans_data=read.csv("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/3-yr-alive-BRAF/ola_data.csv")
+trans_data = trans_data[,2:3]
+phospho_data=read.csv("~/documents/Segundo_Melanoma/Results/phospho/OLA/3-yr-alive-BRAF/ola_data.csv")
+phospho_data = phospho_data[,2:5]
+prot=read.delim("~/documents/Segundo_Melanoma/Results/proteomics/OLA/3-yr-alive-BRAF/mut__comparison_qvals.txt")
+prot= prot[prot$significant == "True", ]
+prot = prot[,1:2]
+trans=read.delim("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/3-yr-alive-BRAF/mut__comparison_qvals.txt")
+trans= trans[trans$significant == "True", ]
+trans = trans[,1:2]
+phospho=read.delim("~/documents/Segundo_Melanoma/Results/phospho/OLA/3-yr-alive-BRAF/mut__comparison_qvals.txt")
+phospho= phospho[phospho$significant == "True", ]
+phospho = phospho[,1:2]
+ppt = merge(prot, prot_data, by="Accession")
+ppt$Group = "proteomics"
+trt = merge(trans, trans_data, by="Gene.name")
+trt$Group = "transcriptomics"
+pht = merge(phospho, phospho_data, by="Modified_sequence")
+pht$Group = "phospho"
+
+ddt.2 = rbind.fill(ppt, pht, trt)
+ddt.2$Feature = "3-yr-alive-BRAF"
+ddt.2$Enriched_in = "mut"
+ddt.2 = ddt.2[,c(4,3,1,5,2,6,7,8)]
+ddt.2 = ddt.2[order(ddt.2$FDR), ]
+
+ddt = rbind.fill(ddt.2, ddt)
+
+prot_data=read.csv("~/documents/Segundo_Melanoma/Results/proteomics/OLA/3-yr-alive-BRAF/ola_data.csv")
+prot_data=prot_data[,2:4]
+trans_data=read.csv("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/3-yr-alive-BRAF/ola_data.csv")
+trans_data = trans_data[,2:3]
+phospho_data=read.csv("~/documents/Segundo_Melanoma/Results/phospho/OLA/3-yr-alive-BRAF/ola_data.csv")
+phospho_data = phospho_data[,2:5]
+prot=read.delim("~/documents/Segundo_Melanoma/Results/proteomics/OLA/3-yr-alive-BRAF/wt__comparison_qvals.txt")
+prot= prot[prot$significant == "True", ]
+prot = prot[,1:2]
+trans=read.delim("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/3-yr-alive-BRAF/wt__comparison_qvals.txt")
+trans= trans[trans$significant == "True", ]
+trans = trans[,1:2]
+phospho=read.delim("~/documents/Segundo_Melanoma/Results/phospho/OLA/3-yr-alive-BRAF/wt__comparison_qvals.txt")
+phospho= phospho[phospho$significant == "True", ]
+phospho = phospho[,1:2]
+ppt = merge(prot, prot_data, by="Accession")
+ppt$Group = "proteomics"
+trt = merge(trans, trans_data, by="Gene.name")
+trt$Group = "transcriptomics"
+pht = merge(phospho, phospho_data, by="Modified_sequence")
+pht$Group = "phospho"
+
+ddt.2 = rbind.fill(ppt, pht, trt)
+ddt.2$Feature = "3-yr-alive-BRAF"
+ddt.2$Enriched_in = "wt"
+ddt.2 = ddt.2[,c(4,3,1,5,2,6,7,8)]
+ddt.2 = ddt.2[order(ddt.2$FDR), ]
+
+ddt = rbind.fill(ddt.2, ddt)
+
+#3yr-dead-BRAF
+prot_data=read.csv("~/documents/Segundo_Melanoma/Results/proteomics/OLA/3-yr-dead-BRAF/ola_data.csv")
+prot_data=prot_data[,2:4]
+trans_data=read.csv("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/3-yr-dead-BRAF/ola_data.csv")
+trans_data = trans_data[,2:3]
+phospho_data=read.csv("~/documents/Segundo_Melanoma/Results/phospho/OLA/3-yr-dead-BRAF/ola_data.csv")
+phospho_data = phospho_data[,2:5]
+prot=read.delim("~/documents/Segundo_Melanoma/Results/proteomics/OLA/3-yr-dead-BRAF/mut__comparison_qvals.txt")
+prot= prot[prot$significant == "True", ]
+prot = prot[,1:2]
+trans=read.delim("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/3-yr-dead-BRAF/mut__comparison_qvals.txt")
+trans= trans[trans$significant == "True", ]
+trans = trans[,1:2]
+
+ppt = merge(prot, prot_data, by="Accession")
+ppt$Group = "proteomics"
+trt = merge(trans, trans_data, by="Gene.name")
+trt$Group = "transcriptomics"
+
+ddt.2 = rbind.fill(ppt, trt)
+ddt.2$Feature = "3-yr-dead-BRAF"
+ddt.2$Enriched_in = "mut"
+# ddt.2 = ddt.2[,c(4,3,1,5,2,6,7,8)]
+ddt.2 = ddt.2[order(ddt.2$FDR), ]
+
+ddt = rbind.fill(ddt.2, ddt)
+
 write.csv(ddt, file = "~/documents/Segundo_Melanoma/Results/OLA_summary.csv", row.names=FALSE)
 
 
