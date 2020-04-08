@@ -3,7 +3,7 @@ library(igraph)
 library(dplyr)
 
 histology = c('tumor.cell.size.average', 'conncetive.tissue.average', 'predominant.tumor.cell.shape.average',
-              'Average.necrosis', 'lymphocyte.density.average', 'Average.necrosis',
+              'Average.necrosis', 'lymphocyte.density.average', 'Average.necrosis', 'Average.tumor.percentage',
               'pigment.score.average', 'predominant.cytoplasm.average', 'lymphocyte.distribution.average',
               'Average.lymphatic.score', 'average.adjacent.lymphnode.percentage')
 # Pathway, IC, clinical
@@ -16,7 +16,7 @@ xxxx = na.omit(left_join(xxxx, Pathways, by="V1"))[, c(2,3)]
 
 for (a in c('strict', 'relax')){
   summm = read.csv(paste("~/Documents/Segundo_Melanoma/Results/", a, "_ICA_GSEA_summary.csv", sep=''))
-  summm = summm[!(summm$clinical %in% histology), ]
+  summm = summm[(summm$clinical %in% histology), ]
   summm['-logp'] = -log(summm$padj)
   for (b in c('proteomics', 'transcriptomics', 'phospho')){
     summ = summm[summm$group == b, c(1,11,12)]
@@ -82,7 +82,7 @@ for (a in c('strict', 'relax')){
     l = layout.kamada.kawai(g)
     l <- layout.norm(l, ymin=-1, ymax=1, xmin=-1, xmax=1)
     
-    pdf(paste("~/Documents/Segundo_Melanoma/Results/graph/clin_", b, '_', a, "_ICA_GSEA_summary.pdf", sep=''), height = 20, width = 20)
+    pdf(paste("~/Documents/Segundo_Melanoma/Results/graph/hist_", b, '_', a, "_ICA_GSEA_summary.pdf", sep=''), height = 20, width = 20)
     plot(g, edge.color=edge.col, edge.curved=.2, vertex.label.color="black", rescale=F, layout=l*1, 
          vertex.label.cex=0.6, main=paste(b, '(', a, ') ICA GSEA', sep=''), vertex.label.degree=pi/2)
     legend(x=-1, y=-.8, c("clinical features", "pathways"), pch=21,
@@ -95,7 +95,7 @@ for (a in c('strict', 'relax')){
 # For multiomics validated pathways
 # Pathway, IC, clinical
 histology = c('tumor.cell.size.average', 'conncetive.tissue.average', 'predominant.tumor.cell.shape.average',
-              'Average.necrosis', 'lymphocyte.density.average', 'Average.necrosis',
+              'Average.necrosis', 'lymphocyte.density.average', 'Average.necrosis', 'Average.tumor.percentage',
               'pigment.score.average', 'predominant.cytoplasm.average', 'lymphocyte.distribution.average',
               'Average.lymphatic.score', 'average.adjacent.lymphnode.percentage')
 # Pathway, IC, clinical
