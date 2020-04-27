@@ -8,10 +8,17 @@
 # proteomics
 prot = read.csv("~/documents/Segundo_Melanoma/Data/proteomics/proteomics_clinical.csv", row.names=1)
 prot.oridata = read.csv("~/documents/Segundo_Melanoma/Data/proteomics/proteomics.csv")
-prot.ola = prot[prot$os.events == 1 | prot$os.days >= 1825,]
-prot.ola = prot.ola[!is.na(prot.ola$os.days),]
-prot.ola = prot.ola[!is.na(prot.ola$os.events),]
+prot.ola = prot[!is.na(prot$survival_5yr),]
 write.csv(prot.ola, "~/documents/Segundo_Melanoma/Results/proteomics/OLA/5-yr-survival/5yr-survival-clinical.csv")
+fileConn<-file("~/documents/Segundo_Melanoma/Results/proteomics/OLA/5-yr-survival/samples.txt")
+writeLines(rownames(prot.ola), fileConn)
+close(fileConn)
+fileConn<-file("~/documents/Segundo_Melanoma/Results/proteomics/OLA/5-yr-survival/G1.txt")
+writeLines(rownames(prot.ola[which(prot.ola$survival_5yr==1),]), fileConn)
+close(fileConn)
+fileConn<-file("~/documents/Segundo_Melanoma/Results/proteomics/OLA/5-yr-survival/G2.txt")
+writeLines(rownames(prot.ola[which(prot.ola$survival_5yr==0),]), fileConn)
+close(fileConn)
 prot.oladata = prot.oridata[,match(rownames(prot.ola), colnames(prot.oridata))]
 prot.oladata = cbind(prot.oridata[111:113], prot.oladata)
 write.csv(prot.oladata, "~/documents/Segundo_Melanoma/Results/proteomics/OLA/5-yr-survival/ola_data.csv")
@@ -19,10 +26,17 @@ write.csv(prot.oladata, "~/documents/Segundo_Melanoma/Results/proteomics/OLA/5-y
 # transcriptomics
 trans = read.csv("~/documents/Segundo_Melanoma/Data/transcriptomics/transcriptomics_clinical.csv", row.names=1)
 trans.oridata = read.csv("~/documents/Segundo_Melanoma/Data/transcriptomics/transcriptomics.csv")
-trans.ola = trans[trans$os.events == 1 | trans$os.days >= 1825,]
-trans.ola = trans.ola[!is.na(trans.ola$os.days),]
-trans.ola = trans.ola[!is.na(trans.ola$os.events),]
+trans.ola = trans[!is.na(trans$survival_5yr),]
 write.csv(trans.ola, "~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/5-yr-survival/5yr-survival-clinical.csv")
+fileConn<-file("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/5-yr-survival/samples.txt")
+writeLines(rownames(trans.ola), fileConn)
+close(fileConn)
+fileConn<-file("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/5-yr-survival/G1.txt")
+writeLines(rownames(trans.ola[which(trans.ola$survival_5yr==1),]), fileConn)
+close(fileConn)
+fileConn<-file("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/5-yr-survival/G2.txt")
+writeLines(rownames(trans.ola[which(trans.ola$survival_5yr==0),]), fileConn)
+close(fileConn)
 trans.oladata = trans.oridata[,match(rownames(trans.ola), colnames(trans.oridata))]
 trans.oladata = cbind(trans.oridata[1:2], trans.oladata)
 write.csv(trans.oladata, "~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/5-yr-survival/ola_data.csv")
@@ -30,10 +44,17 @@ write.csv(trans.oladata, "~/documents/Segundo_Melanoma/Results/transcriptomics/O
 # phospho
 phospho = read.csv("~/documents/Segundo_Melanoma/Data/phospho/phospho_clinical.csv", row.names=1)
 phospho.oridata = read.csv("~/documents/Segundo_Melanoma/Data/phospho/phospho.csv")
-phospho.ola = phospho[phospho$os.events == 1 | phospho$os.days >= 1825,]
-phospho.ola = phospho.ola[!is.na(phospho.ola$os.days),]
-phospho.ola = phospho.ola[!is.na(phospho.ola$os.events),]
+phospho.ola = phospho[!is.na(phospho$survival_5yr),]
 write.csv(phospho.ola, "~/documents/Segundo_Melanoma/Results/phospho/OLA/5-yr-survival/5yr-survival-clinical.csv")
+fileConn<-file("~/documents/Segundo_Melanoma/Results/phospho/OLA/5-yr-survival/samples.txt")
+writeLines(rownames(phospho.ola), fileConn)
+close(fileConn)
+fileConn<-file("~/documents/Segundo_Melanoma/Results/phospho/OLA/5-yr-survival/G1.txt")
+writeLines(rownames(phospho.ola[which(phospho.ola$survival_5yr==1),]), fileConn)
+close(fileConn)
+fileConn<-file("~/documents/Segundo_Melanoma/Results/phospho/OLA/5-yr-survival/G2.txt")
+writeLines(rownames(phospho.ola[which(phospho.ola$survival_5yr==0),]), fileConn)
+close(fileConn)
 phospho.oladata = phospho.oridata[,match(rownames(phospho.ola), colnames(phospho.oridata))]
 phospho.oladata = cbind(phospho.oridata[1:4], phospho.oladata)
 write.csv(phospho.oladata, "~/documents/Segundo_Melanoma/Results/phospho/OLA/5-yr-survival/ola_data.csv")
@@ -99,12 +120,7 @@ write.csv(phospho.oladata, "~/documents/Segundo_Melanoma/Results/phospho/OLA/gen
 # proteomics
 prot = read.csv("~/documents/Segundo_Melanoma/Data/proteomics/proteomics_clinical.csv", row.names=1)
 prot.oridata = read.csv("~/documents/Segundo_Melanoma/Data/proteomics/proteomics.csv")
-prot.ola = prot[prot$os.events == 1 | prot$os.days >= 365,]
-prot.ola = prot.ola[!is.na(prot.ola$os.days),]
-prot.ola = prot.ola[!is.na(prot.ola$os.events),]
-prot.ola$survival_1yr="NA"
-prot.ola$survival_1yr[which(prot.ola$os.days>365)] = 1
-prot.ola$survival_1yr[which(prot.ola$os.days<365 & prot.ola$os.events==1)] = 0
+prot.ola = prot[!is.na(prot$survival_1yr),]
 write.csv(prot.ola, "~/documents/Segundo_Melanoma/Results/proteomics/OLA/1-yr-survival/1yr-survival-clinical.csv")
 fileConn<-file("~/documents/Segundo_Melanoma/Results/proteomics/OLA/1-yr-survival/samples.txt")
 writeLines(rownames(prot.ola), fileConn)
@@ -122,12 +138,7 @@ write.csv(prot.oladata, "~/documents/Segundo_Melanoma/Results/proteomics/OLA/1-y
 # transcriptomics
 trans = read.csv("~/documents/Segundo_Melanoma/Data/transcriptomics/transcriptomics_clinical.csv", row.names=1)
 trans.oridata = read.csv("~/documents/Segundo_Melanoma/Data/transcriptomics/transcriptomics.csv")
-trans.ola = trans[trans$os.events == 1 | trans$os.days >= 365,]
-trans.ola = trans.ola[!is.na(trans.ola$os.days),]
-trans.ola = trans.ola[!is.na(trans.ola$os.events),]
-trans.ola$survival_1yr="NA"
-trans.ola$survival_1yr[which(trans.ola$os.days>365)] = 1
-trans.ola$survival_1yr[which(trans.ola$os.days<365 & trans.ola$os.events==1)] = 0
+trans.ola = trans[!is.na(trans$survival_1yr),]
 write.csv(trans.ola, "~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/1-yr-survival/1yr-survival-clinical.csv")
 fileConn<-file("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/1-yr-survival/samples.txt")
 writeLines(rownames(trans.ola), fileConn)
@@ -145,12 +156,7 @@ write.csv(trans.oladata, "~/documents/Segundo_Melanoma/Results/transcriptomics/O
 # phospho
 phospho = read.csv("~/documents/Segundo_Melanoma/Data/phospho/phospho_clinical.csv", row.names=1)
 phospho.oridata = read.csv("~/documents/Segundo_Melanoma/Data/phospho/phospho.csv")
-phospho.ola = phospho[phospho$os.events == 1 | phospho$os.days >= 365,]
-phospho.ola = phospho.ola[!is.na(phospho.ola$os.days),]
-phospho.ola = phospho.ola[!is.na(phospho.ola$os.events),]
-phospho.ola$survival_1yr="NA"
-phospho.ola$survival_1yr[which(phospho.ola$os.days>365)] = 1
-phospho.ola$survival_1yr[which(phospho.ola$os.days<365 & phospho.ola$os.events==1)] = 0
+phospho.ola = phospho[!is.na(phospho$survival_1yr),]
 write.csv(phospho.ola, "~/documents/Segundo_Melanoma/Results/phospho/OLA/1-yr-survival/1yr-survival-clinical.csv")
 fileConn<-file("~/documents/Segundo_Melanoma/Results/phospho/OLA/1-yr-survival/samples.txt")
 writeLines(rownames(phospho.ola), fileConn)
@@ -169,12 +175,7 @@ write.csv(phospho.oladata, "~/documents/Segundo_Melanoma/Results/phospho/OLA/1-y
 # proteomics
 prot = read.csv("~/documents/Segundo_Melanoma/Data/proteomics/proteomics_clinical.csv", row.names=1)
 prot.oridata = read.csv("~/documents/Segundo_Melanoma/Data/proteomics/proteomics.csv")
-prot.ola = prot[prot$os.events == 1 | prot$os.days >= 183,]
-prot.ola = prot.ola[!is.na(prot.ola$os.days),]
-prot.ola = prot.ola[!is.na(prot.ola$os.events),]
-prot.ola$survival_6mo="NA"
-prot.ola$survival_6mo[which(prot.ola$os.days>183)] = 1
-prot.ola$survival_6mo[which(prot.ola$os.days<183 & prot.ola$os.events==1)] = 0
+prot.ola = prot[!is.na(prot$survival_6mo),]
 write.csv(prot.ola, "~/documents/Segundo_Melanoma/Results/proteomics/OLA/6-month-survival/6-month-survival-clinical.csv")
 fileConn<-file("~/documents/Segundo_Melanoma/Results/proteomics/OLA/6-month-survival/samples.txt")
 writeLines(rownames(prot.ola), fileConn)
@@ -192,12 +193,7 @@ write.csv(prot.oladata, "~/documents/Segundo_Melanoma/Results/proteomics/OLA/6-m
 # transcriptomics
 trans = read.csv("~/documents/Segundo_Melanoma/Data/transcriptomics/transcriptomics_clinical.csv", row.names=1)
 trans.oridata = read.csv("~/documents/Segundo_Melanoma/Data/transcriptomics/transcriptomics.csv")
-trans.ola = trans[trans$os.events == 1 | trans$os.days >= 183,]
-trans.ola = trans.ola[!is.na(trans.ola$os.days),]
-trans.ola = trans.ola[!is.na(trans.ola$os.events),]
-trans.ola$survival_6mo="NA"
-trans.ola$survival_6mo[which(trans.ola$os.days>183)] = 1
-trans.ola$survival_6mo[which(trans.ola$os.days<183 & trans.ola$os.events==1)] = 0
+trans.ola = trans[!is.na(trans$survival_6mo),]
 write.csv(trans.ola, "~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/6-month-survival/6-month-survival-clinical.csv")
 fileConn<-file("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/6-month-survival/samples.txt")
 writeLines(rownames(trans.ola), fileConn)
@@ -215,12 +211,7 @@ write.csv(trans.oladata, "~/documents/Segundo_Melanoma/Results/transcriptomics/O
 # phospho
 phospho = read.csv("~/documents/Segundo_Melanoma/Data/phospho/phospho_clinical.csv", row.names=1)
 phospho.oridata = read.csv("~/documents/Segundo_Melanoma/Data/phospho/phospho.csv")
-phospho.ola = phospho[phospho$os.events == 1 | phospho$os.days >= 183,]
-phospho.ola = phospho.ola[!is.na(phospho.ola$os.days),]
-phospho.ola = phospho.ola[!is.na(phospho.ola$os.events),]
-phospho.ola$survival_6mo="NA"
-phospho.ola$survival_6mo[which(phospho.ola$os.days>183)] = 1
-phospho.ola$survival_6mo[which(phospho.ola$os.days<183 & phospho.ola$os.events==1)] = 0
+phospho.ola = phospho[!is.na(phospho$survival_6mo),]
 write.csv(phospho.ola, "~/documents/Segundo_Melanoma/Results/phospho/OLA/6-month-survival/6-month-survival-clinical.csv")
 fileConn<-file("~/documents/Segundo_Melanoma/Results/phospho/OLA/6-month-survival/samples.txt")
 writeLines(rownames(phospho.ola), fileConn)
@@ -520,21 +511,16 @@ write.csv(phospho.oladata, "~/documents/Segundo_Melanoma/Results/phospho/OLA/Pto
 # proteomics
 prot = read.csv("~/documents/Segundo_Melanoma/Data/proteomics/proteomics_clinical.csv", row.names=1)
 prot.oridata = read.csv("~/documents/Segundo_Melanoma/Data/proteomics/proteomics.csv")
-prot.ola = prot[prot$os.events == 1 | prot$os.days >= 1095,]
-prot.ola = prot.ola[!is.na(prot.ola$os.days),]
-prot.ola = prot.ola[!is.na(prot.ola$os.events),]
-prot.ola$survival_1yr="NA"
-prot.ola$survival_1yr[which(prot.ola$os.days>1095)] = 1
-prot.ola$survival_1yr[which(prot.ola$os.days<1095 & prot.ola$os.events==1)] = 0
+prot.ola = prot[!is.na(prot$survival_3yr),]
 write.csv(prot.ola, "~/documents/Segundo_Melanoma/Results/proteomics/OLA/3-yr-survival/3yr-survival-clinical.csv")
 fileConn<-file("~/documents/Segundo_Melanoma/Results/proteomics/OLA/3-yr-survival/samples.txt")
 writeLines(rownames(prot.ola), fileConn)
 close(fileConn)
 fileConn<-file("~/documents/Segundo_Melanoma/Results/proteomics/OLA/3-yr-survival/G1.txt")
-writeLines(rownames(prot.ola[which(prot.ola$survival_1yr==1),]), fileConn)
+writeLines(rownames(prot.ola[which(prot.ola$survival_3yr==1),]), fileConn)
 close(fileConn)
 fileConn<-file("~/documents/Segundo_Melanoma/Results/proteomics/OLA/3-yr-survival/G2.txt")
-writeLines(rownames(prot.ola[which(prot.ola$survival_1yr==0),]), fileConn)
+writeLines(rownames(prot.ola[which(prot.ola$survival_3yr==0),]), fileConn)
 close(fileConn)
 prot.oladata = prot.oridata[,match(rownames(prot.ola), colnames(prot.oridata))]
 prot.oladata = cbind(prot.oridata[111:113], prot.oladata)
@@ -543,21 +529,16 @@ write.csv(prot.oladata, "~/documents/Segundo_Melanoma/Results/proteomics/OLA/3-y
 # transcriptomics
 trans = read.csv("~/documents/Segundo_Melanoma/Data/transcriptomics/transcriptomics_clinical.csv", row.names=1)
 trans.oridata = read.csv("~/documents/Segundo_Melanoma/Data/transcriptomics/transcriptomics.csv")
-trans.ola = trans[trans$os.events == 1 | trans$os.days >= 1095,]
-trans.ola = trans.ola[!is.na(trans.ola$os.days),]
-trans.ola = trans.ola[!is.na(trans.ola$os.events),]
-trans.ola$survival_1yr="NA"
-trans.ola$survival_1yr[which(trans.ola$os.days>1095)] = 1
-trans.ola$survival_1yr[which(trans.ola$os.days<1095 & trans.ola$os.events==1)] = 0
+trans.ola = trans[!is.na(trans$survival_3yr),]
 write.csv(trans.ola, "~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/3-yr-survival/3yr-survival-clinical.csv")
 fileConn<-file("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/3-yr-survival/samples.txt")
 writeLines(rownames(trans.ola), fileConn)
 close(fileConn)
 fileConn<-file("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/3-yr-survival/G1.txt")
-writeLines(rownames(trans.ola[which(trans.ola$survival_1yr==1),]), fileConn)
+writeLines(rownames(trans.ola[which(trans.ola$survival_3yr==1),]), fileConn)
 close(fileConn)
 fileConn<-file("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/3-yr-survival/G2.txt")
-writeLines(rownames(trans.ola[which(trans.ola$survival_1yr==0),]), fileConn)
+writeLines(rownames(trans.ola[which(trans.ola$survival_3yr==0),]), fileConn)
 close(fileConn)
 trans.oladata = trans.oridata[,match(rownames(trans.ola), colnames(trans.oridata))]
 trans.oladata = cbind(trans.oridata[1:2], trans.oladata)
@@ -567,21 +548,16 @@ write.csv(trans.oladata, "~/documents/Segundo_Melanoma/Results/transcriptomics/O
 # phospho
 phospho = read.csv("~/documents/Segundo_Melanoma/Data/phospho/phospho_clinical.csv", row.names=1)
 phospho.oridata = read.csv("~/documents/Segundo_Melanoma/Data/phospho/phospho.csv")
-phospho.ola = phospho[phospho$os.events == 1 | phospho$os.days >= 1095,]
-phospho.ola = phospho.ola[!is.na(phospho.ola$os.days),]
-phospho.ola = phospho.ola[!is.na(phospho.ola$os.events),]
-phospho.ola$survival_1yr="NA"
-phospho.ola$survival_1yr[which(phospho.ola$os.days>1095)] = 1
-phospho.ola$survival_1yr[which(phospho.ola$os.days<1095 & phospho.ola$os.events==1)] = 0
+phospho.ola = phospho[!is.na(phospho$survival_3yr),]
 write.csv(phospho.ola, "~/documents/Segundo_Melanoma/Results/phospho/OLA/3-yr-survival/3yr-survival-clinical.csv")
 fileConn<-file("~/documents/Segundo_Melanoma/Results/phospho/OLA/3-yr-survival/samples.txt")
 writeLines(rownames(phospho.ola), fileConn)
 close(fileConn)
 fileConn<-file("~/documents/Segundo_Melanoma/Results/phospho/OLA/3-yr-survival/G1.txt")
-writeLines(rownames(phospho.ola[which(phospho.ola$survival_1yr==1),]), fileConn)
+writeLines(rownames(phospho.ola[which(phospho.ola$survival_3yr==1),]), fileConn)
 close(fileConn)
 fileConn<-file("~/documents/Segundo_Melanoma/Results/phospho/OLA/3-yr-survival/G2.txt")
-writeLines(rownames(phospho.ola[which(phospho.ola$survival_1yr==0),]), fileConn)
+writeLines(rownames(phospho.ola[which(phospho.ola$survival_3yr==0),]), fileConn)
 close(fileConn)
 phospho.oladata = phospho.oridata[,match(rownames(phospho.ola), colnames(phospho.oridata))]
 phospho.oladata = cbind(phospho.oridata[1:4], phospho.oladata)
