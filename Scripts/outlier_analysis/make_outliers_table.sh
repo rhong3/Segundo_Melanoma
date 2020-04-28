@@ -1,8 +1,8 @@
 #!/bin/bash
 
 
-gene_column_name="Accession"
-set="proteomics"
+gene_column_name="Gene.name"
+set="transcriptomics"
 
 for m in 1-yr-survival 3-yr-survival 5-yr-survival 6-month-survival BRAF NRAS
 do

@@ -9,8 +9,8 @@ OLA = read.csv("~/Documents/Segundo_Melanoma/Results/OLA_summary.csv")
 prot.clinical = read.csv("~/documents/Segundo_Melanoma/Data/proteomics/proteomics_clinical.csv", row.names = 1)
 prot = read.csv("~/documents/Segundo_Melanoma/Data/proteomics/proteomics.csv")
 
-prot.clinical = prot.clinical[order(prot.clinical['os.days']), ]
-prot.clinical.1 = prot.clinical[, c(2, 12, 20)]
+prot.clinical = prot.clinical[order(prot.clinical['dss.days']), ]
+prot.clinical.1 = prot.clinical[, c(2, 14, 20)]
 
 OLA.prot = OLA[OLA['Group'] == "proteomics", -c(2,4,6)]
 OLA.prot$Enriched_in = paste(OLA.prot$Feature, OLA.prot$Enriched_in, sep='_')
@@ -26,8 +26,8 @@ OLA.prot.table = OLA.prot.table[order(OLA.prot.table$Enriched_in), ]
 OLA.prot.table$FDR = round(OLA.prot.table$FDR, 5) 
 
 OLA.prot.table.out = rbind.fill(OLA.prot.table, as.data.frame(t(prot.clinical.1)))
-OLA.prot.table.out = OLA.prot.table.out[c(c(81:83), c(1:80)), ]
-row.names(OLA.prot.table.out)[1:3] = c('stage', 'prim_to_death/censor', 'NRAS')
+OLA.prot.table.out = OLA.prot.table.out[c(c(103:105), c(1:102)), ]
+row.names(OLA.prot.table.out)[1:3] = c('stage', 'collection_to_death/censor', 'NRAS')
 write.csv(OLA.prot.table.out, "~/documents/Segundo_Melanoma/Results/OLA_HM_proteomics.csv", row.names = TRUE)
 
 col_fun1 = colorRamp2(c(0, 0.05), c("white", "green"))
@@ -51,9 +51,9 @@ anno = HeatmapAnnotation(days = as.numeric(prot.clinical.1[,2]),
                        NRAS = as.numeric(prot.clinical.1[,3]),
                        col = list(days = col_fun2, stage = col_fun3, NRAS = col_fun4))
 
-pdf("~/documents/Segundo_Melanoma/Results/col_OLA_HM_proteomics.pdf", height = 20, width = 30)
+pdf("~/documents/Segundo_Melanoma/Results/OLA_HM_proteomics.pdf", height = 20, width = 30)
 hp = Heatmap(as.matrix(OLA.prot.table.1), col = col, column_title = paste("proteomics outliers"), top_annotation = anno,  right_annotation=gn,
-             cluster_rows = FALSE, cluster_columns = TRUE, show_row_names = FALSE, name = "value", heatmap_legend_param = list(direction = "vertical"))
+             cluster_rows = FALSE, cluster_columns = FALSE, show_row_names = FALSE, name = "value", heatmap_legend_param = list(direction = "vertical"))
 draw(hp, heatmap_legend_side = "bottom", 
      annotation_legend_side = "right", merge_legend = TRUE,)
 dev.off()
@@ -64,8 +64,8 @@ trans.clinical = read.csv("~/documents/Segundo_Melanoma/Data/transcriptomics/tra
 OLA = read.csv("~/Documents/Segundo_Melanoma/Results/OLA_summary.csv")
 trans = read.csv("~/documents/Segundo_Melanoma/Data/transcriptomics/transcriptomics.csv")
 
-trans.clinical = trans.clinical[order(trans.clinical['os.days']), ]
-trans.clinical.1 = trans.clinical[, c(2, 12, 20)]
+trans.clinical = trans.clinical[order(trans.clinical['dss.days']), ]
+trans.clinical.1 = trans.clinical[, c(2, 14, 20)]
 
 OLA.trans = OLA[OLA['Group'] == "transcriptomics", -c(2,3,4,6)]
 OLA.trans$Enriched_in = paste(OLA.trans$Feature, OLA.trans$Enriched_in, sep='_')
@@ -80,8 +80,8 @@ OLA.trans.table = OLA.trans.table[order(OLA.trans.table$Enriched_in), ]
 OLA.trans.table$FDR = round(OLA.trans.table$FDR, 5) 
 
 OLA.trans.table.out = rbind.fill(OLA.trans.table, as.data.frame(t(trans.clinical.1)))
-OLA.trans.table.out = OLA.trans.table.out[c(c(3:5), c(1:2)), ]
-row.names(OLA.trans.table.out)[1:3] = c('stage', 'prim_to_death/censor', 'NRAS')
+OLA.trans.table.out = OLA.trans.table.out[c(c(19:21), c(1:18)), ]
+row.names(OLA.trans.table.out)[1:3] = c('stage', 'collection_to_death/censor', 'NRAS')
 write.csv(OLA.trans.table.out, "~/documents/Segundo_Melanoma/Results/OLA_HM_transcriptomics.csv", row.names = TRUE)
 
 col_fun1 = colorRamp2(c(0, 0.05), c("white", "green"))
@@ -103,7 +103,7 @@ anno = HeatmapAnnotation(days = as.numeric(trans.clinical.1[,2]),
                          NRAS = as.numeric(trans.clinical.1[,3]),
                          col = list(days = col_fun2, stage = col_fun3, NRAS = col_fun4))
 
-pdf("~/documents/Segundo_Melanoma/Results/OLA_HM_transcriptomics.pdf", height = 5, width = 30)
+pdf("~/documents/Segundo_Melanoma/Results/OLA_HM_transcriptomics.pdf", height = 6.5, width = 30)
 hp = Heatmap(as.matrix(OLA.trans.table.1), col = col, column_title = paste("transcriptomics outliers"), top_annotation = anno,  right_annotation=gn,
              cluster_rows = FALSE, cluster_columns = FALSE, show_row_names = FALSE, name = "value", heatmap_legend_param = list(direction = "vertical"))
 draw(hp, heatmap_legend_side = "bottom", 
@@ -115,8 +115,8 @@ phospho.clinical = read.csv("~/documents/Segundo_Melanoma/Data/phospho/phospho_c
 OLA = read.csv("~/Documents/Segundo_Melanoma/Results/OLA_summary.csv")
 phospho = read.csv("~/documents/Segundo_Melanoma/Data/phospho/phospho.csv")
 
-phospho.clinical = phospho.clinical[order(phospho.clinical['os.days']), ]
-phospho.clinical.1 = phospho.clinical[, c(2, 12, 20)]
+phospho.clinical = phospho.clinical[order(phospho.clinical['dss.days']), ]
+phospho.clinical.1 = phospho.clinical[, c(2, 14, 20)]
 
 OLA.phospho = OLA[OLA['Group'] == "phospho", -c(2,4)]
 OLA.phospho$Enriched_in = paste(OLA.phospho$Feature, OLA.phospho$Enriched_in, sep='_')
@@ -133,8 +133,8 @@ OLA.phospho.table = OLA.phospho.table[order(OLA.phospho.table$Enriched_in), ]
 OLA.phospho.table$FDR = round(OLA.phospho.table$FDR, 5) 
 
 OLA.phospho.table.out = rbind.fill(OLA.phospho.table, as.data.frame(t(phospho.clinical.1)))
-OLA.phospho.table.out = OLA.phospho.table.out[c(c(6:8), c(1:5)), ]
-row.names(OLA.phospho.table.out)[1:3] = c('stage', 'prim_to_death/censor', 'NRAS')
+OLA.phospho.table.out = OLA.phospho.table.out[c(c(5:7), c(1:4)), ]
+row.names(OLA.phospho.table.out)[1:3] = c('stage', 'collection_to_death/censor', 'NRAS')
 write.csv(OLA.phospho.table.out, "~/documents/Segundo_Melanoma/Results/OLA_HM_phospho.csv", row.names = TRUE)
 
 col_fun1 = colorRamp2(c(0, 0.05), c("white", "green"))
@@ -160,7 +160,7 @@ anno = HeatmapAnnotation(days = as.numeric(phospho.clinical.1[,2]),
                          NRAS = as.numeric(phospho.clinical.1[,3]),
                          col = list(days = col_fun2, stage = col_fun3, NRAS = col_fun4))
 
-pdf("~/documents/Segundo_Melanoma/Results/OLA_HM_phospho.pdf", height = 10, width = 30)
+pdf("~/documents/Segundo_Melanoma/Results/OLA_HM_phospho.pdf", height = 4, width = 30)
 hp = Heatmap(as.matrix(OLA.phospho.table.1), col = col, column_title = paste("phosphoeomics outliers"), top_annotation = anno,  right_annotation=gn,
              cluster_rows = FALSE, cluster_columns = FALSE, show_row_names = FALSE, name = "value", heatmap_legend_param = list(direction = "vertical"))
 draw(hp, heatmap_legend_side = "bottom", 

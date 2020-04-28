@@ -1,12 +1,12 @@
 #!/bin/bash
 
-gene_column_name="Modified_sequence"
-set="phospho"
+gene_column_name="Gene.name"
+set="transcriptomics"
 
 for m in 1-yr-survival 3-yr-survival 5-yr-survival 6-month-survival
 do
 	location_of_py_file="compare_groups_outliers.py"
-	location_of_outliers_file="/Users/rh2740/documents/Segundo_Melanoma/Results/"$set"/OLA/3-yr-dead-BRAF/ola_table.txt"
+	location_of_outliers_file="/Users/rh2740/documents/Segundo_Melanoma/Results/"$set"/OLA/"$m"/ola_table.txt"
 
 	fdr_cut_off=0.05
 	blue_or_red="red"
@@ -54,7 +54,7 @@ done
 for m in BRAF NRAS
 do
 	location_of_py_file="compare_groups_outliers.py"
-	location_of_outliers_file="/Users/rh2740/documents/Segundo_Melanoma/Results/"$set"/OLA/3-yr-dead-BRAF/ola_table.txt"
+	location_of_outliers_file="/Users/rh2740/documents/Segundo_Melanoma/Results/"$set"/OLA/"$m"/ola_table.txt"
 
 	fdr_cut_off=0.05
 	blue_or_red="red"

@@ -66,32 +66,32 @@ write.csv(GSEA.joined, file = "~/documents/Segundo_Melanoma/Results/relax_ICA_GS
 library(plyr)
 # Aggregate OLA
 # 5yr survival
-prot_data=read.csv("~/documents/Segundo_Melanoma/Results/proteomics/OLA/5-yr-survival/ola_data.csv")
-prot_data=prot_data[,2:4]
+# prot_data=read.csv("~/documents/Segundo_Melanoma/Results/proteomics/OLA/5-yr-survival/ola_data.csv")
+# prot_data=prot_data[,2:4]
 # trans_data=read.csv("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/ola_data.csv")
 # trans_data = trans_data[,2:3]
-phospho_data=read.csv("~/documents/Segundo_Melanoma/Results/phospho/OLA/5-yr-survival/ola_data.csv")
-phospho_data = phospho_data[,2:5]
-prot=read.delim("~/documents/Segundo_Melanoma/Results/proteomics/OLA/5-yr-survival/5-yr-survival-compare_alive_comparison_qvals.txt")
-prot= prot[prot$significant == "True", ]
-prot = prot[,1:2]
+# phospho_data=read.csv("~/documents/Segundo_Melanoma/Results/phospho/OLA/5-yr-survival/ola_data.csv")
+# phospho_data = phospho_data[,2:5]
+# prot=read.delim("~/documents/Segundo_Melanoma/Results/proteomics/OLA/5-yr-survival/5-yr-survival-compare_alive_comparison_qvals.txt")
+# prot= prot[prot$significant == "True", ]
+# prot = prot[,1:2]
 # trans=read.delim("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/5yr-survival-compare_alive_comparison_qvals.txt")
 # trans= trans[trans$significant == "True", ]
 # trans = trans[,1:2]
-phospho=read.delim("~/documents/Segundo_Melanoma/Results/phospho/OLA/5-yr-survival/5-yr-survival-compare_alive_comparison_qvals.txt")
-phospho= phospho[phospho$significant == "True", ]
-phospho = phospho[,1:2]
-ppt = merge(prot, prot_data, by="Accession")
-ppt$Group = "proteomics"
+# phospho=read.delim("~/documents/Segundo_Melanoma/Results/phospho/OLA/5-yr-survival/5-yr-survival-compare_alive_comparison_qvals.txt")
+# phospho= phospho[phospho$significant == "True", ]
+# phospho = phospho[,1:2]
+# ppt = merge(prot, prot_data, by="Accession")
+# ppt$Group = "proteomics"
 # trt = merge(trans, trans_data, by="Gene.name")
 # trt$Group = "transcriptomics"
-pht = merge(phospho, phospho_data, by="Modified_sequence")
-pht$Group = "phospho"
-ddt = rbind.fill(ppt, pht)
-ddt$Feature = "5-yr-survival"
-ddt$Enriched_in = "alive"
-ddt = ddt[,c(4,3,1,5,2,6,7,8)]
-ddt = ddt[order(ddt$FDR), ]
+# pht = merge(phospho, phospho_data, by="Modified_sequence")
+# pht$Group = "phospho"
+# ddt = rbind.fill(ppt, pht)
+# ddt$Feature = "5-yr-survival"
+# ddt$Enriched_in = "alive"
+# ddt = ddt[,c(4,3,1,5,2,6,7,8)]
+# ddt = ddt[order(ddt$FDR), ]
 
 # 6 month survival
 prot_data=read.csv("~/documents/Segundo_Melanoma/Results/proteomics/OLA/6-month-survival/ola_data.csv")
@@ -100,13 +100,13 @@ trans_data=read.csv("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/6-
 trans_data = trans_data[,2:3]
 phospho_data=read.csv("~/documents/Segundo_Melanoma/Results/phospho/OLA/6-month-survival/ola_data.csv")
 phospho_data = phospho_data[,2:5]
-prot=read.delim("~/documents/Segundo_Melanoma/Results/proteomics/OLA/6-month-survival/dead__comparison_qvals.txt")
+prot=read.delim("~/documents/Segundo_Melanoma/Results/proteomics/OLA/6-month-survival/dead_comparison_qvals.txt")
 prot= prot[prot$significant == "True", ]
 prot = prot[,1:2]
-trans=read.delim("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/6-month-survival/dead__comparison_qvals.txt")
+trans=read.delim("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/6-month-survival/dead_comparison_qvals.txt")
 trans= trans[trans$significant == "True", ]
 trans = trans[,1:2]
-phospho=read.delim("~/documents/Segundo_Melanoma/Results/phospho/OLA/6-month-survival/dead__comparison_qvals.txt")
+phospho=read.delim("~/documents/Segundo_Melanoma/Results/phospho/OLA/6-month-survival/dead_comparison_qvals.txt")
 phospho= phospho[phospho$significant == "True", ]
 phospho = phospho[,1:2]
 ppt = merge(prot, prot_data, by="Accession")
@@ -122,25 +122,43 @@ ddt.2$Enriched_in = "dead"
 ddt.2 = ddt.2[,c(4,3,1,5,2,6,7,8)]
 ddt.2 = ddt.2[order(ddt.2$FDR), ]
 
-ddt = rbind.fill(ddt, ddt.2)
+ddt = ddt.2
 
 # 1 year survival
+prot_data=read.csv("~/documents/Segundo_Melanoma/Results/proteomics/OLA/1-yr-survival/ola_data.csv")
+prot_data=prot_data[,2:4]
 trans_data=read.csv("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/1-yr-survival/ola_data.csv")
 trans_data = trans_data[,2:3]
-trans=read.delim("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/1-yr-survival/dead__comparison_qvals.txt")
+phospho_data=read.csv("~/documents/Segundo_Melanoma/Results/phospho/OLA/1-yr-survival/ola_data.csv")
+phospho_data = phospho_data[,2:5]
+prot=read.delim("~/documents/Segundo_Melanoma/Results/proteomics/OLA/1-yr-survival/dead_comparison_qvals.txt")
+prot= prot[prot$significant == "True", ]
+prot = prot[,1:2]
+trans=read.delim("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/1-yr-survival/dead_comparison_qvals.txt")
 trans= trans[trans$significant == "True", ]
 trans = trans[,1:2]
+phospho=read.delim("~/documents/Segundo_Melanoma/Results/phospho/OLA/1-yr-survival/dead_comparison_qvals.txt")
+phospho= phospho[phospho$significant == "True", ]
+phospho = phospho[,1:2]
+ppt = merge(prot, prot_data, by="Accession")
+ppt$Group = "proteomics"
 trt = merge(trans, trans_data, by="Gene.name")
 trt$Group = "transcriptomics"
-trt$Feature = "1-yr-survival"
-trt$Enriched_in = "dead"
+pht = merge(phospho, phospho_data, by="Modified_sequence")
+pht$Group = "phospho"
 
-ddt = rbind.fill(ddt, trt)
+ddt.2 = rbind.fill(ppt, pht, trt)
+ddt.2$Feature = "1-yr-survival"
+ddt.2$Enriched_in = "dead"
+ddt.2 = ddt.2[,c(4,3,1,5,2,6,7,8)]
+ddt.2 = ddt.2[order(ddt.2$FDR), ]
+
+ddt = rbind.fill(ddt, ddt.2)
 
 # NRAS
 prot_data=read.csv("~/documents/Segundo_Melanoma/Results/proteomics/OLA/NRAS/ola_data.csv")
 prot_data=prot_data[,2:4]
-prot=read.delim("~/documents/Segundo_Melanoma/Results/proteomics/OLA/NRAS/mut__comparison_qvals.txt")
+prot=read.delim("~/documents/Segundo_Melanoma/Results/proteomics/OLA/NRAS/mut_comparison_qvals.txt")
 prot= prot[prot$significant == "True", ]
 prot = prot[,1:2]
 ppt = merge(prot, prot_data, by="Accession")
@@ -250,8 +268,5 @@ ddt = rbind.fill(ddt, ppt)
 # ddt.2 = ddt.2[order(ddt.2$FDR), ]
 # 
 # ddt = rbind.fill(ddt.2, ddt)
-# 
-# write.csv(ddt, file = "~/documents/Segundo_Melanoma/Results/OLA_summary.csv", row.names=FALSE)
-# 
-# 
-# 
+
+write.csv(ddt, file = "~/documents/Segundo_Melanoma/Results/OLA_summary.csv", row.names=FALSE)
