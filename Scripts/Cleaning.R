@@ -16,10 +16,9 @@ histology = histology[histology$`Case ID` != "MM814",]
 histology[1,1] = "MM814"
 rownames(histology) = histology$`Case ID`
 
-clinical = read_excel("~/Documents/Segundo_Melanoma/Data/20200520ClinicalData_144samplesLundMM_REVISEDandUPDATEDtill2020_no_formulas.xlsx")
-clinical = clinical[-1,-c(12,17,25,27,28,29,33,35:38)]
+clinical = read_excel("~/Documents/Segundo_Melanoma/Data/20200427ClinicalData_144samplesLundMM_REVISED and UPDATED till 2016.xlsx")
+clinical = clinical[-1,-c(1,12,21,22,24,25,32:42)]
 clinical$sample = toupper(clinical$sample)
-clinical[clinical == 'NA'] = NA
 rownames(clinical) = clinical$sample
 clinical$stage <- mapvalues(clinical$stage, from=c("Local", "In transit", "Regional", "General"), to=c(1, 2, 3, 4))
 clinical["dist.met.location.Sc/Lgl"] = as.numeric(clinical$dist.met.location %like% "0")
@@ -50,8 +49,8 @@ rownames(his_clin) = his_clin$sample
 his_clin = his_clin[,-which(colnames(his_clin) %in% c("Row.names", "Case ID", "sample"))]
 
 his_clin$survival_5yr="NA"
-his_clin$survival_5yr[which(his_clin$dss.days>1825)] = 1
-his_clin$survival_5yr[which(his_clin$dss.days<1825 & his_clin$dss.events==1)] = 0
+his_clin$survival_5yr[which(his_clin$os.days>1825)] = 1
+his_clin$survival_5yr[which(his_clin$os.days<1825 & his_clin$os.events==1)] = 0
 write.csv(his_clin, "~/Documents/Segundo_Melanoma/Data/clinical&histology.csv")
 
 his_clin = read.csv("~/Documents/Segundo_Melanoma/Data/clinical&histology.csv", row.names=1)

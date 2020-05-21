@@ -4,7 +4,7 @@
 gene_column_name="Gene.name"
 set="transcriptomics"
 
-for m in 1-yr-survival 3-yr-survival 5-yr-survival 6-month-survival BRAF NRAS
+for m in 1-yr-survival 3-yr-survival 5-yr-survival 6-month-survival BRAF NRAS gender PtoM400 PtoM600 stage
 do
 	updown="up"
 	location_of_py_file="make_outliers_table.py"
