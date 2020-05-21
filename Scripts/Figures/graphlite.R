@@ -16,7 +16,7 @@ xxxx = na.omit(left_join(xxxx, Pathways, by="V1"))[, c(2,3)]
 
 for (a in c('strict', 'relax')){
   summm = read.csv(paste("~/Documents/Segundo_Melanoma/Results/", a, "_ICA_GSEA_summary.csv", sep=''))
-  summm = summm[(summm$clinical %in% histology), ]
+  summm = summm[!(summm$clinical %in% histology), ]
   summm['-logp'] = -log(summm$padj)
   for (b in c('proteomics', 'transcriptomics', 'phospho')){
     summ = summm[summm$group == b, c(1,11,12)]
@@ -82,7 +82,7 @@ for (a in c('strict', 'relax')){
     l = layout.kamada.kawai(g)
     l <- layout.norm(l, ymin=-1, ymax=1, xmin=-1, xmax=1)
     
-    pdf(paste("~/Documents/Segundo_Melanoma/Results/graph/hist_", b, '_', a, "_ICA_GSEA_summary.pdf", sep=''), height = 20, width = 20)
+    pdf(paste("~/Documents/Segundo_Melanoma/Results/graph/clin_", b, '_', a, "_ICA_GSEA_summary.pdf", sep=''), height = 20, width = 20)
     plot(g, edge.color=edge.col, edge.curved=.2, vertex.label.color="black", rescale=F, layout=l*1, 
          vertex.label.cex=0.6, main=paste(b, '(', a, ') ICA GSEA', sep=''), vertex.label.degree=pi/2)
     legend(x=-1, y=-.8, c("clinical features", "pathways"), pch=21,
@@ -108,7 +108,7 @@ xxxx = na.omit(left_join(xxxx, Pathways, by="V1"))[, c(2,3)]
 
 for (a in c('strict', 'relax')){
   summ = read.csv(paste("~/Documents/Segundo_Melanoma/Results/", a, "_ICA_GSEA_summary_joined.csv", sep=''))
-  summ = summ[(summ$clinical %in% histology), ]
+  summ = summ[!(summ$clinical %in% histology), ]
   summ['-logp'] = -(log(summ$padj.prot)+log(summ$padj.trans)+log(summ$padj.phos))/3
   summ = summ[c('pathway', 'clinical', '-logp')]
   unqp = distinct(summ['pathway'])
@@ -172,7 +172,7 @@ for (a in c('strict', 'relax')){
   l = layout.kamada.kawai(g)
   l <- layout.norm(l, ymin=-1, ymax=1, xmin=-1, xmax=1)
   
-  pdf(paste("~/Documents/Segundo_Melanoma/Results/graph/hist_", a, "_ICA_GSEA_summary_joined.pdf", sep=''), height = 20, width = 20)
+  pdf(paste("~/Documents/Segundo_Melanoma/Results/graph/clin_", a, "_ICA_GSEA_summary_joined.pdf", sep=''), height = 20, width = 20)
   plot(g, edge.color=edge.col, edge.curved=.2, vertex.label.color="black", rescale=F, layout=l*1, 
        vertex.label.cex=0.8, main=paste(a, ' joined ICA GSEA', sep=''), vertex.label.degree=pi/2)
   legend(x=-1, y=-.8, c("clinical features", "pathways"), pch=21,

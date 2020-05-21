@@ -1,7 +1,7 @@
 #!/bin/bash
 
-gene_column_name="Gene.name"
-set="transcriptomics"
+gene_column_name="Modified_sequence"
+set="phospho"
 
 for m in 1-yr-survival 3-yr-survival 5-yr-survival 6-month-survival
 do

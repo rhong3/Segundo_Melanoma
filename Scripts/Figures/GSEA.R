@@ -139,12 +139,12 @@ HMP = function(centroid_file, clinical_file, data_file, td_list_file, outdir, nu
 
 
 # proteomics
-todolist("~/documents/Segundo_Melanoma/Results/proteomics/ICA/0.0005/ICA_proteomics_IC_Clinical_Correlation_P_Value_all.tsv",
+todolist("~/documents/Segundo_Melanoma/Results/proteomics/ICA/0.00001/ICA_proteomics_IC_Clinical_Correlation_P_Value_all.tsv",
          "~/documents/Segundo_Melanoma/Results/proteomics/ICA/ICA_proteomics_IC_mean_mixing_score.txt",
-         "~/documents/Segundo_Melanoma/Results/proteomics/ICA/0.0005/significant_IC_clinical.csv")
+         "~/documents/Segundo_Melanoma/Results/proteomics/ICA/0.00001/significant_IC_clinical.csv")
 GSEA("~/documents/Segundo_Melanoma/Results/proteomics/ICA/MG_ICA_proteomics_IC_centroid.csv", 
-     "~/documents/Segundo_Melanoma/Results/proteomics/ICA/0.0005/significant_IC_clinical.csv", 
-     "~/documents/Segundo_Melanoma/Results/proteomics/GSEA/relax/")
+     "~/documents/Segundo_Melanoma/Results/proteomics/ICA/0.00001/significant_IC_clinical.csv", 
+     "~/documents/Segundo_Melanoma/Results/proteomics/GSEA/strict/")
 HMP(centroid_file = "~/documents/Segundo_Melanoma/Results/proteomics/ICA/MG_ICA_proteomics_IC_centroid.csv",
     clinical_file = "~/documents/Segundo_Melanoma/Data/proteomics/proteomics_clinical.csv",
     data_file = "~/documents/Segundo_Melanoma/Data/proteomics/ICA_proteomics.csv",
@@ -152,12 +152,12 @@ HMP(centroid_file = "~/documents/Segundo_Melanoma/Results/proteomics/ICA/MG_ICA_
     outdir = "~/documents/Segundo_Melanoma/Results/proteomics/GSEA/strict/", numb = 2, nm = "Accession")
 
 # transcriptomics
-todolist("~/documents/Segundo_Melanoma/Results/transcriptomics/ICA/0.0005/ICA_transcriptomics_IC_Clinical_Correlation_P_Value_all.tsv",
+todolist("~/documents/Segundo_Melanoma/Results/transcriptomics/ICA/0.00001/ICA_transcriptomics_IC_Clinical_Correlation_P_Value_all.tsv",
          "~/documents/Segundo_Melanoma/Results/transcriptomics/ICA/ICA_transcriptomics_IC_mean_mixing_score.txt",
-         "~/documents/Segundo_Melanoma/Results/transcriptomics/ICA/0.0005/significant_IC_clinical.csv")
+         "~/documents/Segundo_Melanoma/Results/transcriptomics/ICA/0.00001/significant_IC_clinical.csv")
 GSEA("~/documents/Segundo_Melanoma/Results/transcriptomics/ICA/MG_ICA_transcriptomics_IC_centroid.csv", 
-     "~/documents/Segundo_Melanoma/Results/transcriptomics/ICA/0.0005/significant_IC_clinical.csv", 
-     "~/documents/Segundo_Melanoma/Results/transcriptomics/GSEA/relax/")
+     "~/documents/Segundo_Melanoma/Results/transcriptomics/ICA/0.00001/significant_IC_clinical.csv", 
+     "~/documents/Segundo_Melanoma/Results/transcriptomics/GSEA/strict/")
 HMP(centroid_file = "~/documents/Segundo_Melanoma/Results/transcriptomics/ICA/MG_ICA_transcriptomics_IC_centroid.csv",
     clinical_file = "~/documents/Segundo_Melanoma/Data/transcriptomics/transcriptomics_clinical.csv",
     data_file = "~/documents/Segundo_Melanoma/Data/transcriptomics/ICA_transcriptomics.csv",
@@ -165,17 +165,17 @@ HMP(centroid_file = "~/documents/Segundo_Melanoma/Results/transcriptomics/ICA/MG
     outdir = "~/documents/Segundo_Melanoma/Results/transcriptomics/GSEA/strict/", numb = 1, nm="Gene.name")
 
 # phospho
-todolist("~/documents/Segundo_Melanoma/Results/phospho/ICA/0.0005/ICA_phospho_IC_Clinical_Correlation_P_Value_all.tsv",
+todolist("~/documents/Segundo_Melanoma/Results/phospho/ICA/0.00001/ICA_phospho_IC_Clinical_Correlation_P_Value_all.tsv",
          "~/documents/Segundo_Melanoma/Results/phospho/ICA/ICA_phospho_IC_mean_mixing_score.txt",
-         "~/documents/Segundo_Melanoma/Results/phospho/ICA/0.0005/significant_IC_clinical.csv")
+         "~/documents/Segundo_Melanoma/Results/phospho/ICA/0.00001/significant_IC_clinical.csv")
 GSEA("~/documents/Segundo_Melanoma/Results/phospho/ICA/MG_ICA_phospho_IC_centroid.csv", 
-     "~/documents/Segundo_Melanoma/Results/phospho/ICA/0.0005/significant_IC_clinical.csv", 
-     "~/documents/Segundo_Melanoma/Results/phospho/GSEA/relax/")
+     "~/documents/Segundo_Melanoma/Results/phospho/ICA/0.00001/significant_IC_clinical.csv", 
+     "~/documents/Segundo_Melanoma/Results/phospho/GSEA/strict/")
 HMP(centroid_file = "~/documents/Segundo_Melanoma/Results/phospho/ICA/MG_ICA_phospho_IC_centroid.csv",
     clinical_file = "~/documents/Segundo_Melanoma/Data/phospho/phospho_clinical.csv",
     data_file = "~/documents/Segundo_Melanoma/Data/phospho/ICA_phospho.csv",
-    td_list_file = "~/documents/Segundo_Melanoma/Results/phospho/ICA/0.0005/significant_IC_clinical.csv",
-    outdir = "~/documents/Segundo_Melanoma/Results/phospho/GSEA/relax/", numb = 3, nm="Modified_sequence")
+    td_list_file = "~/documents/Segundo_Melanoma/Results/phospho/ICA/0.00001/significant_IC_clinical.csv",
+    outdir = "~/documents/Segundo_Melanoma/Results/phospho/GSEA/strict/", numb = 3, nm="Modified_sequence")
 
 
 
