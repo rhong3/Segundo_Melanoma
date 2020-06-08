@@ -101,13 +101,13 @@ trans_data = trans_data[,2:3]
 phospho_data=read.csv("~/documents/Segundo_Melanoma/Results/phospho/OLA/6-month-survival/ola_data.csv")
 phospho_data = phospho_data[,2:5]
 prot=read.delim("~/documents/Segundo_Melanoma/Results/proteomics/OLA/6-month-survival/dead_comparison_qvals.txt")
-prot= prot[prot$significant == "True", ]
+# prot= prot[prot$significant == "True", ]
 prot = prot[,1:2]
 trans=read.delim("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/6-month-survival/dead_comparison_qvals.txt")
-trans= trans[trans$significant == "True", ]
+# trans= trans[trans$significant == "True", ]
 trans = trans[,1:2]
 phospho=read.delim("~/documents/Segundo_Melanoma/Results/phospho/OLA/6-month-survival/dead_comparison_qvals.txt")
-phospho= phospho[phospho$significant == "True", ]
+# phospho= phospho[phospho$significant == "True", ]
 phospho = phospho[,1:2]
 ppt = merge(prot, prot_data, by="Accession")
 ppt$Group = "proteomics"
@@ -132,13 +132,13 @@ trans_data = trans_data[,2:3]
 phospho_data=read.csv("~/documents/Segundo_Melanoma/Results/phospho/OLA/1-yr-survival/ola_data.csv")
 phospho_data = phospho_data[,2:5]
 prot=read.delim("~/documents/Segundo_Melanoma/Results/proteomics/OLA/1-yr-survival/dead_comparison_qvals.txt")
-prot= prot[prot$significant == "True", ]
+# prot= prot[prot$significant == "True", ]
 prot = prot[,1:2]
 trans=read.delim("~/documents/Segundo_Melanoma/Results/transcriptomics/OLA/1-yr-survival/dead_comparison_qvals.txt")
-trans= trans[trans$significant == "True", ]
+# trans= trans[trans$significant == "True", ]
 trans = trans[,1:2]
 phospho=read.delim("~/documents/Segundo_Melanoma/Results/phospho/OLA/1-yr-survival/dead_comparison_qvals.txt")
-phospho= phospho[phospho$significant == "True", ]
+# phospho= phospho[phospho$significant == "True", ]
 phospho = phospho[,1:2]
 ppt = merge(prot, prot_data, by="Accession")
 ppt$Group = "proteomics"
@@ -159,7 +159,7 @@ ddt = rbind.fill(ddt, ddt.2)
 prot_data=read.csv("~/documents/Segundo_Melanoma/Results/proteomics/OLA/NRAS/ola_data.csv")
 prot_data=prot_data[,2:4]
 prot=read.delim("~/documents/Segundo_Melanoma/Results/proteomics/OLA/NRAS/mut_comparison_qvals.txt")
-prot= prot[prot$significant == "True", ]
+# prot= prot[prot$significant == "True", ]
 prot = prot[,1:2]
 ppt = merge(prot, prot_data, by="Accession")
 ppt$Group = "proteomics"
@@ -172,7 +172,7 @@ ddt = rbind.fill(ddt, ppt)
 prot_data=read.csv("~/documents/Segundo_Melanoma/Results/proteomics/OLA/stage/ola_data.csv")
 prot_data=prot_data[,2:4]
 prot=read.delim("~/documents/Segundo_Melanoma/Results/proteomics/OLA/stage/4_comparison_qvals.txt")
-prot= prot[prot$significant == "True", ]
+# prot= prot[prot$significant == "True", ]
 prot = prot[,1:2]
 ppt = merge(prot, prot_data, by="Accession")
 ppt$Group = "proteomics"
@@ -181,4 +181,13 @@ ppt$Enriched_in = "4"
 
 ddt = rbind.fill(ddt, ppt)
 
-write.csv(ddt, file = "~/documents/Segundo_Melanoma/Results/OLA_summary.csv", row.names=FALSE)
+write.csv(ddt, file = "~/documents/Segundo_Melanoma/Results/full_OLA_summary.csv", row.names=FALSE)
+
+old=read.csv("~/documents/Segundo_Melanoma/Legacy/old_summary/OLA_summary_old.csv")
+
+mgg = merge(x=ddt, y=old, by = c('Gene.name', 'Description', 'Group', 'Feature', 'Accession', 'Modified_sequence'), all = TRUE, suffixes=c('_new', '_old'))
+write.csv(mgg, file="~/documents/Segundo_Melanoma/Legacy/old_summary/OLA_new_old.csv", row.names=FALSE)
+
+
+
+
