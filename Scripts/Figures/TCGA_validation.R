@@ -1,3 +1,4 @@
+library('dplyr')
 # validate OLA/COX proteins and phosphosites using TCGA RNAseq data
 RNAseq <- read.csv("Data/TCGA_RNA/log2_RNAseq.csv")
 clinical <- read.delim("~/Documents/Segundo_melanoma/Data/TCGA_RNA/data_clinical_sample.txt", comment.char="#")
@@ -5,6 +6,8 @@ clinical$SAMPLE_ID=gsub('-','.', clinical$SAMPLE_ID)
 patient = read.delim("~/Documents/Segundo_melanoma/Data/TCGA_RNA/data_clinical_patient.txt", comment.char="#")
 patient.clinical = merge(patient, clinical, by="PATIENT_ID")
 row.names(patient.clinical) = patient.clinical$SAMPLE_ID
+# Get only stageIII and IV patients
+patient.clinical = filter(patient.clinical, grepl('III|IV', AJCC_PATHOLOGIC_TUMOR_STAGE))
 
 patient.clinical = patient.clinical[, c('DSS_MONTHS', 'DSS_STATUS')]
 patient.clinical = na.omit(patient.clinical)
@@ -93,33 +96,13 @@ write.csv(trans.oladata, "~/documents/Segundo_Melanoma/Results/TCGA_RNA/OLA/6-mo
 # Aggregate Results
 trans_data=read.csv("~/documents/Segundo_Melanoma/Results/TCGA_RNA/OLA/3-yr-survival/ola_data.csv")
 trans_data = trans_data[,2:3]
-trans=read.delim("~/documents/Segundo_Melanoma/Results/TCGA_RNA/OLA/3-yr-survival/dead_comparison_qvals.txt")
+trans=read.delim("~/documents/Segundo_Melanoma/Results/TCGA_RNA/OLA/3-yr-survival/alive_comparison_qvals.txt")
 trans= trans[trans$significant == "True", ]
 trans = trans[,1:2]
 trt = merge(trans, trans_data, by='Hugo_Symbol')
 trt$Feature = "3-yr-survival"
-trt$Enriched_in = "dead"
+trt$Enriched_in = "alive"
 trt_all = trt
-
-trans_data=read.csv("~/documents/Segundo_Melanoma/Results/TCGA_RNA/OLA/1-yr-survival/ola_data.csv")
-trans_data = trans_data[,2:3]
-trans=read.delim("~/documents/Segundo_Melanoma/Results/TCGA_RNA/OLA/1-yr-survival/dead_comparison_qvals.txt")
-trans= trans[trans$significant == "True", ]
-trans = trans[,1:2]
-trt = merge(trans, trans_data, by='Hugo_Symbol')
-trt$Feature = "1-yr-survival"
-trt$Enriched_in = "dead"
-trt_all = rbind(trt_all, trt)
-
-trans_data=read.csv("~/documents/Segundo_Melanoma/Results/TCGA_RNA/OLA/5-yr-survival/ola_data.csv")
-trans_data = trans_data[,2:3]
-trans=read.delim("~/documents/Segundo_Melanoma/Results/TCGA_RNA/OLA/5-yr-survival/dead_comparison_qvals.txt")
-trans= trans[trans$significant == "True", ]
-trans = trans[,1:2]
-trt = merge(trans, trans_data, by='Hugo_Symbol')
-trt$Feature = "5-yr-survival"
-trt$Enriched_in = "dead"
-trt_all = rbind(trt_all, trt)
 
 trans_data=read.csv("~/documents/Segundo_Melanoma/Results/TCGA_RNA/OLA/5-yr-survival/ola_data.csv")
 trans_data = trans_data[,2:3]
@@ -135,6 +118,7 @@ write.csv(trt_all, '~/documents/Segundo_Melanoma/Results/TCGA_RNA/OLA_summary.cs
 
 
 # t-test alive/dead
+library(readr)
 library(dplyr)
 library(ggplot2)
 library(ggpubr)
@@ -142,6 +126,8 @@ library(gridExtra)
 toplist_prot = c('AIMP1', 'CDK4', 'DDX11', 'PAEP', 'CTNND1', 'GPR126', 'PIK3CB', 'TEX30', 'IARS', 'MMP12', 
                  'OXSR1', 'PDZD11', 'NCS1', 'RIOK1', 'THADA', 'FADD', 'NTPCR', 'TTYH3', 'XYLB')
 toplist_phos = c('ADAM10', 'FGA', 'MARCKS', 'AKAP12', 'BCKDK', 'SRRM1', 'HMOX1', 'NIBAN2', 'PRKAB1', 'SYMPK')
+
+
 svv = c('5-yr-survival', '3-yr-survival', '1-yr-survival', '6-month-survival')
 
 for (sett in svv){
