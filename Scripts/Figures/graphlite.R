@@ -72,9 +72,15 @@ for (a in c('strict', 'relax')){
     V(g)$group = gsub("clinical", "tomato", V(g)$group)
     V(g)$color <- V(g)$group
     if (a == 'relax'){
-      V(g)$label = ifelse(V(g)$group == "tomato", V(g)$name, NA)
+      if (b == 'phospho'){ma = 18}
+      else if(b == 'proteomics'){ma = 15}
+      else{ma = 23}
+      V(g)$label = ifelse(degree(g) > ma | V(g)$group == "tomato", V(g)$name, NA)
     }else{
-      V(g)$label = ifelse(degree(g) > 10 | V(g)$group == "tomato", V(g)$name, NA)
+      if (b == 'phospho'){ma = 18}
+      else if(b == 'proteomics'){ma = 10}
+      else{ma = 3}
+      V(g)$label = ifelse(degree(g) > ma | V(g)$group == "tomato", V(g)$name, NA)
     }
     
     deg <- degree(g, mode="all")
@@ -85,10 +91,10 @@ for (a in c('strict', 'relax')){
     # V(g)$label <- NA
     edge.start <- get.edges(g, 1:ecount(g))[,2] 
     edge.col <- V(g)$color[edge.start]
-    l = layout.kamada.kawai(g)
+    l = layout_in_circle(g)
     l <- layout.norm(l, ymin=-1, ymax=1, xmin=-1, xmax=1)
     
-    pdf(paste("~/Documents/Segundo_Melanoma/Results/graph/No_IC/", b, '_', a, "_ICA_GSEA_summary.pdf", sep=''), height = 20, width = 20)
+    pdf(paste("~/Documents/Segundo_Melanoma/Results/graph/No_IC/", b, '_', a, "_ICA_GSEA_summary.pdf", sep=''), height = 20, width = 22)
     plot(g, edge.color=edge.col, edge.curved=.2, vertex.label.color="black", rescale=F, layout=l*1,
          vertex.label.cex=1.25, main=paste(b, '(', a, ') ICA GSEA', sep=''), vertex.label.degree=pi/4, vertex.label.dist=0)
     legend(x=-1, y=-0.8, c("features", "pathways"), pch=21,
@@ -175,11 +181,11 @@ for (a in c('strict', 'relax')){
   E(g)$edge.color <- "gray80"
   edge.start <- get.edges(g, 1:ecount(g))[,2] 
   edge.col <- V(g)$color[edge.start]
-  l = layout.kamada.kawai(g)
+  l = layout_in_circle(g)
   l <- layout.norm(l, ymin=-1, ymax=1, xmin=-1, xmax=1)
   
-  pdf(paste("~/Documents/Segundo_Melanoma/Results/graph/No_IC/", a, "_ICA_GSEA_summary_joined.pdf", sep=''), height = 20, width = 20)
-  plot(g, edge.color=edge.col, edge.curved=.2, vertex.label.color="black", rescale=F, layout=l*1, vertex.label = ifelse(degree(g) > 10 | V(g)$group == "tomato", V(g)$label, NA),
+  pdf(paste("~/Documents/Segundo_Melanoma/Results/graph/No_IC/", a, "_ICA_GSEA_summary_joined.pdf", sep=''), height = 20, width = 22)
+  plot(g, edge.color=edge.col, edge.curved=.2, vertex.label.color="black", rescale=F, layout=l*1, vertex.label = ifelse(degree(g) > 5 | V(g)$group == "tomato", V(g)$label, NA),
        vertex.label.cex=1.25, main=paste(a, ' joined ICA GSEA', sep=''), vertex.label.degree=pi/4, vertex.label.dist=0)
   legend(x=-1, y=-0.8, c("features", "pathways"), pch=21,
          col="#777777", pt.bg=colrs, pt.cex=2, cex=2, bty="n", ncol=1)
