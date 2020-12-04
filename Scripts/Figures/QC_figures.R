@@ -33,12 +33,47 @@ dev.off()
 
 
 # Volcano plots
+library(readxl)
+library(EnhancedVolcano)
+library(dplyr)
+TMT11 <- read_excel("Data/others/20201203_TMT11_MM_proteins_t-test_log2dif_volcano_plot_30vs70_tumor_content_.xlsx")
+TMT11 = TMT11[-c(1:3,5:11,13:18), TMT11[12, ] %in% c('>70', '<30', NA)]
+TMT11 = cbind(TMT11[,101:108], TMT11[,1:100])
+cn = colnames(TMT11)[1:8]
+colnames(TMT11) = TMT11[1,]
+colnames(TMT11)[1:8] = cn
+TMT11 = TMT11[-c(1,2),-c(1:2, 5:7)]
+colnames(TMT11)[1:3] = c('-logP-value', 'log2FoldChange', 'Gene')
+TMT11$log2FoldChange = as.numeric(as.character(TMT11$log2FoldChange))
+TMT11$`-logP-value` = as.numeric(as.character(TMT11$`-logP-value`))
+TMT11$`-logP-value` = 10**-TMT11['-logP-value']
+TMT11$`-logP-value` = as.numeric(as.character(unlist(TMT11$`-logP-value`)))
 
-
+png("Results/others/TMT-volcano.png", units="in", width=7, height=7, res=300)
+EnhancedVolcano(TMT11,
+                lab = TMT11$Gene,
+                x = 'log2FoldChange',
+                y = '-logP-value',
+                selectLab = c('RB1', 'TYR', 'MLANA', 'WDR12', 'S100A1'),
+                xlab = bquote(~Log[2]~ 'fold change'),
+                pCutoff = 10e-5,
+                FCcutoff = 0.5,
+                colAlpha = 0.5,
+                pointSize = 1.0,
+                labSize = 6.0,
+                labCol = 'black',
+                labFace = 'bold',
+                boxedLabels = TRUE,
+                drawConnectors = TRUE,
+                widthConnectors = 0.5,
+                colConnectors = 'black',
+                title = "TMT11",
+                subtitle = "",
+                caption = 'total = 8125 proteins',
+                xlim = c(-3, 3),
+                ylim = c(0, -log10(10e-21))
+                )
+dev.off()
 ## blue (Safe 16 SVG Hex3)	#0000FF	
 #9be1fb; #a1cae6; #a9afd3; #a8a7c0; #f799d1; #f9b3af; #ffeca1; #f4b4ad; #fffbb2
-
-# I also attached an excel table for the volcano plot that I do not know how to do in R. The table is a Perseus output where I performed a students t-test. You can either perform the t-test yourself using the row I marked in yellow (<30 and >70)  or you can use the output from Perseus directly, then you can use the column "-Log Student's T-test p-value >70_<30" and "Student's T-test Difference >70_<30" (log2 fold change). 
-# 
-# The known melanoma markers I highlighted are: RB1, TYR, MLANA, WDR12 and S100A1 - I checked all the markers that you once send me (around 55) and these where the once that were displayed the nicest. 
 
