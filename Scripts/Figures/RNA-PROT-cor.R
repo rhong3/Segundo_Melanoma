@@ -1,3 +1,4 @@
+library(readr)
 # RNA-Protein correlation
 proteomics <- read_csv("Data/proteomics/proteomics.csv")
 proteomics = proteomics[, -c(111,112)]
@@ -53,9 +54,11 @@ p = ggplot(new_cor, aes(x=`correlation coefficient`, fill=correlation, color=cor
   scale_fill_brewer(palette="Dark2")+
   labs(title="mRNA and protein Spearman correlation")+ 
   theme_classic()+
-  theme(legend.position="top", plot.title = element_text(hjust = 0.5)) 
+  theme(legend.position="top", plot.title = element_text(size=25, face="bold", hjust = 0.5),
+        axis.text=element_text(size=20), axis.title = element_text(size = 20), 
+        legend.text = element_text(size = 16), legend.title = element_text(size = 16)) 
 pdf(file=paste("~/documents/Segundo_Melanoma/Results/mRNA-protein-corr.pdf", sep=''),
-    width=10,height=8)
+    width=12,height=8)
 grid.arrange(p,nrow=1, ncol=1)
 dev.off()
 
@@ -118,9 +121,11 @@ p = ggplot(new_cor, aes(x=`correlation coefficient`, fill=correlation, color=cor
   scale_fill_brewer(palette="Dark2")+
   labs(title="protein and phosphosite Spearman correlation")+ 
   theme_classic()+
-  theme(legend.position="top", plot.title = element_text(hjust = 0.5)) 
+  theme(legend.position="top", plot.title = element_text(size=25, face="bold", hjust = 0.5),
+        axis.text=element_text(size=20), axis.title = element_text(size = 20), 
+        legend.text = element_text(size = 20), legend.title = element_text(size = 20)) 
 pdf(file=paste("~/documents/Segundo_Melanoma/Results/protein-phospho-corr.pdf", sep=''),
-    width=10,height=8)
+    width=20,height=8)
 grid.arrange(p,nrow=1, ncol=1)
 dev.off()
 
