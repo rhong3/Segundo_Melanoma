@@ -172,8 +172,8 @@ km.roc <- function(DATA, cutoff.cat.roc){
     
     km.plot <- autoplot(km_fit, conf.int = F, censor = T, surv.size = 1)+theme_bw()+
       labs(title = paste("km_",colnames(data)[4], "  p=",signif(pv$pval, 4),
-                         " |  auc=",signif(ROC.matrix$`AUC(%)`[j], 3),"%",
-                         "  cut-off=",signif(ROC.matrix$cut_off[j], 2),sep =""),
+                         " |  auc=",signif(ROC.matrix$`AUC(%)`[j-3], 3),"%",
+                         "  cut-off=",signif(ROC.matrix$cut_off[j-3], 2),sep =""),
            y = paste("Survival (",cutoff.cat.roc,")",sep=""), 
            x = "Time (days)")+
       theme (text = element_text(size=13), legend.title = element_blank())
