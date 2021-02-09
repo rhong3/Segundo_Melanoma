@@ -163,6 +163,23 @@ write.csv(data.frame(xxx['coefficients']),  "~/Documents/Segundo_Melanoma/Result
 
 
 # Cox Regression
+IHC.cox = IHC
+IHC.cox$status = abs(IHC.cox$Live-1)+1
+IHC.cox$time = IHC.cox$OS
+prot.clinical.cox = prot.clinical
+prot.clinical.cox$status = prot.clinical.cox$dss.events+1
+prot.clinical.cox$time = prot.clinical.cox$dss.days
+
+res.cox <- coxph(Surv(time, status) ~ ADAM10_M+ADAM10_S+PIK3CB_M+PIK3CB_S+PAEP_M+PAEP_S+FGA_M+FGA_S+CDK4_M+CDK4_S+CTNND1_M+CTNND1_S+HMOX1_M+HMOX1_S, data =  IHC.cox)
+xxx = summary(res.cox)
+print(xxx)
+write.csv(data.frame(xxx['coefficients']),  "~/Documents/Segundo_Melanoma/Results/IHC/IHC_cox.csv")
+        
+   
+res.cox <- coxph(Surv(time, status) ~ CDK4+ADAM10+FGA+PAEP+HMOX1+CTNND1+PIK3CB, data=prot.clinical.cox)
+xxx = summary(res.cox)
+print(xxx)
+write.csv(data.frame(xxx['coefficients']),  "~/Documents/Segundo_Melanoma/Results/IHC/proteome_cox.csv")
 
 
 
