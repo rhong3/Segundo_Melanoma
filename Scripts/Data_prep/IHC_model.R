@@ -4,6 +4,8 @@ library(readxl)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
+library("survival")
+library("survminer")
 
 
 # IHC data filter
@@ -127,10 +129,40 @@ ggplot(IHC.plot, aes(Days, Values, color=Live)) +
 #   geom_point() +
 #   facet_wrap(~ Measure, ncol=7) + ggtitle("IHC-scaled vs. Survival") + theme_bw()
 
-
+prot.clinical.plot=data.frame()
+for (i in 2:8){
+  prot.clinical.temp = data.frame(Values=prot.clinical[,i], Measure=colnames(prot.clinical)[i], Days=prot.clinical$dss.days, Live=abs(prot.clinical$dss.events-1))
+  prot.clinical.plot = rbind.data.frame(prot.clinical.plot, prot.clinical.temp)
+}
+prot.clinical.plot$Live = as.factor(prot.clinical.plot$Live)
+ggplot(prot.clinical.plot, aes(Days, Values, color=Live)) +
+  geom_point() +
+  facet_wrap(~ Measure, ncol=4) + ggtitle("Proteome vs. Survival") + theme_bw()
 
 # LM Main
+model = lm(dss.days~CDK4+ADAM10+FGA+PAEP+HMOX1+CTNND1+PIK3CB, data=prot.clinical)
+xxx = summary(model)
+print(xxx)
+write.csv(data.frame(xxx['coefficients']),  "~/Documents/Segundo_Melanoma/Results/IHC/proteome_lm.csv")
+
+model = lm(OS~ADAM10_M+ADAM10_S+PIK3CB_M+PIK3CB_S+PAEP_M+PAEP_S+FGA_M+FGA_S+CDK4_M+CDK4_S+CTNND1_M+CTNND1_S+HMOX1_M+HMOX1_S, data=IHC)
+xxx = summary(model)
+print(xxx)
+write.csv(data.frame(xxx['coefficients']),  "~/Documents/Segundo_Melanoma/Results/IHC/IHC_lm.csv")
+
+# Logistic 
 model = glm(survival_6mo~CDK4+ADAM10+FGA+PAEP+HMOX1+CTNND1+PIK3CB, data=prot.clinical, family="binomial")
-summary(model)
+xxx = summary(model)
+print(xxx)
+write.csv(data.frame(xxx['coefficients']),  "~/Documents/Segundo_Melanoma/Results/IHC/proteome_logistic.csv")
+
+model = glm(Live~ADAM10_M+ADAM10_S+PIK3CB_M+PIK3CB_S+PAEP_M+PAEP_S+FGA_M+FGA_S+CDK4_M+CDK4_S+CTNND1_M+CTNND1_S+HMOX1_M+HMOX1_S, data=IHC, family="binomial")
+xxx = summary(model)
+print(xxx)
+write.csv(data.frame(xxx['coefficients']),  "~/Documents/Segundo_Melanoma/Results/IHC/IHC_logistic.csv")
+
+
+# Cox Regression
+
 
 
