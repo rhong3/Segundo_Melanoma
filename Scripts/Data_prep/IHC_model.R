@@ -9,6 +9,14 @@ library("survminer")
 
 
 # IHC data filter
+NBP1 <- read_excel("~/Documents/Segundo_Melanoma/Data/NBP1_IHC.xls")
+NBP1 = NBP1[, c(1:7)]
+NBP1.mean = NBP1 %>%
+  fill(Chip_p) %>%
+  na.omit() %>%
+  group_by(Chip_p) %>%
+  summarise_all(mean)
+
 ADAM10 <- read_excel("~/Documents/Segundo_Melanoma/Data/ADAM10_IHC.xls")
 ADAM10 = ADAM10[, c(1:7)]
 ADAM10.mean = ADAM10 %>%
@@ -72,13 +80,14 @@ IHC = ADAM10.mean %>%
   left_join(CDK4.mean, by=c('Chip_p', 'DFS', 'PFS', 'OS', 'Live')) %>%
   left_join(CTNND1.mean, by=c('Chip_p', 'DFS', 'PFS', 'OS', 'Live')) %>%
   left_join(HMOX1.mean, by=c('Chip_p', 'DFS', 'PFS', 'OS', 'Live')) %>%
-  select(c(1:3, 8:19, 4:7))
+  left_join(NBP1.mean, by=c('Chip_p', 'DFS', 'PFS', 'OS', 'Live')) %>%
+  select(c(1:3, 8:21, 4:7))
 
 write.csv(IHC, "~/Documents/Segundo_Melanoma/Data/IHC_agg.csv", row.names = FALSE)
   
 
 # Proteomics data filter
-gene = c('PIK3CB', 'PAEP', 'FGA', 'CDK4', 'ADAM10', 'HMOX1', 'CTNND1')
+gene = c('PIK3CB', 'PAEP', 'FGA', 'CDK4', 'ADAM10', 'HMOX1', 'CTNND1', 'SCAI')
 proteomics <- read.csv("~/Documents/Segundo_Melanoma/Data/proteomics/proteomics.csv")
 proteomics = proteomics[which(proteomics$Gene.name %in% gene), ]
 proteomics = proteomics[,c(113, 1:110)]
@@ -101,23 +110,23 @@ prot.clinical = read.csv("~/Documents/Segundo_Melanoma/Data/IHC_prot_clinical.cs
 IHC = read.csv("~/Documents/Segundo_Melanoma/Data/IHC_agg.csv")
 colnames(IHC) = gsub("PIK3cB", "PIK3CB", colnames(IHC))
 colnames(IHC) = gsub("HMOX", "HMOX1", colnames(IHC))
-gene_means = colMeans(prot.clinical[,2:8])
-gene_std = apply(prot.clinical[,2:8], 2, sd)
+gene_means = colMeans(prot.clinical[,2:9])
+gene_std = apply(prot.clinical[,2:9], 2, sd)
 IHC.scale = IHC
 center_factors = c(0.0302873, 0.0302873, 0.0896912, 0.0896912, -0.2300511, -0.2300511, -0.1936995, -0.1936995, 0.1471385, 0.1471385, -0.2320132, -0.2320132, 0.1701781, 0.1701781)
 scale_factors = c(0.3197894, 0.3197894, 0.4426608, 0.4426608, 1.4249570, 1.4249570, 1.3063025, 1.3063025, 0.5791502, 0.5791502, 0.5169386, 0.5169386, 0.6680108, 0.6680108)
-IHC.scale[, 2:15] = scale(IHC.scale[, 2:15], center=scale_factors, scale=FALSE)
+IHC.scale[, 2:17] = scale(IHC.scale[, 2:17], center=scale_factors, scale=FALSE)
 
 # plot
 IHC.plot = data.frame()
-for (i in 2:15){
+for (i in 2:17){
   IHC.plot.temp = data.frame(Values=IHC[,i], Measure=colnames(IHC)[i], Days=IHC$OS, Live=IHC$Live)
   IHC.plot = rbind.data.frame(IHC.plot, IHC.plot.temp)
 }
 IHC.plot$Live = as.factor(IHC.plot$Live)
 ggplot(IHC.plot, aes(Days, Values, color=Live)) +
   geom_point() +
-  facet_wrap(~ Measure, ncol=7) + ggtitle("IHC vs. Survival") + theme_bw()
+  facet_wrap(~ Measure, ncol=4) + ggtitle("IHC vs. Survival") + theme_bw()
 
 # IHC.scale.plot = data.frame()
 # for (i in 2:15){
@@ -130,7 +139,7 @@ ggplot(IHC.plot, aes(Days, Values, color=Live)) +
 #   facet_wrap(~ Measure, ncol=7) + ggtitle("IHC-scaled vs. Survival") + theme_bw()
 
 prot.clinical.plot=data.frame()
-for (i in 2:8){
+for (i in 2:9){
   prot.clinical.temp = data.frame(Values=prot.clinical[,i], Measure=colnames(prot.clinical)[i], Days=prot.clinical$dss.days, Live=abs(prot.clinical$dss.events-1))
   prot.clinical.plot = rbind.data.frame(prot.clinical.plot, prot.clinical.temp)
 }
@@ -170,13 +179,13 @@ prot.clinical.cox = prot.clinical
 prot.clinical.cox$status = prot.clinical.cox$dss.events+1
 prot.clinical.cox$time = prot.clinical.cox$dss.days
 
-res.cox <- coxph(Surv(time, status) ~ ADAM10_M+ADAM10_S+PIK3CB_M+PIK3CB_S+PAEP_M+PAEP_S+FGA_M+FGA_S+CDK4_M+CDK4_S+CTNND1_M+CTNND1_S+HMOX1_M+HMOX1_S, data =  IHC.cox)
+res.cox <- coxph(Surv(time, status) ~ ADAM10_M+ADAM10_S+PIK3CB_M+PIK3CB_S+PAEP_M+PAEP_S+FGA_M+FGA_S+CDK4_M+CDK4_S+CTNND1_M+CTNND1_S+HMOX1_M+HMOX1_S+NBP1_M+NBP1_S, data =  IHC.cox)
 xxx = summary(res.cox)
 print(xxx)
 write.csv(data.frame(xxx['coefficients']),  "~/Documents/Segundo_Melanoma/Results/IHC/IHC_cox.csv")
         
    
-res.cox <- coxph(Surv(time, status) ~ CDK4+ADAM10+FGA+PAEP+HMOX1+CTNND1+PIK3CB, data=prot.clinical.cox)
+res.cox <- coxph(Surv(time, status) ~ CDK4+ADAM10+FGA+PAEP+HMOX1+CTNND1+PIK3CB+SCAI, data=prot.clinical.cox)
 xxx = summary(res.cox)
 print(xxx)
 write.csv(data.frame(xxx['coefficients']),  "~/Documents/Segundo_Melanoma/Results/IHC/proteome_cox.csv")
