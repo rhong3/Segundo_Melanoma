@@ -4,6 +4,7 @@ library(readxl)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
+library(ggrepel)
 library("survival")
 library("survminer")
 
@@ -180,9 +181,9 @@ prot.clinical.cox$status = prot.clinical.cox$dss.events+1
 prot.clinical.cox$time = prot.clinical.cox$dss.days
 
 res.cox <- coxph(Surv(time, status) ~ ADAM10_M+ADAM10_S+PIK3CB_M+PIK3CB_S+PAEP_M+PAEP_S+FGA_M+FGA_S+CDK4_M+CDK4_S+CTNND1_M+CTNND1_S+HMOX1_M+HMOX1_S+NBP1_M+NBP1_S, data =  IHC.cox)
-xxx = summary(res.cox)
-print(xxx)
-write.csv(data.frame(xxx['coefficients']),  "~/Documents/Segundo_Melanoma/Results/IHC/IHC_cox.csv")
+aaa = summary(res.cox)
+print(aaa)
+write.csv(data.frame(aaa['coefficients']),  "~/Documents/Segundo_Melanoma/Results/IHC/IHC_cox.csv")
         
    
 res.cox <- coxph(Surv(time, status) ~ CDK4+ADAM10+FGA+PAEP+HMOX1+CTNND1+PIK3CB+SCAI, data=prot.clinical.cox)
@@ -190,5 +191,33 @@ xxx = summary(res.cox)
 print(xxx)
 write.csv(data.frame(xxx['coefficients']),  "~/Documents/Segundo_Melanoma/Results/IHC/proteome_cox.csv")
 
+ihc.coeff = data.frame(aaa['coefficients'])
+ihc.coeff = ihc.coeff[grepl('_M', row.names(ihc.coeff)),]
+ihc.coeff['gene'] = gsub('_M', '', row.names(ihc.coeff))
+ihc.coeff$gene = gsub('NBP1', 'SCAI', ihc.coeff$gene)
+row.names(ihc.coeff) = NULL
+ihc.coeff = ihc.coeff[, c('gene', 'coefficients.coef')]
+colnames(ihc.coeff) = c('gene', 'IHC coef.')
 
+
+prot.coeff = data.frame(xxx['coefficients'])
+prot.coeff['gene'] = row.names(prot.coeff)
+row.names(prot.coeff) = NULL
+prot.coeff = prot.coeff[, c('gene', 'coefficients.coef')]
+colnames(prot.coeff) = c('gene', 'Proteome coef.')
+
+coef = inner_join(ihc.coeff, prot.coeff, by="gene")
+coef$Direction = coef$`IHC coef.`*coef$`Proteome coef.`>0
+coef$Direction = gsub(TRUE, 'Match', coef$Direction)
+coef$Direction = gsub(FALSE, 'Not Match', coef$Direction)
+
+ggplot(coef, aes(x=`IHC coef.`, y=`Proteome coef.`, label=gene)) +
+  geom_point(color = dplyr::case_when(coef$Direction == 'Match' ~ "Red", 
+                                      coef$Direction == 'Not Match' ~ "Blue"), 
+             size=3)+
+  geom_label_repel(aes(label = gene),
+                   box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50') + xlim(-15,15) + ylim(-0.8,0.8)
+  theme_classic()
 
