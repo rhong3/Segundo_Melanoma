@@ -10,6 +10,14 @@ library("survminer")
 
 
 # IHC data filter
+DDX11 <- read_excel("~/Documents/Segundo_Melanoma/Data/DDX11_IHC.xlsx")
+DDX11.mean = DDX11 %>%
+  fill(Chip_p) %>%
+  na.omit() %>%
+  group_by(Chip_p) %>%
+  summarise_all(mean)
+
+
 NBP1 <- read_excel("~/Documents/Segundo_Melanoma/Data/NBP1_IHC.xls")
 NBP1 = NBP1[, c(1:7)]
 NBP1.mean = NBP1 %>%
@@ -82,13 +90,14 @@ IHC = ADAM10.mean %>%
   left_join(CTNND1.mean, by=c('Chip_p', 'DFS', 'PFS', 'OS', 'Live')) %>%
   left_join(HMOX1.mean, by=c('Chip_p', 'DFS', 'PFS', 'OS', 'Live')) %>%
   left_join(NBP1.mean, by=c('Chip_p', 'DFS', 'PFS', 'OS', 'Live')) %>%
-  select(c(1:3, 8:21, 4:7))
+  left_join(DDX11.mean, by=c('Chip_p', 'DFS', 'PFS', 'OS', 'Live')) %>%
+  select(c(1:3, 8:22, 4:7))
 
 write.csv(IHC, "~/Documents/Segundo_Melanoma/Data/IHC_agg.csv", row.names = FALSE)
   
 
 # Proteomics data filter
-gene = c('PIK3CB', 'PAEP', 'FGA', 'CDK4', 'ADAM10', 'HMOX1', 'CTNND1', 'SCAI')
+gene = c('PIK3CB', 'PAEP', 'FGA', 'CDK4', 'ADAM10', 'HMOX1', 'CTNND1', 'SCAI', 'DDX11')
 proteomics <- read.csv("~/Documents/Segundo_Melanoma/Data/proteomics/proteomics.csv")
 proteomics = proteomics[which(proteomics$Gene.name %in% gene), ]
 proteomics = proteomics[,c(113, 1:110)]
@@ -120,14 +129,14 @@ IHC.scale[, 2:17] = scale(IHC.scale[, 2:17], center=scale_factors, scale=FALSE)
 
 # plot
 IHC.plot = data.frame()
-for (i in 2:17){
+for (i in 2:18){
   IHC.plot.temp = data.frame(Values=IHC[,i], Measure=colnames(IHC)[i], Days=IHC$OS, Live=IHC$Live)
   IHC.plot = rbind.data.frame(IHC.plot, IHC.plot.temp)
 }
 IHC.plot$Live = as.factor(IHC.plot$Live)
 ggplot(IHC.plot, aes(Days, Values, color=Live)) +
   geom_point() +
-  facet_wrap(~ Measure, ncol=4) + ggtitle("IHC vs. Survival") + theme_bw()
+  facet_wrap(~ Measure, ncol=6) + ggtitle("IHC vs. Survival") + theme_bw()
 
 # IHC.scale.plot = data.frame()
 # for (i in 2:15){
@@ -140,14 +149,14 @@ ggplot(IHC.plot, aes(Days, Values, color=Live)) +
 #   facet_wrap(~ Measure, ncol=7) + ggtitle("IHC-scaled vs. Survival") + theme_bw()
 
 prot.clinical.plot=data.frame()
-for (i in 2:9){
+for (i in 2:10){
   prot.clinical.temp = data.frame(Values=prot.clinical[,i], Measure=colnames(prot.clinical)[i], Days=prot.clinical$dss.days, Live=abs(prot.clinical$dss.events-1))
   prot.clinical.plot = rbind.data.frame(prot.clinical.plot, prot.clinical.temp)
 }
 prot.clinical.plot$Live = as.factor(prot.clinical.plot$Live)
 ggplot(prot.clinical.plot, aes(Days, Values, color=Live)) +
   geom_point() +
-  facet_wrap(~ Measure, ncol=4) + ggtitle("Proteome vs. Survival") + theme_bw()
+  facet_wrap(~ Measure, ncol=3) + ggtitle("Proteome vs. Survival") + theme_bw()
 
 # LM Main
 model = lm(dss.days~CDK4+ADAM10+FGA+PAEP+HMOX1+CTNND1+PIK3CB, data=prot.clinical)
@@ -180,30 +189,31 @@ prot.clinical.cox = prot.clinical
 prot.clinical.cox$status = prot.clinical.cox$dss.events+1
 prot.clinical.cox$time = prot.clinical.cox$dss.days
 
-res.cox <- coxph(Surv(time, status) ~ ADAM10_M+ADAM10_S+PIK3CB_M+PIK3CB_S+PAEP_M+PAEP_S+FGA_M+FGA_S+CDK4_M+CDK4_S+CTNND1_M+CTNND1_S+HMOX1_M+HMOX1_S+NBP1_M+NBP1_S, data =  IHC.cox)
+res.cox <- coxph(Surv(time, status) ~ ADAM10_M+ADAM10_S+PIK3CB_M+PIK3CB_S+PAEP_M+PAEP_S+FGA_M+FGA_S+CDK4_M+CDK4_S+CTNND1_M+CTNND1_S+HMOX1_M+HMOX1_S+NBP1_M+NBP1_S+DDX11_M, data =  IHC.cox)
 aaa = summary(res.cox)
 print(aaa)
 write.csv(data.frame(aaa['coefficients']),  "~/Documents/Segundo_Melanoma/Results/IHC/IHC_cox.csv")
         
    
-res.cox <- coxph(Surv(time, status) ~ CDK4+ADAM10+FGA+PAEP+HMOX1+CTNND1+PIK3CB+SCAI, data=prot.clinical.cox)
+res.cox <- coxph(Surv(time, status) ~ CDK4+ADAM10+FGA+PAEP+HMOX1+CTNND1+PIK3CB+SCAI+DDX11, data=prot.clinical.cox)
 xxx = summary(res.cox)
 print(xxx)
 write.csv(data.frame(xxx['coefficients']),  "~/Documents/Segundo_Melanoma/Results/IHC/proteome_cox.csv")
 
+# Melanoma cells
 ihc.coeff = data.frame(aaa['coefficients'])
 ihc.coeff = ihc.coeff[grepl('_M', row.names(ihc.coeff)),]
 ihc.coeff['gene'] = gsub('_M', '', row.names(ihc.coeff))
 ihc.coeff$gene = gsub('NBP1', 'SCAI', ihc.coeff$gene)
 row.names(ihc.coeff) = NULL
-ihc.coeff = ihc.coeff[, c('gene', 'coefficients.coef')]
+ihc.coeff = ihc.coeff[, c('gene', 'coefficients.z')]
 colnames(ihc.coeff) = c('gene', 'IHC coef.')
 
 
 prot.coeff = data.frame(xxx['coefficients'])
 prot.coeff['gene'] = row.names(prot.coeff)
 row.names(prot.coeff) = NULL
-prot.coeff = prot.coeff[, c('gene', 'coefficients.coef')]
+prot.coeff = prot.coeff[, c('gene', 'coefficients.z')]
 colnames(prot.coeff) = c('gene', 'Proteome coef.')
 
 coef = inner_join(ihc.coeff, prot.coeff, by="gene")
@@ -218,6 +228,39 @@ ggplot(coef, aes(x=`IHC coef.`, y=`Proteome coef.`, label=gene)) +
   geom_label_repel(aes(label = gene),
                    box.padding   = 0.35, 
                    point.padding = 0.5,
-                   segment.color = 'grey50') + xlim(-15,15) + ylim(-0.8,0.8)
+                   segment.color = 'grey50') + xlim(-4,4) + ylim(-4,4)
   theme_classic()
+
+  
+
+# Stromal cells
+ihc.coeff = data.frame(aaa['coefficients'])
+ihc.coeff = ihc.coeff[grepl('_S', row.names(ihc.coeff)),]
+ihc.coeff['gene'] = gsub('_S', '', row.names(ihc.coeff))
+ihc.coeff$gene = gsub('NBP1', 'SCAI', ihc.coeff$gene)
+row.names(ihc.coeff) = NULL
+ihc.coeff = ihc.coeff[, c('gene', 'coefficients.z')]
+colnames(ihc.coeff) = c('gene', 'IHC coef.')
+
+
+prot.coeff = data.frame(xxx['coefficients'])
+prot.coeff['gene'] = row.names(prot.coeff)
+row.names(prot.coeff) = NULL
+prot.coeff = prot.coeff[, c('gene', 'coefficients.z')]
+colnames(prot.coeff) = c('gene', 'Proteome coef.')
+
+coef = inner_join(ihc.coeff, prot.coeff, by="gene")
+coef$Direction = coef$`IHC coef.`*coef$`Proteome coef.`>0
+coef$Direction = gsub(TRUE, 'Match', coef$Direction)
+coef$Direction = gsub(FALSE, 'Not Match', coef$Direction)
+
+ggplot(coef, aes(x=`IHC coef.`, y=`Proteome coef.`, label=gene)) +
+  geom_point(color = dplyr::case_when(coef$Direction == 'Match' ~ "Red", 
+                                      coef$Direction == 'Not Match' ~ "Blue"), 
+             size=3)+
+  geom_label_repel(aes(label = gene),
+                   box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   segment.color = 'grey50') + xlim(-4,4) + ylim(-4,4)
+theme_classic()
 
