@@ -113,19 +113,40 @@ prot.clinical = merge(data.frame(proteomics), data.frame(clinical), by=0)
 prot.clinical = na.omit(prot.clinical)
 write.csv(prot.clinical, "~/Documents/Segundo_Melanoma/Data/IHC_prot_clinical.csv", row.names = FALSE)
 
+# phospho data filter
+gene = c('PIK3CB', 'PAEP', 'FGA', 'CDK4', 'ADAM10', 'HMOX1', 'CTNND1', 'SCAI', 'DDX11')
+phospho = read.csv("~/Documents/Segundo_Melanoma/Data/phospho/phospho.csv")
+phospho = phospho[which(phospho$Gene.name %in% gene), ]
+phospho = phospho[, c(4:122)]
+phospho = phospho %>%
+  group_by(Gene.name) %>%
+  summarise_all(mean)
+row.names(phospho) = phospho$Gene.name
+phospho = t(phospho)
+phospho = phospho[-1,]
+
+clinical = read.csv("~/Documents/Segundo_Melanoma/Data/phospho/phospho_clinical.csv")
+row.names(clinical) = clinical[,1]
+clinical = clinical[, c("dss.days", "dss.events", "survival_5yr",	"survival_3yr",	"survival_1yr", "survival_6mo")]
+
+phos.clinical = merge(data.frame(phospho), data.frame(clinical), by=0)
+phos.clinical = na.omit(phos.clinical)
+write.csv(phos.clinical, "~/Documents/Segundo_Melanoma/Data/IHC_phos_clinical.csv", row.names = FALSE)
+
 
 # LM 
 # prep
 prot.clinical = read.csv("~/Documents/Segundo_Melanoma/Data/IHC_prot_clinical.csv")
+phos.clinical = read.csv("~/Documents/Segundo_Melanoma/Data/IHC_phos_clinical.csv")
 IHC = read.csv("~/Documents/Segundo_Melanoma/Data/IHC_agg.csv")
 colnames(IHC) = gsub("PIK3cB", "PIK3CB", colnames(IHC))
 colnames(IHC) = gsub("HMOX", "HMOX1", colnames(IHC))
-gene_means = colMeans(prot.clinical[,2:9])
-gene_std = apply(prot.clinical[,2:9], 2, sd)
-IHC.scale = IHC
-center_factors = c(0.0302873, 0.0302873, 0.0896912, 0.0896912, -0.2300511, -0.2300511, -0.1936995, -0.1936995, 0.1471385, 0.1471385, -0.2320132, -0.2320132, 0.1701781, 0.1701781)
-scale_factors = c(0.3197894, 0.3197894, 0.4426608, 0.4426608, 1.4249570, 1.4249570, 1.3063025, 1.3063025, 0.5791502, 0.5791502, 0.5169386, 0.5169386, 0.6680108, 0.6680108)
-IHC.scale[, 2:17] = scale(IHC.scale[, 2:17], center=scale_factors, scale=FALSE)
+# gene_means = colMeans(prot.clinical[,2:9])
+# gene_std = apply(prot.clinical[,2:9], 2, sd)
+# IHC.scale = IHC
+# center_factors = c(0.0302873, 0.0302873, 0.0896912, 0.0896912, -0.2300511, -0.2300511, -0.1936995, -0.1936995, 0.1471385, 0.1471385, -0.2320132, -0.2320132, 0.1701781, 0.1701781)
+# scale_factors = c(0.3197894, 0.3197894, 0.4426608, 0.4426608, 1.4249570, 1.4249570, 1.3063025, 1.3063025, 0.5791502, 0.5791502, 0.5169386, 0.5169386, 0.6680108, 0.6680108)
+# IHC.scale[, 2:17] = scale(IHC.scale[, 2:17], center=scale_factors, scale=FALSE)
 
 # plot
 IHC.plot = data.frame()
@@ -158,27 +179,37 @@ ggplot(prot.clinical.plot, aes(Days, Values, color=Live)) +
   geom_point() +
   facet_wrap(~ Measure, ncol=3) + ggtitle("Proteome vs. Survival") + theme_bw()
 
-# LM Main
-model = lm(dss.days~CDK4+ADAM10+FGA+PAEP+HMOX1+CTNND1+PIK3CB, data=prot.clinical)
-xxx = summary(model)
-print(xxx)
-write.csv(data.frame(xxx['coefficients']),  "~/Documents/Segundo_Melanoma/Results/IHC/proteome_lm.csv")
+phos.clinical.plot=data.frame()
+for (i in 2:5){
+  phos.clinical.temp = data.frame(Values=phos.clinical[,i], Measure=colnames(phos.clinical)[i], Days=phos.clinical$dss.days, Live=abs(phos.clinical$dss.events-1))
+  phos.clinical.plot = rbind.data.frame(phos.clinical.plot, phos.clinical.temp)
+}
+phos.clinical.plot$Live = as.factor(phos.clinical.plot$Live)
+ggplot(phos.clinical.plot, aes(Days, Values, color=Live)) +
+  geom_point() +
+  facet_wrap(~ Measure, ncol=2) + ggtitle("Phospho vs. Survival") + theme_bw()
 
-model = lm(OS~ADAM10_M+ADAM10_S+PIK3CB_M+PIK3CB_S+PAEP_M+PAEP_S+FGA_M+FGA_S+CDK4_M+CDK4_S+CTNND1_M+CTNND1_S+HMOX1_M+HMOX1_S, data=IHC)
-xxx = summary(model)
-print(xxx)
-write.csv(data.frame(xxx['coefficients']),  "~/Documents/Segundo_Melanoma/Results/IHC/IHC_lm.csv")
-
-# Logistic 
-model = glm(survival_6mo~CDK4+ADAM10+FGA+PAEP+HMOX1+CTNND1+PIK3CB, data=prot.clinical, family="binomial")
-xxx = summary(model)
-print(xxx)
-write.csv(data.frame(xxx['coefficients']),  "~/Documents/Segundo_Melanoma/Results/IHC/proteome_logistic.csv")
-
-model = glm(Live~ADAM10_M+ADAM10_S+PIK3CB_M+PIK3CB_S+PAEP_M+PAEP_S+FGA_M+FGA_S+CDK4_M+CDK4_S+CTNND1_M+CTNND1_S+HMOX1_M+HMOX1_S, data=IHC, family="binomial")
-xxx = summary(model)
-print(xxx)
-write.csv(data.frame(xxx['coefficients']),  "~/Documents/Segundo_Melanoma/Results/IHC/IHC_logistic.csv")
+# # LM Main
+# model = lm(dss.days~CDK4+ADAM10+FGA+PAEP+HMOX1+CTNND1+PIK3CB, data=prot.clinical)
+# xxx = summary(model)
+# print(xxx)
+# write.csv(data.frame(xxx['coefficients']),  "~/Documents/Segundo_Melanoma/Results/IHC/proteome_lm.csv")
+# 
+# model = lm(OS~ADAM10_M+ADAM10_S+PIK3CB_M+PIK3CB_S+PAEP_M+PAEP_S+FGA_M+FGA_S+CDK4_M+CDK4_S+CTNND1_M+CTNND1_S+HMOX1_M+HMOX1_S, data=IHC)
+# xxx = summary(model)
+# print(xxx)
+# write.csv(data.frame(xxx['coefficients']),  "~/Documents/Segundo_Melanoma/Results/IHC/IHC_lm.csv")
+# 
+# # Logistic 
+# model = glm(survival_6mo~CDK4+ADAM10+FGA+PAEP+HMOX1+CTNND1+PIK3CB, data=prot.clinical, family="binomial")
+# xxx = summary(model)
+# print(xxx)
+# write.csv(data.frame(xxx['coefficients']),  "~/Documents/Segundo_Melanoma/Results/IHC/proteome_logistic.csv")
+# 
+# model = glm(Live~ADAM10_M+ADAM10_S+PIK3CB_M+PIK3CB_S+PAEP_M+PAEP_S+FGA_M+FGA_S+CDK4_M+CDK4_S+CTNND1_M+CTNND1_S+HMOX1_M+HMOX1_S, data=IHC, family="binomial")
+# xxx = summary(model)
+# print(xxx)
+# write.csv(data.frame(xxx['coefficients']),  "~/Documents/Segundo_Melanoma/Results/IHC/IHC_logistic.csv")
 
 
 # Cox Regression
