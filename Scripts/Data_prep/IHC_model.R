@@ -223,7 +223,7 @@ phos.clinical.cox = phos.clinical
 phos.clinical.cox$status = phos.clinical.cox$dss.events+1
 phos.clinical.cox$time = phos.clinical.cox$dss.days
 
-res.cox <- coxph(Surv(time, status) ~ ADAM10_M+ADAM10_S+PIK3CB_M+PIK3CB_S+PAEP_M+PAEP_S+FGA_M+FGA_S+CDK4_M+CDK4_S+CTNND1_M+CTNND1_S+HMOX1_M+HMOX1_S+NBP1_M+NBP1_S+DDX11_M, data =  IHC.cox)
+res.cox <- coxph(Surv(time, status) ~ ADAM10_M+ADAM10_S+CDK4_M+CDK4_S+CTNND1_M+CTNND1_S+HMOX1_M+HMOX1_S+NBP1_M+NBP1_S+DDX11_M, data =  IHC.cox)
 aaa = summary(res.cox)
 print(aaa)
 write.csv(data.frame(aaa['coefficients']),  "~/Documents/Segundo_Melanoma/Results/IHC/IHC_cox.csv")
