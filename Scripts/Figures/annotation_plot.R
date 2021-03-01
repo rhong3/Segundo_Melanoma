@@ -85,6 +85,6 @@ plot_heatmap=Heatmap(ph[,order(plot_dat$histology,plot_dat$subtype)],
 
 out_dir = '/media/lwk/data/ucec_image/'
 pdf(file = paste(out_dir,'annotation.pdf',sep='/'),
-    width =45, height = 10, bg='white')
+    width = 45, height = 10, bg='white')
 draw(plot_heatmap,annotation_legend_side = "bottom")
 graphics.off()
