@@ -9,23 +9,34 @@
 # Command line arguments: exp_prefix, clinical_data, ica_rdata, out_dir p_value
 
 
-args = commandArgs(trailingOnly=TRUE)
-message(Sys.time())
+# args = commandArgs(trailingOnly=TRUE)
+# message(Sys.time())
+# 
+# exp_prefix=args[1]
+# message(paste('exp_prefix:',exp_prefix))
+# 
+# clinical_data=args[2]
+# message(paste('clinical_data:',clinical_data))
+# 
+# ica_rdata=args[3]
+# message(paste('ica_rdata:',ica_rdata))
+# 
+# out_dir=args[4]
+# message(paste('out_dir:',out_dir))
+# 
+# p_value=args[5]
+# message(paste('p_value_threshold:',p_value))
 
-exp_prefix=args[1]
-message(paste('exp_prefix:',exp_prefix))
 
-clinical_data=args[2]
-message(paste('clinical_data:',clinical_data))
+exp_prefix='ICA_proteomics'
 
-ica_rdata=args[3]
-message(paste('ica_rdata:',ica_rdata))
+clinical_data='~/documents/Segundo_Melanoma/Data/prot_subtypes.csv'
 
-out_dir=args[4]
-message(paste('out_dir:',out_dir))
+ica_rdata='~/documents/Segundo_Melanoma/Results/proteomics/ICA/ICA_proteomics_ICA.Rdata'
 
-p_value=args[5]
-message(paste('p_value_threshold:',p_value))
+out_dir='~/documents/Segundo_Melanoma/Results/proteomics/ICA/subtype/0.0005'
+
+p_value=0.0005
 
 # load required functions
 
@@ -34,7 +45,7 @@ library(RColorBrewer)
 library(ggplot2)
 library(stringr)
 
-source('./ICA_Clusters_Functions.R')
+source('./Scripts/ICA/ICA_Clusters_Functions.R')
 # source('~/R_Functions/heatmap.3.R')
 
 clinical=read.table(file=clinical_data,
