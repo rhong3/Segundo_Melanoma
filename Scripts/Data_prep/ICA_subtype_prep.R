@@ -15,3 +15,13 @@ row.names(joined) = joined$`Sample name`
 colnames(joined) = gsub("SUBTYPE_", "", colnames(joined))
 joined = joined[,-1]
 write.csv(joined, '~/documents/Segundo_Melanoma/Data/prot_subtypes.csv')
+
+
+
+# Find IC correlated with both subtypes and clinical variables 
+## Strict
+clin = read.csv("~/documents/Segundo_Melanoma/Results/proteomics/ICA/0.0005/significant_IC_clinical.csv")
+sub = read.csv("~/documents/Segundo_Melanoma/Results/proteomics/ICA/subtype/0.0005/significant_IC_clinical.csv")
+write.csv(inner_join(clin, sub, by='IC'), "~/documents/Segundo_Melanoma/Results/proteomics/ICA/subtype/0.0005/significant_IC_both.csv", row.names=FALSE)
+
+

@@ -179,5 +179,9 @@ HMP(centroid_file = "~/documents/Segundo_Melanoma/Results/phospho/ICA/MG_ICA_pho
 
 
 
+# Proteomics subtypes
+todolist("~/documents/Segundo_Melanoma/Results/proteomics/ICA/subtype/0.0005/ICA_proteomics_IC_Clinical_Correlation_P_Value_all.tsv",
+         "~/documents/Segundo_Melanoma/Results/proteomics/ICA/ICA_proteomics_IC_mean_mixing_score.txt",
+         "~/documents/Segundo_Melanoma/Results/proteomics/ICA/subtype/0.0005/significant_IC_clinical.csv")
 
 
