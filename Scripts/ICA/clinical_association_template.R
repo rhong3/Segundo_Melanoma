@@ -95,7 +95,7 @@ write.table(icPave,
 # heatmap of significal clinical association counts
 icPave_plot=melt(icPave)
 icPave_plot=subset(icPave_plot,
-                      X1%in%names(which(apply(icPave,1,sum)>0))&X2%in%colnames(icPave)[which(apply(icPave,2,sum)>0)])
+                   X1%in%names(which(apply(icPave,1,sum)>0))&X2%in%colnames(icPave)[which(apply(icPave,2,sum)>0)])
 colnames(icPave_plot)[1:2]=c('IC','clinical_feature')
 icPave_plot[,1]=factor(icPave_plot[,1])
 icPave_plot$IC=paste('IC',str_pad(icPave_plot$IC,2,pad='0'),sep='_')

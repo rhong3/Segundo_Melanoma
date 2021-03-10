@@ -43,16 +43,16 @@ rownames(plot_dat)=as.character(dat$name)
 
 ## get binary colors
 ColSide=lapply(plot_dat[,1:24],
-                   function(x)get_color(binaries,x))
+               function(x)get_color(binaries,x))
 
 ColSide[['subtype']]=get_color(colors=c('#7fc97f','#beaed4','#fdc086','#f0027f'),
                                factor=plot_dat$subtype)
 
 ColSide[['histology']]=get_color(colors=c('#66c2a5','#fc8d62'),
-                               factor = plot_dat$histology)
+                                 factor = plot_dat$histology)
 
 ColSide[['MSI']]=get_color(colors=c('#e78ac3','#8da0cb'),
-                                 factor = plot_dat$MSI)
+                           factor = plot_dat$MSI)
 
 ColSide[['BMI']]=colorRamp2(breaks=range(plot_dat$BMI,na.rm=T),
                             colors=c("#eff3ff","#2171b5"))
