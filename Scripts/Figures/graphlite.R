@@ -3,9 +3,9 @@ library(igraph)
 library(dplyr)
 
 inlist = c('tumor.cell.size.average', 'conncetive.tissue.average', 'predominant.tumor.cell.shape.average',
-              'Average.necrosis', 'Average.tumor.percentage',
+              'Average.necrosis', 'Average.tumor.percentage', 'survival_3yr', 
               'pigment.score.average', 'predominant.cytoplasm.average', 'Average.lymphatic.score', 'prim.breslow',
-           'survival_6mo', 'Local.Visceral')
+           'survival_6mo', 'Local.Visceral', 'stage', 'Local.Cutaneous', 'Targeted.BRAF.treatment..vemurafenib.')
 # Pathway, IC, clinical
 Relation <- read.delim("~/Documents/Segundo_Melanoma/Results/ReactomePathwaysRelation.txt", header=FALSE)
 Pathways <- read.delim("~/Documents/Segundo_Melanoma/Results/ReactomePathways.txt", header=FALSE)
@@ -16,7 +16,7 @@ xxxx = na.omit(left_join(xxxx, Pathways, by="V1"))[, c(2,3)]
 
 # For figure
 a = 'relax'
-b = "proteomics"
+b = "transcriptomics"
 summm = read.csv(paste("~/Documents/Segundo_Melanoma/Results/", a, "_ICA_GSEA_summary.csv", sep=''))
 summm['-logp'] = -log(summm$padj)
 summ = summm[summm$group == b, c(1,11,12)]
@@ -24,7 +24,7 @@ summ = summm[summm$group == b, c(1,11,12)]
 colnames(summ) = c("from", "to", "-logp")
 summall = unique(summ)
 summall = summall[summall$to %in% inlist,]
-summall_g = summall[summall$`-logp`>5,]
+summall_g = summall[summall$`-logp`> 5,]
 
 unqa = distinct(summall_g['from'])
 colnames(unqa) = c('name')
@@ -55,7 +55,7 @@ E(g)$edge.color <- "gray80"
 # V(g)$label <- NA
 edge.start <- get.edges(g, 1:ecount(g))[,2] 
 edge.col <- V(g)$color[edge.start]
-l = layout_with_fr(g)
+l = layout_with_kk(g)
 l <- layout.norm(l, ymin=-1, ymax=1, xmin=-1, xmax=1)
 
 pdf(paste("~/Documents/Segundo_Melanoma/Results/graph/Figure/", b, '_', a, "_ICA_GSEA_summary.pdf", sep=''), height = 20, width = 22)
