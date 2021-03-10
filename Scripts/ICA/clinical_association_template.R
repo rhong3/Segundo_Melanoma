@@ -28,15 +28,15 @@
 # message(paste('p_value_threshold:',p_value))
 
 
-exp_prefix='ICA_proteomics'
+exp_prefix='ICA_transcriptomics'
 
-clinical_data='~/documents/Segundo_Melanoma/Data/prot_subtypes.csv'
+clinical_data='~/documents/Segundo_Melanoma/Data/transcriptomics/transcriptomics_clinical.csv'
 
-ica_rdata='~/documents/Segundo_Melanoma/Results/proteomics/ICA/ICA_proteomics_ICA.Rdata'
+ica_rdata='~/documents/Segundo_Melanoma/Results/transcriptomics/ICA/ICA_transcriptomics_ICA.Rdata'
 
-out_dir='~/documents/Segundo_Melanoma/Results/proteomics/ICA/subtype/0.0005'
+out_dir='~/documents/Segundo_Melanoma/Results/Figures/Figure3-S3'
 
-p_value=0.0005
+p_value=0.00001
 
 # load required functions
 
@@ -95,22 +95,23 @@ write.table(icPave,
 # heatmap of significal clinical association counts
 icPave_plot=melt(icPave)
 icPave_plot=subset(icPave_plot,
-                   X1%in%names(which(apply(icPave,1,sum)>0))&X2%in%colnames(icPave)[which(apply(icPave,2,sum)>0)])
+                   X1%in%names(which(apply(icPave,1,sum)>30))&X2%in%colnames(icPave)[which(apply(icPave,2,sum)>30)])
 colnames(icPave_plot)[1:2]=c('IC','clinical_feature')
 icPave_plot[,1]=factor(icPave_plot[,1])
 icPave_plot$IC=paste('IC',str_pad(icPave_plot$IC,2,pad='0'),sep='_')
+
 png(filename=paste(out_dir,paste(exp_prefix,'IC_cluster_clinical_association.png',sep='_'),sep='/'),
     width = 1200, height = 480, units = "px", 
-    pointsize = 12,
+    pointsize = 20,
     bg = 'transparent')
-
 ggplot(icPave_plot,aes(x=IC,y=clinical_feature))+
-  theme_classic(base_size=12)+
+  theme_classic(base_size=20)+
   theme(axis.line=element_blank())+
-  theme(axis.text.x = element_text(angle=90,vjust=0.5))+
+  theme(axis.text.x = element_text(angle=90,vjust=0.5, size=20))+
+  theme(axis.text.y = element_text(vjust=0.5, size=20))+
   geom_tile(aes(fill=value))+
   scale_fill_gradient2(low='white',high='purple')+
-  geom_text(aes(label=round(value,digits=2)),size=2)
+  geom_text(aes(label=round(value,digits=2)),size=6)
 graphics.off()
 
 
