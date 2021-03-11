@@ -28,15 +28,15 @@
 # message(paste('p_value_threshold:',p_value))
 
 
-exp_prefix='ICA_transcriptomics'
+exp_prefix='ICA_proteomics'
 
-clinical_data='~/documents/Segundo_Melanoma/Data/transcriptomics/transcriptomics_clinical.csv'
+clinical_data='~/documents/Segundo_Melanoma/Data/proteomics/proteomics_clinical.csv'
 
-ica_rdata='~/documents/Segundo_Melanoma/Results/transcriptomics/ICA/ICA_transcriptomics_ICA.Rdata'
+ica_rdata='~/documents/Segundo_Melanoma/Results/proteomics/ICA/ICA_proteomics_ICA.Rdata'
 
-out_dir='~/documents/Segundo_Melanoma/Results/Figures/Figure3-S3'
+out_dir='~/documents/Segundo_Melanoma/Results/Figures'
 
-p_value=0.00001
+p_value=0.0005
 
 # load required functions
 

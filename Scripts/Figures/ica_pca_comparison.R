@@ -8,10 +8,10 @@ library(ggplot2)
 library(stringr)
 library(cowplot)
 
-ica_rdata = "Results/transcriptomics/ICA/ICA_transcriptomics_ICA.Rdata"
-clinical_data = "Data/transcriptomics/transcriptomics_clinical.csv"
-exp_prefix = "ICA_transcriptomics"
-feature = "transcriptomics"
+ica_rdata = "Results/phospho/ICA/ICA_phospho_ICA.Rdata"
+clinical_data = "Data/phospho/phospho_clinical.csv"
+exp_prefix = "ICA_phospho"
+feature = "phospho"
 
 findCor2=function(mix,clustering,clinical.data,p_value=T){
   
