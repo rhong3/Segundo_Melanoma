@@ -124,8 +124,10 @@ HMP = function(centroid_file, clinical_file, data_file, td_list_file, outdir, nu
     gn = rowAnnotation(Gene.name = anno_text(sorted_data_out$Gene.name[2:length(sorted_data_out$Gene.name)],
                                              location = 0.5, just = "center"))
     sorted_data_out = sorted_data_out %>% dplyr::select(matches("MM"))
+    ori_data[ori_data>5] <- 5
+    ori_data[ori_data<(-5)] <- -5
     breaksList = seq(min(ori_data), max(ori_data), by=1)
-    col = colorRampPalette(rev(brewer.pal(n = 10, name = "RdYlBu")))(length(breaksList))
+    col = colorRampPalette(rev(brewer.pal(n = 10, name = "RdYlBu")))(11)[breaksList+6]
     col_fun = colorRamp2(c(min(as.numeric(sorted_data_out[1, ])), mean(as.numeric(sorted_data_out[1, ])), max(as.numeric(sorted_data_out[1, ]))), c("blue", "white", "red"))
     anno = HeatmapAnnotation(Feature = as.numeric(sorted_data_out[1, ]), col=list(Feature=col_fun), annotation_legend_param = list(direction = "horizontal"))
     pdf(paste(outdir, n, "_", m, "_HM.pdf", sep=""), height = 5, width = 20)
@@ -148,8 +150,8 @@ GSEA("~/documents/Segundo_Melanoma/Results/proteomics/ICA/MG_ICA_proteomics_IC_c
 HMP(centroid_file = "~/documents/Segundo_Melanoma/Results/proteomics/ICA/MG_ICA_proteomics_IC_centroid.csv",
     clinical_file = "~/documents/Segundo_Melanoma/Data/proteomics/proteomics_clinical.csv",
     data_file = "~/documents/Segundo_Melanoma/Data/proteomics/ICA_proteomics.csv",
-    td_list_file = "~/documents/Segundo_Melanoma/Results/proteomics/ICA/0.0005/significant_IC_clinical.csv",
-    outdir = "~/documents/Segundo_Melanoma/Results/proteomics/GSEA/relax/", numb = 2, nm = "Accession")
+    td_list_file = "~/documents/Segundo_Melanoma/Results/proteomics/ICA/0.00001/significant_IC_clinical.csv",
+    outdir = "~/documents/Segundo_Melanoma/Results/proteomics/GSEA/strict/", numb = 2, nm = "Accession")
 
 # transcriptomics
 todolist("~/documents/Segundo_Melanoma/Results/transcriptomics/ICA/0.00001/ICA_transcriptomics_IC_Clinical_Correlation_P_Value_all.tsv",
