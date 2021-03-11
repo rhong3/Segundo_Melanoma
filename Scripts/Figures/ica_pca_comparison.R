@@ -8,10 +8,10 @@ library(ggplot2)
 library(stringr)
 library(cowplot)
 
-ica_rdata = "Results/proteomics/ICA/ICA_proteomics_ICA.Rdata"
-clinical_data = "Data/proteomics/proteomics_clinical.csv"
-exp_prefix = "ICA_proteomics"
-feature = "proteomics"
+ica_rdata = "Results/transcriptomics/ICA/ICA_transcriptomics_ICA.Rdata"
+clinical_data = "Data/transcriptomics/transcriptomics_clinical.csv"
+exp_prefix = "ICA_transcriptomics"
+feature = "transcriptomics"
 
 findCor2=function(mix,clustering,clinical.data,p_value=T){
   
@@ -78,52 +78,59 @@ colnames(pca_scores)=paste('PC',str_pad(as.character(colnames(pca_scores)),2,pad
 #           col=colorRampPalette(c("steelblue","white", "darkorange"))(64))
 icP_pca=findCor2(t(pca_scores),clustering=1:length(colnames(dat)),clinical.data=clinical)
 icP_pca=-log10(icP_pca)
-
+row.names(icP_pca)=paste('PC',str_pad(as.character(seq(1:nrow(icP_pca))),2,pad='0'),sep='_')
+row.names(icP_pca)[nchar(row.names(icP_pca))<6] = gsub("PC_", "PC_0", row.names(icP_pca)[nchar(row.names(icP_pca))<6])
+icP_pca[is.na(icP_pca)] = 0
 icP_pca_plot = melt(icP_pca)
 colnames(icP_pca_plot)=c('sig','clinical','value')
-icP_pca_plot$sig=paste('PC',str_pad(as.character(icP_pca_plot$sig),2,pad='0'),sep='_')
 icP_pca_plot=na.omit(icP_pca_plot)
-icP_pca_plot$sig[nchar(icP_pca_plot$sig)<6] = gsub("PC_", "PC_0", icP_pca_plot$sig[nchar(icP_pca_plot$sig)<6])
+icP_pca_plot=subset(icP_pca_plot,
+                    sig%in%names(which(apply(icP_pca,1,max)>3))&clinical%in%colnames(icP_pca)[which(apply(icP_pca,2,max)>3)])
 
 pr_ica = apply(ica$A,2,function(x)tapply(x,as.factor(iccls$clustering),mean))
-rownames(pr_ica)=paste('IC',str_pad(as.character(rownames(pr_ica)),2,pad='0'),sep='_')
 # heatmap.2(pr_ica[,colnames(dat)[order(colside)]], trace ='none',scale ='none',
 #           ColSideColors = cols[colside[order(colside)]],
 #           Rowv=F,
 #           col=colorRampPalette(c("steelblue","white", "darkorange"))(64))
 icP_ica=findCor2(pr_ica,clustering=1:length(colnames(dat)),clinical.data=clinical)
 icP_ica=-log10(icP_ica)
+rownames(icP_ica)=paste('IC',str_pad(as.character(seq(1:nrow(icP_ica))),2,pad='0'),sep='_')
+rownames(icP_ica)[nchar(rownames(icP_ica))<6] = gsub("IC_", "IC_0", rownames(icP_ica)[nchar(rownames(icP_ica))<6])
+icP_ica[is.na(icP_ica)] = 0
 icP_ica_plot = melt(icP_ica)
 colnames(icP_ica_plot)=c('sig','clinical','value')
-icP_ica_plot$sig=paste('IC',str_pad(as.character(icP_ica_plot$sig),2,pad='0'),sep='_')
 icP_ica_plot=na.omit(icP_ica_plot)
-icP_ica_plot$sig[nchar(icP_ica_plot$sig)<6] = gsub("IC_", "IC_0", icP_ica_plot$sig[nchar(icP_ica_plot$sig)<6])
+icP_ica_plot=subset(icP_ica_plot,
+                   sig%in%names(which(apply(icP_ica,1,max)>3))&clinical%in%colnames(icP_ica)[which(apply(icP_ica,2,max)>3)])
 
 rng = range(icP_ica_plot$value, icP_pca_plot$value)
 
 p1=ggplot(icP_pca_plot,aes(x=sig,y=clinical))+
-  theme_classic(base_size=12)+
+  theme_classic(base_size=20)+
   theme(axis.line=element_blank())+
-  theme(axis.text.x = element_text(angle=90,vjust=0.5))+
+  theme(text = element_text(size=20), axis.text.x = element_text(angle=90,vjust=0.5, size=20), axis.text.y=element_blank())+
   geom_tile(aes(fill=value))+
   scale_fill_gradient2(low='white',high='dodgerblue', midpoint=mean(rng)/1000, limits=c(floor(rng[1]), ceiling(rng[2])))+
-  geom_text(data=subset(icP_pca_plot,value>2),aes(label=round(value,digits=1)),size=2)+
-  xlab('PCA-extracted signatures')+ylab('clinical features')+
+  geom_text(data=subset(icP_pca_plot,value>3),aes(label=round(value,digits=1)),size=6)+
+  xlab('PCA-extracted signatures (-log(P)>3)')+ylab('clinical and histological features')+
   labs(fill='-log(P)')+
-  ggtitle(paste('Significance levels of correlation between clinical features and', feature, 'data signature activity scores', sep=" "))
+  ggtitle(paste('Significance levels of correlation between clinical and histological features and', feature, 'data', sep=" "))
 
 p2=ggplot(icP_ica_plot,aes(x=sig,y=clinical))+
-  theme_classic(base_size=12)+
+  theme_classic(base_size=20)+
   theme(axis.line=element_blank())+
-  theme(axis.text.x = element_text(angle=90,vjust=0.5))+
+  theme(text = element_text(size=20), axis.text.x = element_text(angle=90,vjust=0.5, size=20), axis.text.y=element_blank(), legend.position="none")+
   geom_tile(aes(fill=value))+
   scale_fill_gradient2(low='white',high='dodgerblue', midpoint=mean(rng)/1000, limits=c(floor(rng[1]), ceiling(rng[2])))+
-  geom_text(data=subset(icP_ica_plot,value>2),aes(label=round(value,digits=1)),size=2)+
-  xlab('ICA-extracted signatures')+ylab('clinical features')+
+  geom_text(data=subset(icP_ica_plot,value>3),aes(label=round(value,digits=1)),size=6)+
+  xlab('ICA-extracted signatures (-log(P)>3)')+ylab('clinical and histological features')+
   labs(fill='-log(P)')+
   ggtitle(' ')
 
+png(filename=paste('~/documents/Segundo_Melanoma/Results/Figures/Figure3-S3/', feature, '_ICA_PCA.png', sep=''),
+    width = 1200, height = 1000, units = "px", 
+    pointsize = 20,
+    bg = 'transparent')
 plot_grid(p1,p2,ncol=1)
+graphics.off()
 
-# sum(apply(icP_pca,1,function(x)sum(x>3))>0)
-# sum(apply(icP_ica,1,function(x)sum(x>3))>0)
