@@ -189,11 +189,11 @@ write.csv(ddt, file = "~/documents/Segundo_Melanoma/Results/OLA_summary.csv", ro
 # mgg = merge(x=ddt, y=old, by = c('Gene.name', 'Description', 'Group', 'Feature', 'Accession', 'Modified_sequence'), all = TRUE, suffixes=c('_new', '_old'))
 # write.csv(mgg, file="~/documents/Segundo_Melanoma/Legacy/old_summary/OLA_new_old.csv", row.names=FALSE)
 
-# OLD figure
+# OLA figure
 library(dplyr)
 library(ggplot2)
 library(ggrepel)
-toplist=c('ADAM10', 'HMOX1', 'FGA', 'DDX11', 'SCAI', 'CTNND1', 'CDK4', 'PAEP', 'PIK3cB', 'TEX30')
+toplist=c('ADAM10', 'HMOX1', 'FGA', 'DDX11', 'SCAI', 'CTNND1', 'CDK4', 'PAEP', 'PIK3CB', 'TEX30')
 OLA=read.csv("~/documents/Segundo_Melanoma/Results/OLA_summary.csv")
 OLA = OLA[, c("Gene.name", "Group", "FDR", "Feature", "Enriched_in")]
 OLA$`-log(FDR)` = -log10(OLA$FDR)
@@ -215,4 +215,78 @@ ggplot(OLA, aes(x=Group, y=`-log(FDR)`)) +
                    segment.color = 'grey50') +
   theme(axis.text.x = element_text(size=12))
 
+
+# COX figure
+library(dplyr)
+library(ggplot2)
+library(ggrepel)
+
+prot = read.csv('~/documents/Segundo_Melanoma/Results/Jonatan_Lund/results_updated_may2020/tmt_survival_features_dss.csv')
+prot2= read.csv('~/documents/Segundo_Melanoma/Results/Jonatan_Lund/results_updated_may2020/tmt_survival_features_os.csv')
+
+phos = read.csv('~/documents/Segundo_Melanoma/Results/Jonatan_Lund/results_updated_may2020/phospho_survival_features_dss.csv')
+phos2 = read.csv('~/documents/Segundo_Melanoma/Results/Jonatan_Lund/results_updated_may2020/phospho_survival_features_os.csv')
+
+trans = read.csv('~/documents/Segundo_Melanoma/Results/Jonatan_Lund/results_updated_may2020/transcriptomics_survival_features_dss.csv')
+trans2 = read.csv('~/documents/Segundo_Melanoma/Results/Jonatan_Lund/results_updated_may2020/transcriptomics_survival_features_os.csv')
+
+colnames(prot) = c('Accession', "Score", "Coefficient")
+colnames(phos) = c('Modified_sequence', "Score",'Accession', "Coefficient")
+colnames(trans) = c('Gene.name', "Score", "Coefficient")
+colnames(prot2) = c('Accession', "Score", "Coefficient")
+colnames(phos2) = c('Modified_sequence', "Score",'Accession', "Coefficient")
+colnames(trans2) = c('Gene.name', "Score", "Coefficient")
+
+prot.data = read.csv('~/documents/Segundo_Melanoma/Data/proteomics/proteomics.csv')[, c('Accession', 'Gene.name')]
+phos.data = read.csv('~/documents/Segundo_Melanoma/Data/phospho/phospho.csv')[, c('Modified_sequence', 'Gene.name')]
+
+prot = left_join(prot, prot.data, by='Accession')
+prot = prot[, c('Gene.name', "Score", "Coefficient")]
+prot$Group = "proteomics_DSS"
+
+phos = left_join(phos, phos.data, by='Modified_sequence')
+phos = phos[, c('Gene.name', "Score", "Coefficient")]
+phos$Group = "phospho_DSS"
+
+trans$Group = "transcriptomics_DSS"
+
+
+prot2 = left_join(prot2, prot.data, by='Accession')
+prot2 = prot2[, c('Gene.name', "Score", "Coefficient")]
+prot2$Group = "proteomics_OS"
+
+phos2 = left_join(phos2, phos.data, by='Modified_sequence')
+phos2 = phos2[, c('Gene.name', "Score", "Coefficient")]
+phos2$Group = "phospho_OS"
+
+trans2$Group = "transcriptomics_OS"
+
+joint = rbind(prot, phos)
+joint = rbind(joint, trans)
+joint = rbind(joint, prot2)
+joint = rbind(joint, phos2)
+joint = rbind(joint, trans2)
+joint$Direction = ifelse(joint$Coefficient > 0, "positive", "negative")
+joint$Coefficient = abs(joint$Coefficient)
+
+write.csv(joint, '~/documents/Segundo_Melanoma/Results/Cox_summary.csv', row.names=FALSE)
+
+
+COX = read.csv('~/documents/Segundo_Melanoma/Results/Cox_summary.csv')
+toplist=c('ADAM10', 'HMOX1', 'FGA', 'DDX11', 'SCAI', 'CTNND1', 'CDK4', 'PAEP', 'PIK3CB', 'TEX30')
+COX$toplist = NA
+for (i in 1:nrow(COX)){
+  if (COX$Gene.name[i] %in% toplist){
+    print(COX[i, 'Gene.name'])
+    COX[i, 'toplist'] <- as.character(COX[i, 'Gene.name'])
+  }
+}
+
+ggplot(COX, aes(x=Group, y=Coefficient)) + 
+  geom_jitter(aes(color=Direction, shape=Direction), size=3, shape=16, position=position_jitter(0.1)) +
+  geom_label_repel(aes(label = toplist),
+                   box.padding   = 1, 
+                   point.padding = 0.1,
+                   segment.color = 'grey50') +
+  theme(axis.text.x = element_text(angle=45, vjust=0.55, size=12))
 
