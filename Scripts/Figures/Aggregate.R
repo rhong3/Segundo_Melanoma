@@ -182,7 +182,7 @@ ppt$Enriched_in = "4"
 
 ddt = rbind.fill(ddt, ppt)
 
-write.csv(ddt, file = "~/documents/Segundo_Melanoma/Results/full_OLA_summary.csv", row.names=FALSE)
+write.csv(ddt, file = "~/documents/Segundo_Melanoma/Results/OLA_summary.csv", row.names=FALSE)
 
 # old=read.csv("~/documents/Segundo_Melanoma/Legacy/old_summary/OLA_summary_old.csv")
 # 
