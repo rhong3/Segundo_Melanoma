@@ -189,6 +189,30 @@ write.csv(ddt, file = "~/documents/Segundo_Melanoma/Results/OLA_summary.csv", ro
 # mgg = merge(x=ddt, y=old, by = c('Gene.name', 'Description', 'Group', 'Feature', 'Accession', 'Modified_sequence'), all = TRUE, suffixes=c('_new', '_old'))
 # write.csv(mgg, file="~/documents/Segundo_Melanoma/Legacy/old_summary/OLA_new_old.csv", row.names=FALSE)
 
+# OLD figure
+library(dplyr)
+library(ggplot2)
+library(ggrepel)
+toplist=c('ADAM10', 'HMOX1', 'FGA', 'DDX11', 'SCAI', 'CTNND1', 'CDK4', 'PAEP', 'PIK3cB', 'TEX30')
+OLA=read.csv("~/documents/Segundo_Melanoma/Results/OLA_summary.csv")
+OLA = OLA[, c("Gene.name", "Group", "FDR", "Feature", "Enriched_in")]
+OLA$`-log(FDR)` = -log10(OLA$FDR)
+OLA$Feature = paste(OLA$Feature, OLA$Enriched_in, sep='-')
+OLA$toplist = NA
+for (i in 1:nrow(OLA)){
+  if (OLA$Gene.name[i] %in% toplist){
+    print(OLA[i, 'Gene.name'])
+    OLA[i, 'toplist'] <- as.character(OLA[i, 'Gene.name'])
+  }
+}
 
+
+ggplot(OLA, aes(x=Group, y=`-log(FDR)`)) + 
+  geom_jitter(aes(color=Feature, shape=Feature), size=3, shape=16, position=position_jitter(0.1)) +
+  geom_label_repel(aes(label = toplist),
+                   box.padding   = 2, 
+                   point.padding = 0.1,
+                   segment.color = 'grey50') +
+  theme(axis.text.x = element_text(size=12))
 
 
