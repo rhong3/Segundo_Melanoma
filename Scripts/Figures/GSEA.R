@@ -84,6 +84,8 @@ HMP = function(centroid_file, clinical_file, data_file, td_list_file, outdir, nu
   colnames(clinical) = gsub("tumor..", "tumor.percentage", colnames(clinical))
   colnames(clinical) = gsub("tumor.percentageell.size.average", "tumor.cell.size.average", colnames(clinical))
   ori_data = read.csv(data_file, row.names=1)
+  ori_data[ori_data>5] <- 5
+  ori_data[ori_data<(-5)] <- -5
   td_list <- read.csv(td_list_file)
   for (a in 1:nrow(td_list)){
     m = toString(droplevels(td_list[a, "Feature"]))
@@ -124,8 +126,6 @@ HMP = function(centroid_file, clinical_file, data_file, td_list_file, outdir, nu
     gn = rowAnnotation(Gene.name = anno_text(sorted_data_out$Gene.name[2:length(sorted_data_out$Gene.name)],
                                              location = 0.5, just = "center"))
     sorted_data_out = sorted_data_out %>% dplyr::select(matches("MM"))
-    ori_data[ori_data>5] <- 5
-    ori_data[ori_data<(-5)] <- -5
     breaksList = seq(min(ori_data), max(ori_data), by=1)
     col = colorRampPalette(rev(brewer.pal(n = 10, name = "RdYlBu")))(11)[breaksList+6]
     col_fun = colorRamp2(c(min(as.numeric(sorted_data_out[1, ])), mean(as.numeric(sorted_data_out[1, ])), max(as.numeric(sorted_data_out[1, ]))), c("blue", "white", "red"))
