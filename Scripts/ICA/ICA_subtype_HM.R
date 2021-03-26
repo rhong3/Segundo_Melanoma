@@ -9,6 +9,7 @@ library(dplyr)
 library(plyr)
 library(circlize)
 library("RColorBrewer")
+library(colorspace)
 
 
 centroid_file = "~/documents/Segundo_Melanoma/Results/proteomics/ICA/MG_ICA_proteomics_IC_centroid.csv"
@@ -29,7 +30,7 @@ ori_data = read.csv(data_file, row.names=1)
 ori_data[ori_data>5] <- 5
 ori_data[ori_data<(-5)] <- -5
 td_list <- read.csv(td_list_file)
-td_list = td_list[td_list$Feature %in% c('Mit.Immune'),]
+td_list = td_list[td_list$Feature %in% c('EC.Mit'),]
 for (a in 1:nrow(td_list)){
   m = toString(droplevels(td_list[a, "Feature"]))
   n = toString(droplevels(td_list[a, "IC"]))
@@ -70,11 +71,12 @@ for (a in 1:nrow(td_list)){
                                            location = 0.5, just = "center"))
   sorted_data_out = sorted_data_out %>% dplyr::select(matches("MM"))
   breaksList = seq(min(ori_data), max(ori_data), by=1)
-  col = colorRampPalette(rev(brewer.pal(n = 10, name = "RdYlBu")))(11)[breaksList+6]
-  col_fun = c("0" = "blue", "1" = "red")
-  anno = HeatmapAnnotation('Mit.Immune' = as.factor(sorted_data_out[1, ]), col=list('Mit.Immune'=col_fun), annotation_legend_param = list(direction = "horizontal"))
+  col = colorRampPalette(colorspace::diverge_hsv(10))(11)[breaksList+6]
+  col_fun = c("0" = "white", "1" = "#DECBE4")
+  anno = HeatmapAnnotation('EC.Mit' = as.factor(sorted_data_out[1, ]), col=list('EC.Mit'=col_fun), annotation_legend_param = list(direction = "horizontal"))
   pdf(paste(outdir, n, "_", m, "_HM.pdf", sep=""), height = 3, width = 20)
-  hp = Heatmap(as.matrix(sorted_data_out[2:nrow(sorted_data_out), ]), col = col, column_title = paste(n, ' vs ',m), top_annotation = anno,  right_annotation=gn, show_column_names = FALSE,
+  hp = Heatmap(as.matrix(sorted_data_out[2:nrow(sorted_data_out), ]), col = col, column_title = paste(n), 
+               column_title_gp = gpar(fontsize = 18, fontface = "bold"), top_annotation = anno,  right_annotation=gn, show_column_names = FALSE,
                cluster_rows = FALSE, cluster_columns = FALSE, name = "Value", heatmap_legend_param = list(direction = "horizontal"))
   draw(hp, heatmap_legend_side = "bottom", 
        annotation_legend_side = "bottom", merge_legend = TRUE,)
