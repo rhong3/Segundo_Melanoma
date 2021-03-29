@@ -223,7 +223,7 @@ phos.clinical.cox = phos.clinical
 phos.clinical.cox$status = phos.clinical.cox$dss.events+1
 phos.clinical.cox$time = phos.clinical.cox$dss.days
 
-res.cox <- coxph(Surv(time, status) ~ ADAM10_M+ADAM10_S+CDK4_M+CDK4_S+CTNND1_M+CTNND1_S+HMOX1_M+HMOX1_S+NBP1_M+NBP1_S+DDX11_M, data =  IHC.cox)
+res.cox <- coxph(Surv(time, status) ~ ADAM10_M+ADAM10_S+PIK3CB_M+PIK3CB_S+PAEP_M+PAEP_S+FGA_M+FGA_S+CDK4_M+CDK4_S+CTNND1_M+CTNND1_S+HMOX1_M+HMOX1_S+NBP1_M+NBP1_S+DDX11_M, data =  IHC.cox)
 aaa = summary(res.cox)
 print(aaa)
 write.csv(data.frame(aaa['coefficients']),  "~/Documents/Segundo_Melanoma/Results/IHC/IHC_cox.csv")
@@ -236,8 +236,8 @@ write.csv(data.frame(xxx['coefficients']),  "~/Documents/Segundo_Melanoma/Result
 
 
 res.cox <- coxph(Surv(time, status) ~ ADAM10+FGA+HMOX1+CTNND1, data=phos.clinical.cox)
-xxx = summary(res.cox)
-print(xxx)
+ppp = summary(res.cox)
+print(ppp)
 write.csv(data.frame(xxx['coefficients']),  "~/Documents/Segundo_Melanoma/Results/IHC/phospho_cox.csv")
 
 # prot
@@ -262,9 +262,12 @@ coef = inner_join(ihc.coeff, prot.coeff, by="gene")
 coef$Direction = coef$`IHC coef.`*coef$`Proteome coef.`>0
 coef$Direction = gsub(TRUE, 'Match', coef$Direction)
 coef$Direction = gsub(FALSE, 'Not Match', coef$Direction)
+coef[round(coef$`IHC coef.`, digits=0) == 0 | round(coef$`Proteome coef.`, digits=0) == 0, 'Direction'] = "Undecided"
+  
 
 ggplot(coef, aes(x=`IHC coef.`, y=`Proteome coef.`, label=gene)) +
   geom_point(color = dplyr::case_when(coef$Direction == 'Match' ~ "Red", 
+                                      coef$Direction == 'Undecided' ~ "Purple", 
                                       coef$Direction == 'Not Match' ~ "Blue"), 
              size=3)+
   geom_label_repel(aes(label = gene),
@@ -293,9 +296,11 @@ coef = inner_join(ihc.coeff, prot.coeff, by="gene")
 coef$Direction = coef$`IHC coef.`*coef$`Proteome coef.`>0
 coef$Direction = gsub(TRUE, 'Match', coef$Direction)
 coef$Direction = gsub(FALSE, 'Not Match', coef$Direction)
+coef[round(coef$`IHC coef.`, digits=0) == 0 | round(coef$`Proteome coef.`, digits=0) == 0, 'Direction'] = "Undecided"
 
 ggplot(coef, aes(x=`IHC coef.`, y=`Proteome coef.`, label=gene)) +
   geom_point(color = dplyr::case_when(coef$Direction == 'Match' ~ "Red", 
+                                      coef$Direction == 'Undecided' ~ "Purple", 
                                       coef$Direction == 'Not Match' ~ "Blue"), 
              size=3)+
   geom_label_repel(aes(label = gene),
@@ -315,7 +320,7 @@ row.names(ihc.coeff) = NULL
 ihc.coeff = ihc.coeff[, c('gene', 'coefficients.z')]
 colnames(ihc.coeff) = c('gene', 'IHC coef.')
 
-phos.coeff = data.frame(xxx['coefficients'])
+phos.coeff = data.frame(ppp['coefficients'])
 phos.coeff['gene'] = row.names(phos.coeff)
 row.names(phos.coeff) = NULL
 phos.coeff = phos.coeff[, c('gene', 'coefficients.z')]
@@ -326,9 +331,11 @@ coef = inner_join(ihc.coeff, phos.coeff, by="gene")
 coef$Direction = coef$`IHC coef.`*coef$`phospho coef.`>0
 coef$Direction = gsub(TRUE, 'Match', coef$Direction)
 coef$Direction = gsub(FALSE, 'Not Match', coef$Direction)
+coef[round(coef$`IHC coef.`, digits=0) == 0 | round(coef$`phospho coef.`, digits=0) == 0, 'Direction'] = "Undecided"
 
 ggplot(coef, aes(x=`IHC coef.`, y=`phospho coef.`, label=gene)) +
-  geom_point(color = dplyr::case_when(coef$Direction == 'Match' ~ "Red", 
+  geom_point(color = dplyr::case_when(coef$Direction == 'Match' ~ "Red",
+                                      coef$Direction == 'Undecided' ~ "Purple",
                                       coef$Direction == 'Not Match' ~ "Blue"), 
              size=3)+
   geom_label_repel(aes(label = gene),
@@ -347,7 +354,7 @@ ihc.coeff = ihc.coeff[, c('gene', 'coefficients.z')]
 colnames(ihc.coeff) = c('gene', 'IHC coef.')
 
 
-phos.coeff = data.frame(xxx['coefficients'])
+phos.coeff = data.frame(ppp['coefficients'])
 phos.coeff['gene'] = row.names(phos.coeff)
 row.names(phos.coeff) = NULL
 phos.coeff = phos.coeff[, c('gene', 'coefficients.z')]
@@ -357,9 +364,11 @@ coef = inner_join(ihc.coeff, phos.coeff, by="gene")
 coef$Direction = coef$`IHC coef.`*coef$`phospho coef.`>0
 coef$Direction = gsub(TRUE, 'Match', coef$Direction)
 coef$Direction = gsub(FALSE, 'Not Match', coef$Direction)
+coef[round(coef$`IHC coef.`, digits=0) == 0 | round(coef$`phospho coef.`, digits=0) == 0, 'Direction'] = "Undecided"
 
 ggplot(coef, aes(x=`IHC coef.`, y=`phospho coef.`, label=gene)) +
-  geom_point(color = dplyr::case_when(coef$Direction == 'Match' ~ "Red", 
+  geom_point(color = dplyr::case_when(coef$Direction == 'Match' ~ "Red",
+                                      coef$Direction == 'Undecided' ~ "Purple",
                                       coef$Direction == 'Not Match' ~ "Blue"), 
              size=3)+
   geom_label_repel(aes(label = gene),

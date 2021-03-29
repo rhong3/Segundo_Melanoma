@@ -28,6 +28,8 @@ OLA.prot.table <- merge(OLA.prot,prot.1,by=c("Gene.name","Accession"))
 OLA.prot.table = OLA.prot.table[order(OLA.prot.table$Enriched_in), ]
 OLA.prot.table$FDR = round(OLA.prot.table$FDR, 5)
 OLA.prot.table = OLA.prot.table[order(OLA.prot.table$FDR),]
+OLA.prot.table[, 5:ncol(OLA.prot.table)][OLA.prot.table[, 5:ncol(OLA.prot.table)] > 1] = 1
+OLA.prot.table[, 5:ncol(OLA.prot.table)][OLA.prot.table[, 5:ncol(OLA.prot.table)] <(-1)] = -1
 
 OLA.prot.table.out = rbind.fill(OLA.prot.table, as.data.frame(t(prot.clinical.1)))
 OLA.prot.table.out = OLA.prot.table.out[c(c(95:97), c(1:94)), ]
@@ -160,6 +162,9 @@ OLA.phospho.table <- merge(OLA.phospho,phospho.1,by=c("Modified_sequence", "Gene
 OLA.phospho.table = OLA.phospho.table[order(OLA.phospho.table$Enriched_in), ]
 OLA.phospho.table$FDR = round(OLA.phospho.table$FDR, 5)
 OLA.phospho.table = OLA.phospho.table[order(OLA.phospho.table$FDR),]
+OLA.phospho.table[, 5:ncol(OLA.phospho.table)][OLA.phospho.table[, 5:ncol(OLA.phospho.table)] > 1] = 1
+OLA.phospho.table[, 5:ncol(OLA.phospho.table)][OLA.phospho.table[, 5:ncol(OLA.phospho.table)] <(-1)] = -1
+
 
 OLA.phospho.table.out = rbind.fill(OLA.phospho.table, as.data.frame(t(phospho.clinical.1)))
 OLA.phospho.table.out = OLA.phospho.table.out[c(c(5:7), c(1:4)), ]
