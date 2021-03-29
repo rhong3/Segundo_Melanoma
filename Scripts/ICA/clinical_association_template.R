@@ -9,23 +9,34 @@
 # Command line arguments: exp_prefix, clinical_data, ica_rdata, out_dir p_value
 
 
-args = commandArgs(trailingOnly=TRUE)
-message(Sys.time())
+# args = commandArgs(trailingOnly=TRUE)
+# message(Sys.time())
+# 
+# exp_prefix=args[1]
+# message(paste('exp_prefix:',exp_prefix))
+# 
+# clinical_data=args[2]
+# message(paste('clinical_data:',clinical_data))
+# 
+# ica_rdata=args[3]
+# message(paste('ica_rdata:',ica_rdata))
+# 
+# out_dir=args[4]
+# message(paste('out_dir:',out_dir))
+# 
+# p_value=args[5]
+# message(paste('p_value_threshold:',p_value))
 
-exp_prefix=args[1]
-message(paste('exp_prefix:',exp_prefix))
 
-clinical_data=args[2]
-message(paste('clinical_data:',clinical_data))
+exp_prefix='ICA_transcriptomics'
 
-ica_rdata=args[3]
-message(paste('ica_rdata:',ica_rdata))
+clinical_data='~/documents/Segundo_Melanoma/Data/transcriptomics/transcriptomics_clinical.csv'
 
-out_dir=args[4]
-message(paste('out_dir:',out_dir))
+ica_rdata='~/documents/Segundo_Melanoma/Results/transcriptomics/ICA/ICA_transcriptomics_ICA.Rdata'
 
-p_value=args[5]
-message(paste('p_value_threshold:',p_value))
+out_dir='~/documents/Segundo_Melanoma/Results/Figures'
+
+p_value=0.00001
 
 # load required functions
 
@@ -34,7 +45,7 @@ library(RColorBrewer)
 library(ggplot2)
 library(stringr)
 
-source('./ICA_Clusters_Functions.R')
+source('./Scripts/ICA/ICA_Clusters_Functions.R')
 # source('~/R_Functions/heatmap.3.R')
 
 clinical=read.table(file=clinical_data,
@@ -84,23 +95,32 @@ write.table(icPave,
 # heatmap of significal clinical association counts
 icPave_plot=melt(icPave)
 icPave_plot=subset(icPave_plot,
-                      X1%in%names(which(apply(icPave,1,sum)>0))&X2%in%colnames(icPave)[which(apply(icPave,2,sum)>0)])
+                   X1%in%names(which(apply(icPave,1,sum)>30))&X2%in%colnames(icPave)[which(apply(icPave,2,sum)>30)])
 colnames(icPave_plot)[1:2]=c('IC','clinical_feature')
 icPave_plot[,1]=factor(icPave_plot[,1])
 icPave_plot$IC=paste('IC',str_pad(icPave_plot$IC,2,pad='0'),sep='_')
+icPave_plot$clinical_feature = gsub("^EC$", "Cluster.EC", icPave_plot$clinical_feature)
+icPave_plot$clinical_feature = gsub("^Mit$", "Cluster.Mit", icPave_plot$clinical_feature)
+icPave_plot$clinical_feature = gsub("^EC.Mit$", "Cluster.EC.Mit", icPave_plot$clinical_feature)
+icPave_plot$clinical_feature = gsub("^EC.Immune$", "Cluster.EC.Immune", icPave_plot$clinical_feature)
+icPave_plot$clinical_feature = gsub("^Mit.Immune$", "Cluster.Mit.Immune", icPave_plot$clinical_feature)
+
+
+
 png(filename=paste(out_dir,paste(exp_prefix,'IC_cluster_clinical_association.png',sep='_'),sep='/'),
     width = 1200, height = 480, units = "px", 
-    pointsize = 12,
+    pointsize = 20,
     bg = 'transparent')
-
 ggplot(icPave_plot,aes(x=IC,y=clinical_feature))+
-  theme_classic(base_size=12)+
+  theme_classic(base_size=20)+
   theme(axis.line=element_blank())+
-  theme(axis.text.x = element_text(angle=90,vjust=0.5))+
+  theme(axis.text.x = element_text(angle=90,vjust=0.5, size=20))+
+  theme(axis.text.y = element_text(vjust=0.5, size=20))+
   geom_tile(aes(fill=value))+
   scale_fill_gradient2(low='white',high='purple')+
-  geom_text(aes(label=round(value,digits=2)),size=2)
+  geom_text(aes(label=round(value,digits=2)),size=6)
 graphics.off()
+
 
 
 

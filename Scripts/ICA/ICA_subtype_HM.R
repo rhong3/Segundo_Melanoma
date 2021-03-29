@@ -70,8 +70,7 @@ for (a in 1:nrow(td_list)){
   gn = rowAnnotation(Gene.name = anno_text(sorted_data_out$Gene.name[2:length(sorted_data_out$Gene.name)],
                                            location = 0.5, just = "center"))
   sorted_data_out = sorted_data_out %>% dplyr::select(matches("MM"))
-  breaksList = seq(min(ori_data), max(ori_data), by=1)
-  col = colorRampPalette(colorspace::diverge_hsv(10))(11)[breaksList+6]
+  col = colorRampPalette(colorspace::diverge_hsv(10))(11)
   col_fun = c("0" = "white", "1" = "#DECBE4")
   anno = HeatmapAnnotation('EC.Mit' = as.factor(sorted_data_out[1, ]), col=list('EC.Mit'=col_fun), annotation_legend_param = list(direction = "horizontal"))
   pdf(paste(outdir, n, "_", m, "_HM.pdf", sep=""), height = 3, width = 20)
