@@ -185,7 +185,7 @@ ddt = rbind.fill(ddt, ppt)
 write.csv(ddt, file = "~/documents/Segundo_Melanoma/Results/OLA_summary.csv", row.names=FALSE)
 
 # old=read.csv("~/documents/Segundo_Melanoma/Legacy/old_summary/OLA_summary_old.csv")
-# 
+#
 # mgg = merge(x=ddt, y=old, by = c('Gene.name', 'Description', 'Group', 'Feature', 'Accession', 'Modified_sequence'), all = TRUE, suffixes=c('_new', '_old'))
 # write.csv(mgg, file="~/documents/Segundo_Melanoma/Legacy/old_summary/OLA_new_old.csv", row.names=FALSE)
 
@@ -207,10 +207,10 @@ for (i in 1:nrow(OLA)){
 }
 
 
-ggplot(OLA, aes(x=Group, y=`-log(FDR)`)) + 
+ggplot(OLA, aes(x=Group, y=`-log(FDR)`)) +
   geom_jitter(aes(color=Feature, shape=Feature), size=3, shape=16, position=position_jitter(0.1)) +
   geom_label_repel(aes(label = toplist),
-                   box.padding   = 2, 
+                   box.padding   = 2,
                    point.padding = 0.1,
                    segment.color = 'grey50') +
   theme(axis.text.x = element_text(size=12))
@@ -282,10 +282,10 @@ for (i in 1:nrow(COX)){
   }
 }
 
-ggplot(COX, aes(x=Group, y=Coefficient)) + 
+ggplot(COX, aes(x=Group, y=Coefficient)) +
   geom_jitter(aes(color=Direction, shape=Direction), size=3, shape=16, position=position_jitter(0.1)) +
   geom_label_repel(aes(label = toplist),
-                   box.padding   = 1, 
+                   box.padding   = 1,
                    point.padding = 0.1,
                    segment.color = 'grey50') +
   theme(axis.text.x = element_text(angle=45, vjust=0.55, size=12))

@@ -112,17 +112,17 @@ HMP = function(centroid_file, clinical_file, data_file, td_list_file, outdir, nu
       sorted_data_out = merge(ica[,1:numb], sorted_data[2:nrow(sorted_data), ], by=0, sort=FALSE)
       sorted_data_all_out = merge(ica[,1:numb], sorted_data_all[2:nrow(sorted_data_all),], by=0, sort=FALSE)
     }
-    
+
     sorted_data_out = rbind.fill(sorted_data[1,], sorted_data_out)
     sorted_data_all_out = rbind.fill(sorted_data_all[1,], sorted_data_all_out)
     colnames(sorted_data_out) = gsub("Row.names", nm, colnames(sorted_data_out))
     colnames(sorted_data_all_out) = gsub("Row.names", nm, colnames(sorted_data_all_out))
     write.csv(sorted_data_out, paste(outdir, n, "_", m, "_lite.csv", sep=""), row.names=FALSE)
     write.csv(sorted_data_all_out, paste(outdir, n, "_", m, ".csv", sep=""), row.names=FALSE)
-    
+
     sorted_data_out[nm][1,] = m
     rownames(sorted_data_out) = unname(unlist(sorted_data_out[nm]))
-    
+
     gn = rowAnnotation(Gene.name = anno_text(sorted_data_out$Gene.name[2:length(sorted_data_out$Gene.name)],
                                              location = 0.5, just = "center"))
     sorted_data_out = sorted_data_out %>% dplyr::select(matches("MM"))
@@ -133,7 +133,7 @@ HMP = function(centroid_file, clinical_file, data_file, td_list_file, outdir, nu
     pdf(paste(outdir, n, "_", m, "_HM.pdf", sep=""), height = 5, width = 20)
     hp = Heatmap(as.matrix(sorted_data_out[2:nrow(sorted_data_out), ]), col = col, column_title = paste(n, ' vs ',m), top_annotation = anno,  right_annotation=gn, show_column_names = FALSE,
                  cluster_rows = FALSE, cluster_columns = FALSE, row_split = c(rep('first 10 proteins',10), rep('last 10 proteins',10)), name = "Value", heatmap_legend_param = list(direction = "horizontal"))
-    draw(hp, heatmap_legend_side = "bottom", 
+    draw(hp, heatmap_legend_side = "bottom",
          annotation_legend_side = "bottom", merge_legend = TRUE,)
     dev.off()
   }
@@ -144,8 +144,8 @@ HMP = function(centroid_file, clinical_file, data_file, td_list_file, outdir, nu
 todolist("~/documents/Segundo_Melanoma/Results/proteomics/ICA/0.0005/ICA_proteomics_IC_Clinical_Correlation_P_Value_all.tsv",
          "~/documents/Segundo_Melanoma/Results/proteomics/ICA/ICA_proteomics_IC_mean_mixing_score.txt",
          "~/documents/Segundo_Melanoma/Results/proteomics/ICA/0.0005/significant_IC_clinical.csv")
-GSEA("~/documents/Segundo_Melanoma/Results/proteomics/ICA/MG_ICA_proteomics_IC_centroid.csv", 
-     "~/documents/Segundo_Melanoma/Results/proteomics/ICA/0.0005/significant_IC_clinical.csv", 
+GSEA("~/documents/Segundo_Melanoma/Results/proteomics/ICA/MG_ICA_proteomics_IC_centroid.csv",
+     "~/documents/Segundo_Melanoma/Results/proteomics/ICA/0.0005/significant_IC_clinical.csv",
      "~/documents/Segundo_Melanoma/Results/proteomics/GSEA/relax/")
 HMP(centroid_file = "~/documents/Segundo_Melanoma/Results/proteomics/ICA/MG_ICA_proteomics_IC_centroid.csv",
     clinical_file = "~/documents/Segundo_Melanoma/Data/proteomics/proteomics_clinical.csv",
@@ -157,8 +157,8 @@ HMP(centroid_file = "~/documents/Segundo_Melanoma/Results/proteomics/ICA/MG_ICA_
 todolist("~/documents/Segundo_Melanoma/Results/transcriptomics/ICA/0.00001/ICA_transcriptomics_IC_Clinical_Correlation_P_Value_all.tsv",
          "~/documents/Segundo_Melanoma/Results/transcriptomics/ICA/ICA_transcriptomics_IC_mean_mixing_score.txt",
          "~/documents/Segundo_Melanoma/Results/transcriptomics/ICA/0.00001/significant_IC_clinical.csv")
-GSEA("~/documents/Segundo_Melanoma/Results/transcriptomics/ICA/MG_ICA_transcriptomics_IC_centroid.csv", 
-     "~/documents/Segundo_Melanoma/Results/transcriptomics/ICA/0.00001/significant_IC_clinical.csv", 
+GSEA("~/documents/Segundo_Melanoma/Results/transcriptomics/ICA/MG_ICA_transcriptomics_IC_centroid.csv",
+     "~/documents/Segundo_Melanoma/Results/transcriptomics/ICA/0.00001/significant_IC_clinical.csv",
      "~/documents/Segundo_Melanoma/Results/transcriptomics/GSEA/strict/")
 HMP(centroid_file = "~/documents/Segundo_Melanoma/Results/transcriptomics/ICA/MG_ICA_transcriptomics_IC_centroid.csv",
     clinical_file = "~/documents/Segundo_Melanoma/Data/transcriptomics/transcriptomics_clinical.csv",
@@ -170,8 +170,8 @@ HMP(centroid_file = "~/documents/Segundo_Melanoma/Results/transcriptomics/ICA/MG
 todolist("~/documents/Segundo_Melanoma/Results/phospho/ICA/0.00001/ICA_phospho_IC_Clinical_Correlation_P_Value_all.tsv",
          "~/documents/Segundo_Melanoma/Results/phospho/ICA/ICA_phospho_IC_mean_mixing_score.txt",
          "~/documents/Segundo_Melanoma/Results/phospho/ICA/0.00001/significant_IC_clinical.csv")
-GSEA("~/documents/Segundo_Melanoma/Results/phospho/ICA/MG_ICA_phospho_IC_centroid.csv", 
-     "~/documents/Segundo_Melanoma/Results/phospho/ICA/0.00001/significant_IC_clinical.csv", 
+GSEA("~/documents/Segundo_Melanoma/Results/phospho/ICA/MG_ICA_phospho_IC_centroid.csv",
+     "~/documents/Segundo_Melanoma/Results/phospho/ICA/0.00001/significant_IC_clinical.csv",
      "~/documents/Segundo_Melanoma/Results/phospho/GSEA/strict/")
 HMP(centroid_file = "~/documents/Segundo_Melanoma/Results/phospho/ICA/MG_ICA_phospho_IC_centroid.csv",
     clinical_file = "~/documents/Segundo_Melanoma/Data/phospho/phospho_clinical.csv",
@@ -185,5 +185,5 @@ HMP(centroid_file = "~/documents/Segundo_Melanoma/Results/phospho/ICA/MG_ICA_pho
 # todolist("~/documents/Segundo_Melanoma/Results/proteomics/ICA/subtype/0.0005/ICA_proteomics_IC_Clinical_Correlation_P_Value_all.tsv",
 #          "~/documents/Segundo_Melanoma/Results/proteomics/ICA/ICA_proteomics_IC_mean_mixing_score.txt",
 #          "~/documents/Segundo_Melanoma/Results/proteomics/ICA/subtype/0.0005/significant_IC_clinical.csv")
-# 
+#
 

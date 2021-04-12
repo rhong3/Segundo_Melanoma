@@ -3,7 +3,7 @@ library(igraph)
 library(dplyr)
 
 inlist = c('tumor.cell.size.average', 'conncetive.tissue.average', 'predominant.tumor.cell.shape.average',
-              'Average.necrosis', 'Average.tumor.percentage', 'survival_3yr', 
+              'Average.necrosis', 'Average.tumor.percentage', 'survival_3yr',
               'pigment.score.average', 'predominant.cytoplasm.average', 'Average.lymphatic.score', 'prim.breslow',
            'survival_6mo', 'Local.Visceral', 'stage', 'Local.Cutaneous', 'Targeted.BRAF.treatment..vemurafenib.')
 # Pathway, IC, clinical
@@ -53,7 +53,7 @@ E(g)$width <- E(g)$`-logp`/5
 E(g)$arrow.size <- .3
 E(g)$edge.color <- "gray80"
 # V(g)$label <- NA
-edge.start <- get.edges(g, 1:ecount(g))[,2] 
+edge.start <- get.edges(g, 1:ecount(g))[,2]
 edge.col <- V(g)$color[edge.start]
 l = layout_with_kk(g)
 l <- layout.norm(l, ymin=-1, ymax=1, xmin=-1, xmax=1)

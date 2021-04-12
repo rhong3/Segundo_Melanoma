@@ -50,36 +50,36 @@ gn = rowAnnotation(FDR = OLA.prot.table$FDR,
 OLA.prot.table.1 = OLA.prot.table %>% select(matches("MM"))
 breaksList = seq(min(prot.1[,1:110]), max(prot.1[,1:110]), by=1)
 col = colorRampPalette(colorspace::diverge_hsv(50))(length(breaksList))
-anno = HeatmapAnnotation(survival_days = as.numeric(prot.clinical.1[,2]), 
-                       stage = prot.clinical.1[,1], 
+anno = HeatmapAnnotation(survival_days = as.numeric(prot.clinical.1[,2]),
+                       stage = prot.clinical.1[,1],
                        NRAS_mutation = prot.clinical.1[,3],
                        col = list(survival_days = col_fun2, stage = col_fun3, NRAS_mutation = col_fun4))
 
 pdf("~/documents/Segundo_Melanoma/Results/Figures/Figure5-S5/OLA_HM_proteomics.pdf", height = 15, width = 20)
 hp = Heatmap(as.matrix(OLA.prot.table.1), col = col,  top_annotation = anno,  right_annotation=gn, show_column_names = FALSE,
              cluster_rows = FALSE, cluster_columns = FALSE, show_row_names = FALSE, name = "value", heatmap_legend_param = list(direction = "vertical"))
-draw(hp, heatmap_legend_side = "left", 
+draw(hp, heatmap_legend_side = "left",
      annotation_legend_side = "left", merge_legend = TRUE,)
 dev.off()
 
 # pdf("~/documents/Segundo_Melanoma/Results/both_OLA_HM_proteomics.pdf", height = 20, width = 30)
 # hp = Heatmap(as.matrix(OLA.prot.table.1), col = col, column_title = paste("proteomics outliers"), top_annotation = anno,  right_annotation=gn, show_column_names = FALSE,
 #              cluster_rows = TRUE, cluster_columns = TRUE, show_row_names = FALSE, name = "value", heatmap_legend_param = list(direction = "vertical"))
-# draw(hp, heatmap_legend_side = "bottom", 
+# draw(hp, heatmap_legend_side = "bottom",
 #      annotation_legend_side = "right", merge_legend = TRUE,)
 # dev.off()
-# 
+#
 # pdf("~/documents/Segundo_Melanoma/Results/row_OLA_HM_proteomics.pdf", height = 20, width = 30)
 # hp = Heatmap(as.matrix(OLA.prot.table.1), col = col, column_title = paste("proteomics outliers"), top_annotation = anno,  right_annotation=gn, show_column_names = FALSE,
 #              cluster_rows = TRUE, cluster_columns = FALSE, show_row_names = FALSE, name = "value", heatmap_legend_param = list(direction = "vertical"))
-# draw(hp, heatmap_legend_side = "bottom", 
+# draw(hp, heatmap_legend_side = "bottom",
 #      annotation_legend_side = "right", merge_legend = TRUE,)
 # dev.off()
-# 
+#
 # pdf("~/documents/Segundo_Melanoma/Results/col_OLA_HM_proteomics.pdf", height = 20, width = 30)
 # hp = Heatmap(as.matrix(OLA.prot.table.1), col = col, column_title = paste("proteomics outliers"), top_annotation = anno,  right_annotation=gn, show_column_names = FALSE,
 #              cluster_rows = FALSE, cluster_columns = TRUE, show_row_names = FALSE, name = "value", heatmap_legend_param = list(direction = "vertical"))
-# draw(hp, heatmap_legend_side = "bottom", 
+# draw(hp, heatmap_legend_side = "bottom",
 #      annotation_legend_side = "right", merge_legend = TRUE,)
 # dev.off()
 
@@ -126,15 +126,15 @@ gn = rowAnnotation(FDR = OLA.trans.table$FDR,
 OLA.trans.table.1 = OLA.trans.table %>% select(matches("MM"))
 breaksList = seq(min(trans.1[,1:134]), max(trans.1[,1:134]), by=1)
 col = colorRampPalette(colorspace::diverge_hsv(50))(length(breaksList))
-anno = HeatmapAnnotation(survival_days = as.numeric(trans.clinical.1[,2]), 
-                         # stage = trans.clinical.1[,1], 
+anno = HeatmapAnnotation(survival_days = as.numeric(trans.clinical.1[,2]),
+                         # stage = trans.clinical.1[,1],
                          # NRAS_mutation = trans.clinical.1[,3],
                          col = list(survival_days = col_fun2, stage = col_fun3, NRAS_mutation = col_fun4))
 
 pdf("~/documents/Segundo_Melanoma/Results/Figures/Figure5-S5/OLA_HM_transcriptomics.pdf", height = 4.2, width = 20)
 hp = Heatmap(as.matrix(OLA.trans.table.1), col = col, top_annotation = anno,  right_annotation=gn, show_column_names = FALSE,
              cluster_rows = FALSE, cluster_columns = FALSE, show_row_names = FALSE, name = "value", heatmap_legend_param = list(direction = "vertical"))
-draw(hp, heatmap_legend_side = "left", 
+draw(hp, heatmap_legend_side = "left",
      annotation_legend_side = "left", merge_legend = TRUE,)
 dev.off()
 
@@ -185,13 +185,13 @@ gn = rowAnnotation(FDR = OLA.phospho.table$FDR,
 OLA.phospho.table.1 = OLA.phospho.table %>% select(matches("MM"))
 breaksList = seq(min(phospho.1[,1:118]), max(phospho.1[,1:118]), by=1)
 col = colorRampPalette(colorspace::diverge_hsv(50))(length(breaksList))
-anno = HeatmapAnnotation(survival_days = as.numeric(phospho.clinical.1[,2]), 
+anno = HeatmapAnnotation(survival_days = as.numeric(phospho.clinical.1[,2]),
                          col = list(survival_days = col_fun2, stage = col_fun3, NRAS_mutation = col_fun4))
 
 pdf("~/documents/Segundo_Melanoma/Results/Figures/Figure5-S5/OLA_HM_phospho.pdf", height = 2, width = 20)
 hp = Heatmap(as.matrix(OLA.phospho.table.1), col = col, top_annotation = anno,  right_annotation=gn, show_column_names = FALSE,
              cluster_rows = FALSE, cluster_columns = FALSE, show_row_names = FALSE, name = "value", heatmap_legend_param = list(direction = "vertical"))
-draw(hp, heatmap_legend_side = "left", 
+draw(hp, heatmap_legend_side = "left",
      annotation_legend_side = "left", merge_legend = TRUE,)
 dev.off()
 
