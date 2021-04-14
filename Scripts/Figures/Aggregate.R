@@ -212,8 +212,9 @@ ggplot(OLA, aes(x=Group, y=`-log(FDR)`)) +
   geom_label_repel(aes(label = toplist),
                    box.padding   = 2,
                    point.padding = 0.1,
-                   segment.color = 'grey50') +
-  theme(axis.text.x = element_text(size=12))
+                   segment.color = 'grey50') + theme_bw() + theme(axis.text.x = element_text(size=12), panel.border = element_blank(), panel.grid.major = element_blank(),
+                                                                  panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), axis.title.x=element_blank())
+
 
 
 # COX figure
@@ -287,6 +288,7 @@ ggplot(COX, aes(x=Group, y=Coefficient)) +
   geom_label_repel(aes(label = toplist),
                    box.padding   = 1,
                    point.padding = 0.1,
-                   segment.color = 'grey50') +
-  theme(axis.text.x = element_text(angle=45, vjust=0.55, size=12))
+                   segment.color = 'grey50') + theme_bw() + theme(axis.text.x = element_text(angle=45, vjust=0.55, size=12), panel.border = element_blank(), panel.grid.major = element_blank(),
+                                                                                        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), axis.title.x=element_blank())
+
 

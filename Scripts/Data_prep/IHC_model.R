@@ -11,6 +11,7 @@ library("survminer")
 
 # IHC data filter
 DDX11 <- read_excel("~/Documents/Segundo_Melanoma/Data/DDX11_IHC.xlsx")
+DDX11 = DDX11[, c(1:6)]
 DDX11.mean = DDX11 %>%
   fill(Chip_p) %>%
   na.omit() %>%
@@ -238,7 +239,7 @@ write.csv(data.frame(xxx['coefficients']),  "~/Documents/Segundo_Melanoma/Result
 res.cox <- coxph(Surv(time, status) ~ ADAM10+FGA+HMOX1+CTNND1, data=phos.clinical.cox)
 ppp = summary(res.cox)
 print(ppp)
-write.csv(data.frame(xxx['coefficients']),  "~/Documents/Segundo_Melanoma/Results/IHC/phospho_cox.csv")
+write.csv(data.frame(ppp['coefficients']),  "~/Documents/Segundo_Melanoma/Results/IHC/phospho_cox.csv")
 
 # prot
 # Melanoma cells
@@ -262,7 +263,7 @@ coef = inner_join(ihc.coeff, prot.coeff, by="gene")
 coef$Direction = coef$`IHC coef.`*coef$`Proteome coef.`>0
 coef$Direction = gsub(TRUE, 'Match', coef$Direction)
 coef$Direction = gsub(FALSE, 'Not Match', coef$Direction)
-coef[round(coef$`IHC coef.`, digits=0) == 0 | round(coef$`Proteome coef.`, digits=0) == 0, 'Direction'] = "Undecided"
+coef[round(coef$`IHC coef.`, digits=1) == 0 | round(coef$`Proteome coef.`, digits=1) == 0, 'Direction'] = "Undecided"
   
 
 ggplot(coef, aes(x=`IHC coef.`, y=`Proteome coef.`, label=gene)) +
@@ -273,8 +274,7 @@ ggplot(coef, aes(x=`IHC coef.`, y=`Proteome coef.`, label=gene)) +
   geom_label_repel(aes(label = gene),
                    box.padding   = 0.35, 
                    point.padding = 0.5,
-                   segment.color = 'grey50') + xlim(-4,4) + ylim(-4,4)
-  theme_classic()
+                   segment.color = 'grey50') + xlim(-4,4) + ylim(-4,4) + theme_bw()
 
 # Stromal cells
 ihc.coeff = data.frame(aaa['coefficients'])
@@ -306,8 +306,7 @@ ggplot(coef, aes(x=`IHC coef.`, y=`Proteome coef.`, label=gene)) +
   geom_label_repel(aes(label = gene),
                    box.padding   = 0.35, 
                    point.padding = 0.5,
-                   segment.color = 'grey50') + xlim(-4,4) + ylim(-4,4)
-theme_classic()
+                   segment.color = 'grey50') + xlim(-4,4) + ylim(-4,4)+ theme_bw()
 
 
 # phos
@@ -341,8 +340,7 @@ ggplot(coef, aes(x=`IHC coef.`, y=`phospho coef.`, label=gene)) +
   geom_label_repel(aes(label = gene),
                    box.padding   = 0.35, 
                    point.padding = 0.5,
-                   segment.color = 'grey50') + xlim(-4,4) + ylim(-4,4)
-theme_classic()
+                   segment.color = 'grey50') + xlim(-4,4) + ylim(-4,4)+ theme_bw()
 
 # Stromal cells
 ihc.coeff = data.frame(aaa['coefficients'])
@@ -374,7 +372,6 @@ ggplot(coef, aes(x=`IHC coef.`, y=`phospho coef.`, label=gene)) +
   geom_label_repel(aes(label = gene),
                    box.padding   = 0.35, 
                    point.padding = 0.5,
-                   segment.color = 'grey50') + xlim(-4,4) + ylim(-4,4)
-theme_classic()
+                   segment.color = 'grey50') + xlim(-4,4) + ylim(-4,4)+ theme_bw()
 
 
