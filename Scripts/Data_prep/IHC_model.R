@@ -375,3 +375,19 @@ ggplot(coef, aes(x=`IHC coef.`, y=`phospho coef.`, label=gene)) +
                    segment.color = 'grey50') + xlim(-4,4) + ylim(-4,4)+ theme_bw()
 
 
+
+
+
+# IHC ROC and KM
+DDX11 <- read_excel("~/Documents/Segundo_Melanoma/Data/DDX11_IHC.xlsx")
+NBP1 <- read_excel("~/Documents/Segundo_Melanoma/Data/NBP1_IHC.xls")
+ADAM10 <- read_excel("~/Documents/Segundo_Melanoma/Data/ADAM10_IHC.xls")
+PIK3CB <- read_excel("~/Documents/Segundo_Melanoma/Data/PIK3CB_IHC.xls")
+PAEP <- read_excel("~/Documents/Segundo_Melanoma/Data/PAEP_IHC.xls")
+FGA <- read_excel("~/Documents/Segundo_Melanoma/Data/FGA_IHC.xls")
+CDK4 <- read_excel("~/Documents/Segundo_Melanoma/Data/CDK4_IHC.xls")
+HMOX1 <- read_excel("~/Documents/Segundo_Melanoma/Data/HMOX1_IHC.xlsx")
+CTNND1 <- read_excel("~/Documents/Segundo_Melanoma/Data/CTNND1_IHC.xls")
+
+
+
