@@ -380,14 +380,25 @@ ggplot(coef, aes(x=`IHC coef.`, y=`phospho coef.`, label=gene)) +
 
 # IHC ROC and KM
 DDX11 <- read_excel("~/Documents/Segundo_Melanoma/Data/DDX11_IHC.xlsx")
+DDX11 = DDX11[, c("DFS", "PFS", "OS", "Live", "SPSSmodell_DDX11_N")]
 NBP1 <- read_excel("~/Documents/Segundo_Melanoma/Data/NBP1_IHC.xls")
+NBP1 = NBP1[, c("DFS", "PFS", "OS", "Live", "SPSSmodell_SCAI_M", "SPSSmodell_SCAI_S")]
 ADAM10 <- read_excel("~/Documents/Segundo_Melanoma/Data/ADAM10_IHC.xls")
+ADAM10 = ADAM10[, c("DFS", "PFS", "OS", "Live", "SPSSmodell_ADAM10_M", "SPSSmodell_ADAM10_S")]
 PIK3CB <- read_excel("~/Documents/Segundo_Melanoma/Data/PIK3CB_IHC.xls")
+PIK3CB = PIK3CB[, c("DFS", "PFS", "OS", "Live", "SPSSmodell_PIK3cB_M", "SPSSmodell_PIK3cB_S")]
 PAEP <- read_excel("~/Documents/Segundo_Melanoma/Data/PAEP_IHC.xls")
+PAEP = PAEP[, c("DFS", "PFS", "OS", "Live", "SPSSmodell_PAEP_M", "SPSSmodell_PAEP_S")]
 FGA <- read_excel("~/Documents/Segundo_Melanoma/Data/FGA_IHC.xls")
+FGA = FGA[, c("DFS", "PFS", "OS", "Live", "SPSSmodell_FGA_M", "SPSSmodell_FGA_S")]
 CDK4 <- read_excel("~/Documents/Segundo_Melanoma/Data/CDK4_IHC.xls")
+CDK4 = CDK4[, c("DFS", "PFS", "OS", "Live", "SPSSmodell_CDK4_M", "SPSSmodell_CDK4_S")]
 HMOX1 <- read_excel("~/Documents/Segundo_Melanoma/Data/HMOX1_IHC.xlsx")
+HMOX1 = HMOX1[, c("DFS", "PFS", "OS", "Live", "SPSSmodell_HMOX_M", "SPSSmodell_HMOX_S")]
 CTNND1 <- read_excel("~/Documents/Segundo_Melanoma/Data/CTNND1_IHC.xls")
+CTNND1 = CTNND1[, c("DFS", "PFS", "OS", "Live", "SPSSmodell_CTTND1_M", "SPSSmodell_CTTND1_S")]
+
+
 
 
 
