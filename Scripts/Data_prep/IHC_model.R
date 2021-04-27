@@ -5,9 +5,8 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(ggrepel)
-library("survival")
-library("survminer")
-
+library(ggfortify)
+library(survival)
 
 # IHC data filter
 DDX11 <- read_excel("~/Documents/Segundo_Melanoma/Data/DDX11_IHC.xlsx")
@@ -381,24 +380,69 @@ ggplot(coef, aes(x=`IHC coef.`, y=`phospho coef.`, label=gene)) +
 # IHC ROC and KM
 DDX11 <- read_excel("~/Documents/Segundo_Melanoma/Data/DDX11_IHC.xlsx")
 DDX11 = DDX11[, c("DFS", "PFS", "OS", "Live", "SPSSmodell_DDX11_N")]
+DDX11$SPSSmodell_DDX11_N = gsub(1, "high", DDX11$SPSSmodell_DDX11_N)
+DDX11$SPSSmodell_DDX11_N = gsub(0, "low", DDX11$SPSSmodell_DDX11_N)
 NBP1 <- read_excel("~/Documents/Segundo_Melanoma/Data/NBP1_IHC.xls")
 NBP1 = NBP1[, c("DFS", "PFS", "OS", "Live", "SPSSmodell_SCAI_M", "SPSSmodell_SCAI_S")]
+NBP1$SPSSmodell_SCAI_M = gsub(1, "high", NBP1$SPSSmodell_SCAI_M)
+NBP1$SPSSmodell_SCAI_M = gsub(0, "low", NBP1$SPSSmodell_SCAI_M)
+NBP1$SPSSmodell_SCAI_S = gsub(0, "high", NBP1$SPSSmodell_SCAI_S)
+NBP1$SPSSmodell_SCAI_S = gsub(1, "low", NBP1$SPSSmodell_SCAI_S)
 ADAM10 <- read_excel("~/Documents/Segundo_Melanoma/Data/ADAM10_IHC.xls")
 ADAM10 = ADAM10[, c("DFS", "PFS", "OS", "Live", "SPSSmodell_ADAM10_M", "SPSSmodell_ADAM10_S")]
+ADAM10$SPSSmodell_ADAM10_M = gsub(1, "high", ADAM10$SPSSmodell_ADAM10_M)
+ADAM10$SPSSmodell_ADAM10_M = gsub(0, "low", ADAM10$SPSSmodell_ADAM10_M)
+ADAM10$SPSSmodell_ADAM10_S = gsub(0, "high", ADAM10$SPSSmodell_ADAM10_S)
+ADAM10$SPSSmodell_ADAM10_S = gsub(1, "low", ADAM10$SPSSmodell_ADAM10_S)
 PIK3CB <- read_excel("~/Documents/Segundo_Melanoma/Data/PIK3CB_IHC.xls")
 PIK3CB = PIK3CB[, c("DFS", "PFS", "OS", "Live", "SPSSmodell_PIK3cB_M", "SPSSmodell_PIK3cB_S")]
+PIK3CB$SPSSmodell_PIK3cB_M = gsub(1, "high", PIK3CB$SPSSmodell_PIK3cB_M)
+PIK3CB$SPSSmodell_PIK3cB_M = gsub(0, "low", PIK3CB$SPSSmodell_PIK3cB_M)
+PIK3CB$SPSSmodell_PIK3cB_S = gsub(1, "high", PIK3CB$SPSSmodell_PIK3cB_S)
+PIK3CB$SPSSmodell_PIK3cB_S = gsub(0, "low", PIK3CB$SPSSmodell_PIK3cB_S)
 PAEP <- read_excel("~/Documents/Segundo_Melanoma/Data/PAEP_IHC.xls")
 PAEP = PAEP[, c("DFS", "PFS", "OS", "Live", "SPSSmodell_PAEP_M", "SPSSmodell_PAEP_S")]
+PAEP$SPSSmodell_PAEP_M = gsub(0, "high", PAEP$SPSSmodell_PAEP_M)
+PAEP$SPSSmodell_PAEP_M = gsub(1, "low", PAEP$SPSSmodell_PAEP_M)
+PAEP$SPSSmodell_PAEP_S = gsub(0, "high", PAEP$SPSSmodell_PAEP_S)
+PAEP$SPSSmodell_PAEP_S = gsub(1, "low", PAEP$SPSSmodell_PAEP_S)
 FGA <- read_excel("~/Documents/Segundo_Melanoma/Data/FGA_IHC.xls")
 FGA = FGA[, c("DFS", "PFS", "OS", "Live", "SPSSmodell_FGA_M", "SPSSmodell_FGA_S")]
+FGA$SPSSmodell_FGA_M = gsub(1, "high", FGA$SPSSmodell_FGA_M)
+FGA$SPSSmodell_FGA_M = gsub(0, "low", FGA$SPSSmodell_FGA_M)
+FGA$SPSSmodell_FGA_S = gsub(1, "high", FGA$SPSSmodell_FGA_S)
+FGA$SPSSmodell_FGA_S = gsub(0, "low", FGA$SPSSmodell_FGA_S)
 CDK4 <- read_excel("~/Documents/Segundo_Melanoma/Data/CDK4_IHC.xls")
 CDK4 = CDK4[, c("DFS", "PFS", "OS", "Live", "SPSSmodell_CDK4_M", "SPSSmodell_CDK4_S")]
+CDK4$SPSSmodell_CDK4_M = gsub(1, "high", CDK4$SPSSmodell_CDK4_M)
+CDK4$SPSSmodell_CDK4_M = gsub(0, "low", CDK4$SPSSmodell_CDK4_M)
+CDK4$SPSSmodell_CDK4_S = gsub(1, "high", CDK4$SPSSmodell_CDK4_S)
+CDK4$SPSSmodell_CDK4_S = gsub(0, "low", CDK4$SPSSmodell_CDK4_S)
 HMOX1 <- read_excel("~/Documents/Segundo_Melanoma/Data/HMOX1_IHC.xlsx")
 HMOX1 = HMOX1[, c("DFS", "PFS", "OS", "Live", "SPSSmodell_HMOX_M", "SPSSmodell_HMOX_S")]
+HMOX1$SPSSmodell_HMOX_M = gsub(0, "high", HMOX1$SPSSmodell_HMOX_M)
+HMOX1$SPSSmodell_HMOX_M = gsub(1, "low", HMOX1$SPSSmodell_HMOX_M)
+HMOX1$SPSSmodell_HMOX_S = gsub(0, "high", HMOX1$SPSSmodell_HMOX_S)
+HMOX1$SPSSmodell_HMOX_S = gsub(1, "low", HMOX1$SPSSmodell_HMOX_S)
 CTNND1 <- read_excel("~/Documents/Segundo_Melanoma/Data/CTNND1_IHC.xls")
 CTNND1 = CTNND1[, c("DFS", "PFS", "OS", "Live", "SPSSmodell_CTTND1_M", "SPSSmodell_CTTND1_S")]
+CTNND1$SPSSmodell_CTTND1_M = gsub(0, "high", CTNND1$SPSSmodell_CTTND1_M)
+CTNND1$SPSSmodell_CTTND1_M = gsub(1, "low", CTNND1$SPSSmodell_CTTND1_M)
+CTNND1$SPSSmodell_CTTND1_S = gsub(0, "high", CTNND1$SPSSmodell_CTTND1_S)
+CTNND1$SPSSmodell_CTTND1_S = gsub(1, "low", CTNND1$SPSSmodell_CTTND1_S)
 
+km_fit <- survfit(Surv(DFS, Live) ~ SPSSmodell_DDX11_N, data=DDX11)
 
+png(filename = paste("Results/IHC/km_DDX11_N_DFS.png",sep =""), width = 500, height = 400, units = "px", pointsize = 16, bg = "white")
+km.plot <- autoplot(km_fit, conf.int = F, censor = F, surv.size = 2.5,  main = "",
+                    xlab = "",
+                    ylab = "") +
+  theme_bw()+
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), 
+        legend.position = "none", axis.text.x = element_text(size=12, face="bold"), axis.text.y = element_text(size=12, face="bold"))
+
+print(km.plot)
+dev.off()
 
 
 
