@@ -431,7 +431,10 @@ CTNND1$SPSSmodell_CTTND1_M = gsub(1, "low", CTNND1$SPSSmodell_CTTND1_M)
 CTNND1$SPSSmodell_CTTND1_S = gsub(0, "high", CTNND1$SPSSmodell_CTTND1_S)
 CTNND1$SPSSmodell_CTTND1_S = gsub(1, "low", CTNND1$SPSSmodell_CTTND1_S)
 
-km_fit <- survfit(Surv(OS, Live) ~ SPSSmodell_CTTND1_M, data=CTNND1)
+km_fit <- survfit(Surv(OS, Live) ~ SPSSmodell_CDK4_S, data=CDK4)
+
+pv <- survminer::surv_pvalue(km_fit, method = "log-rank", test.for.trend = F, combine = F, data = CDK4)  
+pv
 
 png(filename = paste("Results/IHC/km_CTTND1_M_OS.png",sep =""), width = 500, height = 400, units = "px", pointsize = 16, bg = "white")
 km.plot <- autoplot(km_fit, conf.int = F, censor = F, surv.size = 2.5,  main = "",
