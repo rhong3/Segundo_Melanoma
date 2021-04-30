@@ -382,70 +382,110 @@ DDX11 <- read_excel("~/Documents/Segundo_Melanoma/Data/DDX11_IHC.xlsx")
 DDX11 = DDX11[, c("DFS", "PFS", "OS", "Live", "SPSSmodell_DDX11_N")]
 DDX11$SPSSmodell_DDX11_N = gsub(1, "high", DDX11$SPSSmodell_DDX11_N)
 DDX11$SPSSmodell_DDX11_N = gsub(0, "low", DDX11$SPSSmodell_DDX11_N)
+DDX11$Live = abs(DDX11$Live-1)
+DDX11_list = list(DDX11, "SPSSmodell_DDX11_N", "SPSSmodell_DDX11_N", "DDX11_N", "DDX11_N")
 NBP1 <- read_excel("~/Documents/Segundo_Melanoma/Data/NBP1_IHC.xls")
 NBP1 = NBP1[, c("DFS", "PFS", "OS", "Live", "SPSSmodell_SCAI_M", "SPSSmodell_SCAI_S")]
 NBP1$SPSSmodell_SCAI_M = gsub(1, "high", NBP1$SPSSmodell_SCAI_M)
 NBP1$SPSSmodell_SCAI_M = gsub(0, "low", NBP1$SPSSmodell_SCAI_M)
 NBP1$SPSSmodell_SCAI_S = gsub(0, "high", NBP1$SPSSmodell_SCAI_S)
 NBP1$SPSSmodell_SCAI_S = gsub(1, "low", NBP1$SPSSmodell_SCAI_S)
+NBP1$Live = abs(NBP1$Live-1)
+NBP_list = list(NBP1, "SPSSmodell_SCAI_M", "SPSSmodell_SCAI_S", "SCAI_M", "SCAI_S")
 ADAM10 <- read_excel("~/Documents/Segundo_Melanoma/Data/ADAM10_IHC.xls")
 ADAM10 = ADAM10[, c("DFS", "PFS", "OS", "Live", "SPSSmodell_ADAM10_M", "SPSSmodell_ADAM10_S")]
 ADAM10$SPSSmodell_ADAM10_M = gsub(1, "high", ADAM10$SPSSmodell_ADAM10_M)
 ADAM10$SPSSmodell_ADAM10_M = gsub(0, "low", ADAM10$SPSSmodell_ADAM10_M)
 ADAM10$SPSSmodell_ADAM10_S = gsub(0, "high", ADAM10$SPSSmodell_ADAM10_S)
 ADAM10$SPSSmodell_ADAM10_S = gsub(1, "low", ADAM10$SPSSmodell_ADAM10_S)
+ADAM10$Live = abs(ADAM10$Live-1)
+ADAM10_list = list(ADAM10, "SPSSmodell_ADAM10_M", "SPSSmodell_ADAM10_S", "ADAM10_M", "ADAM10_S")
 PIK3CB <- read_excel("~/Documents/Segundo_Melanoma/Data/PIK3CB_IHC.xls")
 PIK3CB = PIK3CB[, c("DFS", "PFS", "OS", "Live", "SPSSmodell_PIK3cB_M", "SPSSmodell_PIK3cB_S")]
 PIK3CB$SPSSmodell_PIK3cB_M = gsub(1, "high", PIK3CB$SPSSmodell_PIK3cB_M)
 PIK3CB$SPSSmodell_PIK3cB_M = gsub(0, "low", PIK3CB$SPSSmodell_PIK3cB_M)
 PIK3CB$SPSSmodell_PIK3cB_S = gsub(1, "high", PIK3CB$SPSSmodell_PIK3cB_S)
 PIK3CB$SPSSmodell_PIK3cB_S = gsub(0, "low", PIK3CB$SPSSmodell_PIK3cB_S)
+PIK3CB$Live = abs(PIK3CB$Live-1)
+PIK3CB_list = list(PIK3CB, "SPSSmodell_PIK3cB_M", "SPSSmodell_PIK3cB_S", "PIK3cB_M", "PIK3cB_S")
 PAEP <- read_excel("~/Documents/Segundo_Melanoma/Data/PAEP_IHC.xls")
 PAEP = PAEP[, c("DFS", "PFS", "OS", "Live", "SPSSmodell_PAEP_M", "SPSSmodell_PAEP_S")]
 PAEP$SPSSmodell_PAEP_M = gsub(0, "high", PAEP$SPSSmodell_PAEP_M)
 PAEP$SPSSmodell_PAEP_M = gsub(1, "low", PAEP$SPSSmodell_PAEP_M)
 PAEP$SPSSmodell_PAEP_S = gsub(0, "high", PAEP$SPSSmodell_PAEP_S)
 PAEP$SPSSmodell_PAEP_S = gsub(1, "low", PAEP$SPSSmodell_PAEP_S)
+PAEP$Live = abs(PAEP$Live-1)
+PAEP_list = list(PAEP, "SPSSmodell_PAEP_M", "SPSSmodell_PAEP_S", "PAEP_M", "PAEP_S")
 FGA <- read_excel("~/Documents/Segundo_Melanoma/Data/FGA_IHC.xls")
 FGA = FGA[, c("DFS", "PFS", "OS", "Live", "SPSSmodell_FGA_M", "SPSSmodell_FGA_S")]
 FGA$SPSSmodell_FGA_M = gsub(1, "high", FGA$SPSSmodell_FGA_M)
 FGA$SPSSmodell_FGA_M = gsub(0, "low", FGA$SPSSmodell_FGA_M)
 FGA$SPSSmodell_FGA_S = gsub(1, "high", FGA$SPSSmodell_FGA_S)
 FGA$SPSSmodell_FGA_S = gsub(0, "low", FGA$SPSSmodell_FGA_S)
+FGA$Live = abs(FGA$Live-1)
+FGA_list = list(FGA, "SPSSmodell_FGA_M", "SPSSmodell_FGA_S", "FGA_M", "FGA_S")
 CDK4 <- read_excel("~/Documents/Segundo_Melanoma/Data/CDK4_IHC.xls")
 CDK4 = CDK4[, c("DFS", "PFS", "OS", "Live", "SPSSmodell_CDK4_M", "SPSSmodell_CDK4_S")]
 CDK4$SPSSmodell_CDK4_M = gsub(1, "high", CDK4$SPSSmodell_CDK4_M)
 CDK4$SPSSmodell_CDK4_M = gsub(0, "low", CDK4$SPSSmodell_CDK4_M)
 CDK4$SPSSmodell_CDK4_S = gsub(1, "high", CDK4$SPSSmodell_CDK4_S)
 CDK4$SPSSmodell_CDK4_S = gsub(0, "low", CDK4$SPSSmodell_CDK4_S)
+CDK4$Live = abs(CDK4$Live-1)
+CDK4_list = list(CDK4, "SPSSmodell_CDK4_M", "SPSSmodell_CDK4_S", "CDK4_M", "CDK4_S")
 HMOX1 <- read_excel("~/Documents/Segundo_Melanoma/Data/HMOX1_IHC.xlsx")
 HMOX1 = HMOX1[, c("DFS", "PFS", "OS", "Live", "SPSSmodell_HMOX_M", "SPSSmodell_HMOX_S")]
 HMOX1$SPSSmodell_HMOX_M = gsub(0, "high", HMOX1$SPSSmodell_HMOX_M)
 HMOX1$SPSSmodell_HMOX_M = gsub(1, "low", HMOX1$SPSSmodell_HMOX_M)
 HMOX1$SPSSmodell_HMOX_S = gsub(0, "high", HMOX1$SPSSmodell_HMOX_S)
 HMOX1$SPSSmodell_HMOX_S = gsub(1, "low", HMOX1$SPSSmodell_HMOX_S)
+HMOX1$Live = abs(HMOX1$Live-1)
+HMOX1_list = list(HMOX1, "SPSSmodell_HMOX_M", "SPSSmodell_HMOX_S", "HMOX_M", "HMOX_S")
 CTNND1 <- read_excel("~/Documents/Segundo_Melanoma/Data/CTNND1_IHC.xls")
 CTNND1 = CTNND1[, c("DFS", "PFS", "OS", "Live", "SPSSmodell_CTTND1_M", "SPSSmodell_CTTND1_S")]
 CTNND1$SPSSmodell_CTTND1_M = gsub(0, "high", CTNND1$SPSSmodell_CTTND1_M)
 CTNND1$SPSSmodell_CTTND1_M = gsub(1, "low", CTNND1$SPSSmodell_CTTND1_M)
 CTNND1$SPSSmodell_CTTND1_S = gsub(0, "high", CTNND1$SPSSmodell_CTTND1_S)
 CTNND1$SPSSmodell_CTTND1_S = gsub(1, "low", CTNND1$SPSSmodell_CTTND1_S)
+CTNND1$Live = abs(CTNND1$Live-1)
+CTNND1_list = list(CTNND1, "SPSSmodell_CTTND1_M", "SPSSmodell_CTTND1_S", "CTTND1_M", "CTTND1_S")
+full_list = list(DDX11_list, NBP_list, ADAM10_list, PIK3CB_list, PAEP_list, FGA_list, CDK4_list, HMOX1_list, CTNND1_list)
 
-km_fit <- survfit(Surv(OS, Live) ~ SPSSmodell_CTTND1_M, data=CTNND1)
+for (i in full_list){
+  for (s in c("OS", "DFS", "PFS")){
+    km_fit <- survfit(Surv(get(s), Live) ~ get(i[[2]][1]), data=i[[1]])
+    
+    pv <- survminer::surv_pvalue(km_fit, method = "log-rank", test.for.trend = F, combine = F, data = i[[1]])  
+    
+    png(filename = paste("Results/IHC/km_", i[[4]][1], "_", s, ".png",sep =""), width = 500, height = 400, units = "px", pointsize = 16, bg = "white")
+    km.plot <- autoplot(km_fit, conf.int = F, censor = F, surv.size = 2.5,  main = paste("p=", pv$pval, sep=""),
+                        xlab = "",
+                        ylab = "") +
+      theme_bw()+
+      theme(panel.border = element_blank(), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), 
+            legend.position = "none", axis.text.x = element_text(size=12, face="bold"), axis.text.y = element_text(size=12, face="bold"))
+    
+    print(km.plot)
+    dev.off()
+    
+    km_fit <- survfit(Surv(get(s), Live) ~ get(i[[3]][1]), data=i[[1]])
+    
+    pv <- survminer::surv_pvalue(km_fit, method = "log-rank", test.for.trend = F, combine = F, data = i[[1]])  
+    pv$pval
+    
+    png(filename = paste("Results/IHC/km_", i[[5]][1], "_", s, ".png",sep =""), width = 500, height = 400, units = "px", pointsize = 16, bg = "white")
+    km.plot <- autoplot(km_fit, conf.int = F, censor = F, surv.size = 2.5,  main = paste("p=", pv$pval, sep=""),
+                        xlab = "",
+                        ylab = "") +
+      theme_bw()+
+      theme(panel.border = element_blank(), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), 
+            legend.position = "none", axis.text.x = element_text(size=12, face="bold"), axis.text.y = element_text(size=12, face="bold"))
+    
+    print(km.plot)
+    dev.off()
+  }
+}
 
-pv <- survminer::surv_pvalue(km_fit, method = "log-rank", test.for.trend = F, combine = F, data = CTNND1)  
-pv
 
-png(filename = paste("Results/IHC/km_CTTND1_M_OS.png",sep =""), width = 500, height = 400, units = "px", pointsize = 16, bg = "white")
-km.plot <- autoplot(km_fit, conf.int = F, censor = F, surv.size = 2.5,  main = "",
-                    xlab = "",
-                    ylab = "") +
-  theme_bw()+
-  theme(panel.border = element_blank(), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), 
-        legend.position = "none", axis.text.x = element_text(size=12, face="bold"), axis.text.y = element_text(size=12, face="bold"))
-
-print(km.plot)
-dev.off()
 
 
 
