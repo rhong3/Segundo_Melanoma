@@ -426,10 +426,10 @@ FGA$Live = abs(FGA$Live-1)
 FGA_list = list(FGA, "SPSSmodell_FGA_M", "SPSSmodell_FGA_S", "FGA_M", "FGA_S")
 CDK4 <- read_excel("~/Documents/Segundo_Melanoma/Data/CDK4_IHC.xls")
 CDK4 = CDK4[, c("DFS", "PFS", "OS", "Live", "SPSSmodell_CDK4_M", "SPSSmodell_CDK4_S")]
-CDK4$SPSSmodell_CDK4_M = gsub(1, "high", CDK4$SPSSmodell_CDK4_M)
-CDK4$SPSSmodell_CDK4_M = gsub(0, "low", CDK4$SPSSmodell_CDK4_M)
-CDK4$SPSSmodell_CDK4_S = gsub(1, "high", CDK4$SPSSmodell_CDK4_S)
-CDK4$SPSSmodell_CDK4_S = gsub(0, "low", CDK4$SPSSmodell_CDK4_S)
+CDK4$SPSSmodell_CDK4_M = gsub(0, "high", CDK4$SPSSmodell_CDK4_M)
+CDK4$SPSSmodell_CDK4_M = gsub(1, "low", CDK4$SPSSmodell_CDK4_M)
+CDK4$SPSSmodell_CDK4_S = gsub(0, "high", CDK4$SPSSmodell_CDK4_S)
+CDK4$SPSSmodell_CDK4_S = gsub(1, "low", CDK4$SPSSmodell_CDK4_S)
 CDK4$Live = abs(CDK4$Live-1)
 CDK4_list = list(CDK4, "SPSSmodell_CDK4_M", "SPSSmodell_CDK4_S", "CDK4_M", "CDK4_S")
 HMOX1 <- read_excel("~/Documents/Segundo_Melanoma/Data/HMOX1_IHC.xlsx")
@@ -462,7 +462,7 @@ for (i in full_list){
                         ylab = "") +
       theme_bw()+
       theme(panel.border = element_blank(), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), 
-            legend.position = "none", axis.text.x = element_text(size=12, face="bold"), axis.text.y = element_text(size=12, face="bold"))
+            axis.text.x = element_text(size=12, face="bold"), axis.text.y = element_text(size=12, face="bold"))
     
     print(km.plot)
     dev.off()
@@ -472,13 +472,13 @@ for (i in full_list){
     pv <- survminer::surv_pvalue(km_fit, method = "log-rank", test.for.trend = F, combine = F, data = i[[1]])  
     pv$pval
     
-    png(filename = paste("Results/IHC/km_", i[[5]][1], "_", s, ".png",sep =""), width = 500, height = 400, units = "px", pointsize = 16, bg = "white")
+    png(filename = paste("Results/IHC/km_", i[[5]][1], "_", s, ".png",sep =""), width = 600, height = 400, units = "px", pointsize = 16, bg = "white")
     km.plot <- autoplot(km_fit, conf.int = F, censor = F, surv.size = 2.5,  main = paste("p=", pv$pval, sep=""),
                         xlab = "",
                         ylab = "") +
       theme_bw()+
       theme(panel.border = element_blank(), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), 
-            legend.position = "none", axis.text.x = element_text(size=12, face="bold"), axis.text.y = element_text(size=12, face="bold"))
+             axis.text.x = element_text(size=12, face="bold"), axis.text.y = element_text(size=12, face="bold"))
     
     print(km.plot)
     dev.off()
