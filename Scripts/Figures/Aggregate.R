@@ -196,6 +196,7 @@ library(ggrepel)
 toplist=c('ADAM10', 'HMOX1', 'FGA', 'DDX11', 'SCAI', 'CTNND1', 'CDK4', 'PAEP', 'PIK3CB', 'TEX30')
 OLA=read.csv("~/documents/Segundo_Melanoma/Results/OLA_summary.csv")
 OLA = OLA[, c("Gene.name", "Group", "FDR", "Feature", "Enriched_in")]
+OLA = OLA[OLA$Feature %in% c('6-month-survival', '1-yr-survival'),]
 OLA$`-log(FDR)` = -log10(OLA$FDR)
 OLA$Feature = paste(OLA$Feature, OLA$Enriched_in, sep='-')
 OLA$toplist = NA
@@ -208,12 +209,13 @@ for (i in 1:nrow(OLA)){
 
 
 ggplot(OLA, aes(x=Group, y=`-log(FDR)`)) +
-  geom_jitter(aes(color=Feature, shape=Feature), size=3, shape=16, position=position_jitter(0.1)) +
+  geom_jitter(aes(color=Feature, shape=Feature), size=3, shape=16, position=position_jitter(0.04)) +
   geom_label_repel(aes(label = toplist),
                    box.padding   = 2,
                    point.padding = 0.1,
-                   segment.color = 'grey50') + theme_bw() + theme(axis.text.x = element_text(size=12), panel.border = element_blank(), panel.grid.major = element_blank(),
-                                                                  panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), axis.title.x=element_blank())
+                   segment.color = 'grey50') + theme_bw() + theme(axis.text.x = element_text(size=15), axis.text.y = element_text(size=15), panel.border = element_blank(), panel.grid.major = element_blank(), legend.position="bottom", 
+                                                                  panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), axis.title.x=element_blank(), legend.text=element_text(size=15),
+                                                                  legend.title = element_text(size=15), axis.title = element_text(size=15))
 
 
 
