@@ -1,11 +1,11 @@
-### Melanoma Multi-omics Data Analyses
+# Melanoma Multi-omics Data Analyses
 
 ## Scripts
-# Data_prep
+### Data_prep
 
-# Figures
+### Figures
 
-# ICA
+### ICA
 
-# outlier_analysis
+### outlier_analysis
 
