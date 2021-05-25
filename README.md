@@ -28,5 +28,6 @@
  - ICA_template.R: independent component analysis
 
 ### outlier_analysis
- - 
+ - outlier analysis (Blacksheep); please refer to the document files in the folder
+ - https://www.biorxiv.org/content/10.1101/825067v2.full.pdf
 
