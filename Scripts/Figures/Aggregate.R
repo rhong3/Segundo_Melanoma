@@ -269,7 +269,7 @@ joint = rbind(joint, trans)
 joint = rbind(joint, prot2)
 joint = rbind(joint, phos2)
 joint = rbind(joint, trans2)
-joint$Direction = ifelse(joint$Coefficient > 0, "positive", "negative")
+joint$Hazard = ifelse(joint$Coefficient > 0, "high", "low")
 joint$Coefficient = abs(joint$Coefficient)
 
 write.csv(joint, '~/documents/Segundo_Melanoma/Results/Cox_summary.csv', row.names=FALSE)
@@ -286,7 +286,7 @@ for (i in 1:nrow(COX)){
 }
 
 ggplot(COX, aes(x=Group, y=Coefficient)) +
-  geom_jitter(aes(color=Direction, shape=Direction), size=3, shape=16, position=position_jitter(0.1)) +
+  geom_jitter(aes(color=Hazard, shape=Hazard), size=3, shape=16, position=position_jitter(0.1)) +
   geom_label_repel(aes(label = toplist),
                    box.padding   = 1,
                    point.padding = 0.1,
