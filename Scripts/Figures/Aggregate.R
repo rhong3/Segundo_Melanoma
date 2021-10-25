@@ -209,7 +209,7 @@ for (i in 1:nrow(OLA)){
 
 
 ggplot(OLA, aes(x=Group, y=`-log(FDR)`)) +
-  geom_jitter(aes(color=Feature, shape=Feature), size=3, shape=16, position=position_jitter(0.04)) +
+  geom_jitter(aes(color=Feature, shape=Feature), size=3, shape=16, position=position_jitter(0.04)) + scale_color_manual(values=c("#e9a3c9", "#a1d76a")) + 
   geom_label_repel(aes(label = toplist),
                    box.padding   = 2,
                    point.padding = 0.1,
@@ -286,7 +286,7 @@ for (i in 1:nrow(COX)){
 }
 
 ggplot(COX, aes(x=Group, y=Coefficient)) +
-  geom_jitter(aes(color=Hazard, shape=Hazard), size=3, shape=16, position=position_jitter(0.1)) +
+  geom_jitter(aes(color=Hazard, shape=Hazard), size=3, shape=16, position=position_jitter(0.1)) + scale_color_manual(values=c("#f1a340", "#998ec3")) + 
   geom_label_repel(aes(label = toplist),
                    box.padding   = 1,
                    point.padding = 0.1,
