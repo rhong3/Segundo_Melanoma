@@ -28,11 +28,11 @@
 # message(paste('p_value_threshold:',p_value))
 
 
-exp_prefix='ICA_transcriptomics'
+exp_prefix='ICA_proteomics'
 
-clinical_data='~/documents/Segundo_Melanoma/Data/transcriptomics/transcriptomics_clinical.csv'
+clinical_data='~/documents/Segundo_Melanoma/Data/proteomics/proteomics_clinical.csv'
 
-ica_rdata='~/documents/Segundo_Melanoma/Results/transcriptomics/ICA/ICA_transcriptomics_ICA.Rdata'
+ica_rdata='~/documents/Segundo_Melanoma/Results/proteomics/ICA/ICA_proteomics_ICA.Rdata'
 
 out_dir='~/documents/Segundo_Melanoma/Results/Figures'
 
@@ -96,16 +96,31 @@ write.table(icPave,
 icPave_plot=melt(icPave)
 icPave_plot=subset(icPave_plot,
                    X1%in%names(which(apply(icPave,1,sum)>30))&X2%in%colnames(icPave)[which(apply(icPave,2,sum)>30)])
+icPave_plot$value[icPave_plot$value > 100] = 100
+
 colnames(icPave_plot)[1:2]=c('IC','clinical_feature')
 icPave_plot[,1]=factor(icPave_plot[,1])
-icPave_plot$IC=paste('IC',str_pad(icPave_plot$IC,2,pad='0'),sep='_')
-icPave_plot$clinical_feature = gsub("^EC$", "Cluster.EC", icPave_plot$clinical_feature)
-icPave_plot$clinical_feature = gsub("^Mit$", "Cluster.Mit", icPave_plot$clinical_feature)
-icPave_plot$clinical_feature = gsub("^EC.Mit$", "Cluster.EC.Mit", icPave_plot$clinical_feature)
-icPave_plot$clinical_feature = gsub("^EC.Immune$", "Cluster.EC.Immune", icPave_plot$clinical_feature)
-icPave_plot$clinical_feature = gsub("^Mit.Immune$", "Cluster.Mit.Immune", icPave_plot$clinical_feature)
+icPave_plot$IC=paste('IC',str_pad(icPave_plot$IC,3,pad='0'),sep='_')
+icPave_plot$clinical_feature = gsub("^EC$", "EC", icPave_plot$clinical_feature)
+icPave_plot$clinical_feature = gsub("^Mit$", "Mit", icPave_plot$clinical_feature)
+icPave_plot$clinical_feature = gsub("^EC.Mit$", "EC-Mit", icPave_plot$clinical_feature)
+icPave_plot$clinical_feature = gsub("^EC.Immune$", "EC-Immune", icPave_plot$clinical_feature)
+icPave_plot$clinical_feature = gsub("^Mit.Immune$", "Mit-Immune", icPave_plot$clinical_feature)
 
+icPave_plot$clinical_feature = gsub("dist.met.location.OthersViceral", "viceral metastasis", icPave_plot$clinical_feature)
+icPave_plot$clinical_feature = gsub("Average.tumor..", "tumor content", icPave_plot$clinical_feature)
+icPave_plot$clinical_feature = gsub("Local.Cutaneous", "local cutaneous", icPave_plot$clinical_feature)
+icPave_plot$clinical_feature = gsub("average.adjacent.lymphnode..", "adjacent lymph node", icPave_plot$clinical_feature)
+icPave_plot$clinical_feature = gsub("pigment.score.average", "pigment score", icPave_plot$clinical_feature)
+icPave_plot$clinical_feature = gsub("Average.necrosis", "necrosis", icPave_plot$clinical_feature)
+icPave_plot$clinical_feature = gsub("conncetive.tissue.average", "conncetive tissue", icPave_plot$clinical_feature)
+icPave_plot$clinical_feature = gsub("lymphocyte.density.average", "lymphocyte density", icPave_plot$clinical_feature)
+icPave_plot$clinical_feature = gsub("Average.lymphatic.score", "lymphatic score", icPave_plot$clinical_feature)
+icPave_plot$clinical_feature = gsub("prim.breslow", "prim breslow", icPave_plot$clinical_feature)
+icPave_plot$clinical_feature = gsub("lymphocyte.distribution.average", "lymphocyte distribution", icPave_plot$clinical_feature)
 
+lv = c("EC", "EC-Immune", "EC-Mit", "Mit", "Mit-Immune", "gender", "pigment score", "lymphocyte density", "lymphatic score", "tumor content", "adjacent lymph node", "necrosis", "conncetive tissue")
+icPave_plot$clinical_feature = factor(icPave_plot$clinical_feature, levels = rev(lv))
 
 png(filename=paste(out_dir,paste(exp_prefix,'IC_cluster_clinical_association.png',sep='_'),sep='/'),
     width = 1200, height = 480, units = "px", 
