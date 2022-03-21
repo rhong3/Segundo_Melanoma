@@ -233,3 +233,4 @@ findCor2=function(mix,clustering,clinical.data,p_value=T){
     
     return(res)
 }
+
